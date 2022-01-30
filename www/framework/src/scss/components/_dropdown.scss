@@ -1,0 +1,20 @@
+.dropdown-menu{
+  margin-left: 80px;
+  position: relative;
+  display: none;
+
+  .active{
+    display: block;
+  }
+}
+
+.dropdown-menu::before{
+  position: absolute;
+  left: -31px;
+  content: "";
+  width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  height: 75%;
+  top: 15%;
+}
+

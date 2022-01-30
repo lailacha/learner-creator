@@ -1,0 +1,50 @@
+
+.sidebar{
+  .container{
+    background-color: white;
+    margin: 0;
+    padding: 0;
+  }
+
+  .side{
+    border-bottom-right-radius: 25px;
+    border-top-right-radius: 25px;
+    height: 100vh;
+    width: 19rem;
+    background-color:  $light-back-main-color;
+    h1, h2, h3, h4, p {
+      color: white;
+
+      &:hover {
+        font-weight: bold;
+        cursor: pointer;
+      }
+;
+    }
+
+    .spacer{
+      margin-top: 50px;
+
+    }
+
+    .isActive{
+      background-color: lighten(#5E5353, 10%) ;
+    }
+
+    .sidebar-block{
+      padding: 0.5px;
+      width: 80%;
+      align-items: center;
+      justify-content: center;
+      border-radius: 25px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #5E5353;
+      }
+
+
+    }
+  }
+
+}

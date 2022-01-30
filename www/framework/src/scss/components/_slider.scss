@@ -1,0 +1,24 @@
+$slider-width: 576px;
+$slider-height: 384px;
+
+.slider{
+  width: $slider-width;
+  height: $slider-height;
+  overflow: hidden;
+
+  & .slider-container{
+    display: flex;
+  }
+
+  .slide{
+
+    width: $slider-width;
+    height: $slider-height;
+    object-fit: cover ;
+  }
+
+  nav {
+    position: absolute;
+    z-index: 1;
+  }
+}

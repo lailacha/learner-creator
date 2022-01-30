@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+
+body {
+  background-color: $light-grey;
+font-family: $font1;
+  margin: 0;
+}
+
+h1{
+  font-family: $font3;
+  font-size: rem(24px);
+}
+
+h2{
+  font-family: $font3;
+  font-size: rem(18px);
+}
+
+
+h3{
+  font-family: $font3;
+  font-size: rem(16px);
+  font-weight: normal;
+}
+
+.container {
+  margin: auto;
+  max-width: $container-width;
+}
+
+/*  Spacing  */
+$baseSpace: 0.8rem;
+$spaceRange: 5;
+
+@for $i from 0 through $spaceRange {
+  .mt-#{$i} {
+    margin-top: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .mb-#{$i} {
+    margin-bottom: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .mr-#{$i} {
+    margin-right: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .ml-#{$i} {
+    margin-left: calc(#{$baseSpace} * #{$i}) !important;
+  }
+
+  .pt-#{$i} {
+    padding-top: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .pb-#{$i} {
+    padding-bottom: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .pr-#{$i} {
+    padding-right: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .pl-#{$i} {
+    padding-left: calc(#{$baseSpace} * #{$i}) !important;
+  }
+}
+
+.w-25{
+  width: 25%;
+}
+
+.w-50{
+  width: 50%;
+}
+
+.w-100{
+  width: 100%;
+}
+
+
+/*  Flex  */
+
+.flex{
+  display: flex;
+}
+
+.column{
+  flex-direction: column;
+}
+
+.jc-center{
+  justify-content: center;
+}
+
+.jc-sb{
+  justify-content: space-between;
+}
+
+.jc-sa{
+  justify-content: space-around;
+}
+
+.ai-center{
+  align-items: center;
+}
+
+.ai-start{
+  align-items: flex-start;
+}
+
+/*  Colors */
+
+.bg-white{
+  background-color: $white;
+}
+
+.white{
+  color: $white;
+}
+
+.back-light-main-color{
+  color: $light-back-main-color;
+}
+
+.lighter-text{
+  color: #D4C6C6
+}
+
+
+/*  Fonts */
+
+
+.body1{
+  font-size: 1.2rem;
+  line-height: 29px;
+  position: relative;
+}
+
+.body2{
+  font-size: 1rem;
+  line-height: 29px;
+  position: relative;
+}
+
+.bold{
+  font-weight: bold;
+}
+.bg-light-back-main-color{
+  color: $light-back-main-color;
+
+}
+
+
+.body1::after{
+  content: "";
+  position: absolute;
+  border-radius: 25px;
+  bottom: -6px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  width: 50%;
+  background: $light-back-main-color;
+}
+

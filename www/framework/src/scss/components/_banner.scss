@@ -1,0 +1,30 @@
+.banner{
+  display: block;
+  width: 100%;
+  padding-top: 42%;
+  position: relative;
+  @include cover-bg;
+
+  &--text{
+    &>div{
+      position: absolute;
+      background-color: transparentize($black, 0.3);
+      height: 100%;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      display: flex;
+
+      p{
+        margin: auto;
+        color: $white;
+        font-weight: 700;
+        font-size: rem(24);
+        max-width: 75%;
+        text-align: center;
+      }
+    }
+  }
+}

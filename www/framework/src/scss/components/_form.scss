@@ -1,0 +1,24 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  max-width: rem(400px);
+  input{
+    margin-top: 5px;
+    border: 1px solid $light-back-main-color;
+    border-radius: 4px;
+
+  }
+}
+
+.form-register{
+  border-radius: 10px;
+
+  padding: 2rem;
+  h1{
+    color: $white;
+  }
+  background-color: $light-back-main-color;
+
+
+}
+

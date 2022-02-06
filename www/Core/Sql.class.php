@@ -26,7 +26,7 @@ abstract class Sql
     /**
      * @param null $id
      */
-    public function setId(?int $id)
+    public function getById(?int $id)
     {
         $sql = "SELECT * FROM ".$this->table." WHERE id=:id";
         $queryPrepared = $this->pdo->prepare($sql);
@@ -34,6 +34,32 @@ abstract class Sql
         return $queryPrepared->fetchObject(get_called_class());
 
     }
+
+    public function getOneByOne($attribute, $value){
+
+        $sql = "SELECT * FROM ".$this->table." WHERE ".$attribute."=:value";
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute( ["value"=>$value] );
+        return $queryPrepared->fetchObject(get_called_class());
+    }
+
+    public function getOneByMany($attributes){
+
+        $where = "";
+        end($attributes);
+        $endAttributes = key($attributes);
+        foreach ($attributes as $key=>$value) {
+            $where .= $key."=:".$key;
+            if($key !== $endAttributes)
+            $where .= " AND ";
+        }
+        $sql = "SELECT * FROM ".$this->table." WHERE ".$where."";
+
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute( $attributes);
+        return $queryPrepared->fetchObject(get_called_class());
+    }
+
 
 
     public function save(): void

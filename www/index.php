@@ -30,8 +30,16 @@ if(file_exists($fileRoutes)){
 }
 
 
-
 $uri = $_SERVER["REQUEST_URI"];
+
+/**
+ * TODO Remove when router is operationnal with dynamic arguments
+ */
+if(preg_match("/verifyAccount/i", $uri))
+    {
+   $uri = "/verifyAccount";
+
+}
 
 if(empty($routes[$uri]) || empty($routes[$uri]["controller"]) || empty($routes[$uri]["action"])){
     die("Page 404");

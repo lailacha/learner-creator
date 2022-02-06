@@ -426,7 +426,7 @@ h3 {
 .formContainer {
   width: 500px;
   height: 400px;
-  background-color: white;
+  background-color: #ffff;
   display: flex;
   justify-content: center;
   border-radius: 30px;
@@ -895,67 +895,4 @@ h3 {
 .slider nav {
   position: absolute;
   z-index: 1;
-}
-.clearfix::before{
-	content: '';
-	display: table;
-}
-
-.clearfix::after{
-	content: '';
-	clear: both;
-	display: table;
-}
-
-.container{
-	max-width: 1170px;
-	margin: auto;
-	position: relative;
-}
-
-.vertically-centered{
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-}
-
-header{
-	background-color: #464646;
-	padding: 10px 0; /* en haut et en bas : 10px ; a gauche et a droite 0*/
-	position: relative;
-	width: 100%;
-	z-index: 10;
-}
-
-header .container > a{
-  text-decoration: none;
-  color:black;
-	float: left;
-	line-height: 0;
-}
-
-header .container > a img{
-	width: 140px;
-}
-
-header .container > nav{
-	float: right;
-}
-
-header .container > nav ul{
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-header .container > nav li{
-	float: left;
-}
-
-header .container > nav li a{
-  text-decoration: none;
-  
-  color:black;
-	padding: 0.5em;
-	display: block;
 }

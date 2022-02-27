@@ -9,12 +9,13 @@ use App\Core\User as UserClean;
 use App\Core\Verificator;
 use App\Core\View;
 use App\Core\Mail;
+use App\Controller\BaseController;
 use App\Core\FormBuilder;
 use App\Core\Recaptcha;
 use App\Model\User as UserModel;
 use App\Model\ReceivePassword as ReceivePasswordModel;
 
-class User {
+class User extends BaseController {
 
     public function login()
     {
@@ -46,7 +47,8 @@ class User {
         $user = new UserModel();
         $session = new Session();
 
-        if(!empty($_POST)) {
+        if (!empty($_POST)) {
+
 
             $data = array_merge($_POST, $_FILES);
             $verification = Verificator::checkForm($user->getRegisterForm(), $data);

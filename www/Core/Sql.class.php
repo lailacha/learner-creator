@@ -2,11 +2,13 @@
 
 namespace App\Core;
 
+use PDO;
+
 abstract class Sql
 {
 
-    private $pdo;
-    private $table;
+    protected $pdo;
+    protected $table;
 
     public function __construct()
     {
@@ -32,6 +34,18 @@ abstract class Sql
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute( ["id"=>$id] );
         return $queryPrepared->fetchObject(get_called_class());
+
+    }
+
+    /**
+     * @param null $id
+     */
+    public function getALl()
+    {
+        $sql = "SELECT * FROM ".$this->table;
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute();
+        return $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
 
     }
 

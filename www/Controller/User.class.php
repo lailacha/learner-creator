@@ -6,11 +6,12 @@ use App\Core\Session;
 use App\Core\User as UserClean;
 use App\Core\Verificator;
 use App\Core\View;
+use App\Controller\BaseController;
 use App\Core\FormBuilder;
 use App\Core\Recaptcha;
 use App\Model\User as UserModel;
 
-class User {
+class User extends BaseController {
 
     public function login()
     {

@@ -5,20 +5,19 @@ namespace App\Core;
 class Verificator
 {
 
-    public static function checkForm($config, $data): array
+    public static function checkForm($config, $request): array
     {
+        $data = $request->getData();
         $captcha = new Recaptcha();
         $errors = [];
 
+       
         if( count($config["inputs"]) != count($data)){
             die("Tentative de hack");
         }
 
         foreach ($config["inputs"] as $name=>$input)
         {
-            if(!isset($data[$name])){
-                $errors[]="Il manque le champ :".$name;
-            }
 
             if(!empty($input["required"]) && empty($data[$name]) ){
                 $errors[]=$name ." ne peut pas être vide";
@@ -28,7 +27,7 @@ class Verificator
                 $errors[]=$input["error"];
             }
 
-            if($input["type"]=="file" &&  !self::checkFile($data[$name])) {
+            if($input["type"]=="file" && !empty($input[$name]) && !self::checkFile($data[$name])) {
                 $errors[]= "Votre fichier n'est pas au bon format (jpeg, jpg, svg, png) et doit être > 1000.";
             }
 
@@ -62,8 +61,6 @@ class Verificator
         $fileSize = $file['size'];
         $fileNameCmps = explode(".", $fileName);
         $fileExtension = strtolower(end($fileNameCmps));
-        echo $fileName;
-
 
         $extensions = ["jpeg", "png", "svg", "jpg"];
         if(!in_array($fileExtension, $extensions))

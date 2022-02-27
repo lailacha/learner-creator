@@ -1,20 +1,22 @@
-.dropdown-menu{
-  margin-left: 80px;
-  position: relative;
-  display: none;
-
+.dropdown-items{
+  animation: rotateX (10 * 60ms) ease-in-out forwards;
+  opacity: 0;
   .active{
     display: block;
+
   }
 }
 
-.dropdown-menu::before{
-  position: absolute;
-  left: -31px;
-  content: "";
-  width: 0;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  height: 75%;
-  top: 15%;
+@keyframes rotateX {
+  0% {
+    opacity: 0;
+    transform: rotateX(-90deg);
+  }
+  50% {
+    transform: rotateX(-20deg);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateX(0deg);
+  }
 }
-

@@ -2,6 +2,10 @@
 {
   display: flex;
 
+  & img{
+    width: 70px;
+    height: 70px;
+  }
   .card-label{
     display: flex;
     flex-direction: column;
@@ -15,5 +19,10 @@
     h3{
       color: #D4C6C6;
     }
+  }
+
+
+  @media only screen and (max-width: $lg-width) {
+      display: none;
   }
 }

@@ -18,22 +18,55 @@ h2{
 }
 
 
-h3{
+.header3{
   font-family: $font3;
   font-size: rem(16px);
   font-weight: normal;
 }
+
+i{
+  color: $white;
+}
+
 
 .container {
   margin: auto;
   max-width: $container-width;
 }
 
+@media (max-width: $md-width) {
+  .md-hidden {
+    display: none;
+  }
+}
+
+@media (max-width: $lg-width) {
+  .lg-hidden {
+    display: none;
+  }
+}
+
+@media (min-width: $md-width)  {
+  .xl-hidden{
+    display: none;
+  }
+}
 /*  Spacing  */
 $baseSpace: 0.8rem;
 $spaceRange: 5;
 
+.mr-a{
+  margin-right: auto;
+}
+
+.ml-a{
+  margin-left: auto;
+}
+
 @for $i from 0 through $spaceRange {
+  .m-#{$i} {
+    margin: calc(#{$baseSpace} * #{$i}) !important;
+  }
   .mt-#{$i} {
     margin-top: calc(#{$baseSpace} * #{$i}) !important;
   }
@@ -45,6 +78,11 @@ $spaceRange: 5;
   }
   .ml-#{$i} {
     margin-left: calc(#{$baseSpace} * #{$i}) !important;
+  }
+
+
+  .p-#{$i} {
+    padding: calc(#{$baseSpace} * #{$i}) !important;
   }
 
   .pt-#{$i} {
@@ -74,7 +112,46 @@ $spaceRange: 5;
 }
 
 
+
+.h-25{
+  height: 25%;
+}
+
+.h-50{
+height: 50%
+}
+
+.h-100{
+  height: 100%;
+}
+
+.xs-space{
+  margin-top: 20px
+}
+
+
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+/* Border */
+
+.rounded-1{
+  border-radius: 3px;
+}
+
+.rounded-2{
+  border-radius: 5px;
+}
+
+.rounded-25{
+  border-radius: 25px;
+}
+
+
 /*  Flex  */
+
 
 .flex{
   display: flex;
@@ -82,6 +159,14 @@ $spaceRange: 5;
 
 .column{
   flex-direction: column;
+}
+
+.fd-row-reverse{
+  flex-direction: row-reverse;
+}
+
+.fd-col-reverse{
+  flex-direction: column-reverse;
 }
 
 .jc-center{
@@ -106,6 +191,9 @@ $spaceRange: 5;
 
 /*  Colors */
 
+.bg-violet{
+  background-color: $violet-electric;
+}
 .bg-white{
   background-color: $white;
 }
@@ -118,8 +206,12 @@ $spaceRange: 5;
   color: $light-back-main-color;
 }
 
+.back-lighter-main-color{
+  color: lighten($light-back-main-color, 20);
+}
+
 .lighter-text{
-  color: #D4C6C6
+  color: #D4C6C6;
 }
 
 
@@ -127,9 +219,11 @@ $spaceRange: 5;
 
 
 .body1{
-  font-size: 1.2rem;
+  font-size: rem(24px);
+  font-family: Rockwell;
+  font-weight: bold;
+  color: #6B6B6B;
   line-height: 29px;
-  position: relative;
 }
 
 .body2{
@@ -146,16 +240,25 @@ $spaceRange: 5;
 
 }
 
+.underline {
+  position: relative;
 
-.body1::after{
-  content: "";
-  position: absolute;
-  border-radius: 25px;
-  bottom: -6px;
-  left: 0;
-  right: 0;
-  height: 4px;
-  width: 50%;
-  background: $light-back-main-color;
+
+  &::after{
+    content: "";
+    position: absolute;
+    border-radius: 25px;
+    bottom: -6px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    width: 50px;
+    background: lighten($light-back-main-color, 20);
+  }
 }
 
+.thin{
+  &::after{
+    height: 2px;
+  }
+}

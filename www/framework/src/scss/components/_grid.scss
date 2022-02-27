@@ -1,9 +1,10 @@
-$col-nb: 12;
-$grid-gutter: 30px;
+$xs-width: 300px;
 $sm-width: 650px;
 $md-width: 900px;
-$lg-width: 1200px;
+$lg-width: 1250px;
 $xl-width: 1900px;
+
+
 
 .grid{
   box-sizing: border-box;
@@ -16,68 +17,54 @@ $xl-width: 1900px;
       display: flex;
       flex-wrap: wrap;
       margin-right: -15px;
-      margin-left: -15px;
-      @for $i from 1 through $col-nb {
-        .col-#{$i}, col-lg-#{$i}, col-md-#{$i}, col-xl-#{$i}{
-          box-sizing: border-box;
-          width: ((100 / $col-nb) * $i) * 1%;
-          padding-right: calc(#{$grid-gutter}/2) ;
-          padding-left: calc(#{$grid-gutter}/2) ;
+      margin-left: -15px;}
+
+  }
+
+
+
+
+  $columns: 12;
+  $grid-gutter: 30px;
+  $breakpoints: (
+          xs: $xs-width,
+          sm: $sm-width,
+          md: $md-width,
+          lg: $lg-width,
+          xl: $xl-width
+  );
+
+  @mixin create-selectors($breakpoint: null) {
+    $infix: if($breakpoint == null, '', '-#{$breakpoint}');
+
+    @for $i from 0 through $columns {
+      .col#{$infix}-#{$i} {
+        box-sizing: border-box;
+        width: ((100 / $columns) * $i) * 1%;
+        padding-right: calc(#{$grid-gutter}/2) ;
+        padding-left: calc(#{$grid-gutter}/2) ;
+      }
+
+      .col-offset#{$infix}-#{$i} {
+        @if $i == 0 {
+          margin-left: 0;
+        } @else {
+          margin-left: 100% / $columns * $i;
         }
       }
+
     }
   }
 
 
-  @media (min-width: #{$sm-width}){
-    @for $i from 1 through $col-nb {
-      .col-sm-#{$i} {
-        box-sizing: border-box;
-        width: ((100 / $col-nb) * $i) * 1%;
-        padding-right: calc(#{$grid-gutter}/2) ;
-        padding-left: calc(#{$grid-gutter}/2) ;
-      }
+
+  @include create-selectors;
+
+  @each $breakpoint, $width in $breakpoints {
+    @media (min-width: $width) {
+      @include create-selectors($breakpoint);
     }
-
   }
-
-
-  @media (min-width: #{$md-width}){
-    @for $i from 1 through $col-nb {
-      .col-md-#{$i} {
-        box-sizing: border-box;
-        width: ((100 / $col-nb) * $i) * 1%;
-        padding-right: calc(#{$grid-gutter}/2) ;
-        padding-left: calc(#{$grid-gutter}/2) ;
-      }
-    }
-
-  }
-
-  @media (min-width: #{$lg-width}){
-    @for $i from 1 through $col-nb {
-      .col-lg-#{$i} {
-        box-sizing: border-box;
-        width: ((100 / $col-nb) * $i) * 1%;
-        padding-right: calc(#{$grid-gutter}/2) ;
-        padding-left: calc(#{$grid-gutter}/2) ;
-      }
-
-    }
-
-  }
-
-  @media (min-width: #{$xl-width}){
-    @for $i from 1 through $col-nb {
-      .col-xl-#{$i} {
-        box-sizing: border-box;
-        width: ((100 / $col-nb) * $i) * 1%;
-        padding-right: calc(#{$grid-gutter}/2) ;
-        padding-left: calc(#{$grid-gutter}/2) ;
-      }
-
-    }
-
-  }
-
 }
+
+

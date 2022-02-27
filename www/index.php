@@ -33,6 +33,8 @@ if(file_exists($fileRoutes)){
 
 $uri = $_SERVER["REQUEST_URI"];
 
+$params = explode("?",$uri );
+
 if(empty($routes[$uri]) || empty($routes[$uri]["controller"]) || empty($routes[$uri]["action"])){
     die("Page 404");
 }

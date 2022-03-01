@@ -21,9 +21,6 @@ $xl-width: 1900px;
 
   }
 
-
-
-
   $columns: 12;
   $grid-gutter: 30px;
   $breakpoints: (
@@ -34,7 +31,7 @@ $xl-width: 1900px;
           xl: $xl-width
   );
 
-  @mixin create-selectors($breakpoint: null) {
+  @mixin generateGrid($breakpoint: null) {
     $infix: if($breakpoint == null, '', '-#{$breakpoint}');
 
     @for $i from 0 through $columns {
@@ -58,11 +55,11 @@ $xl-width: 1900px;
 
 
 
-  @include create-selectors;
+  @include generateGrid;
 
   @each $breakpoint, $width in $breakpoints {
     @media (min-width: $width) {
-      @include create-selectors($breakpoint);
+      @include generateGrid($breakpoint);
     }
   }
 }

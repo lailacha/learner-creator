@@ -752,6 +752,10 @@ i {
   color: #FFF;
 }
 
+button {
+  cursor: pointer;
+}
+
 .container {
   margin: auto;
   max-width: 1000px;
@@ -1242,7 +1246,7 @@ i {
   min-height: 100vh;
   width: 20rem;
   background-color: #464646;
-  color: white;
+  color: #FFF;
 }
 .grid .sidebar #logo {
   max-width: 9.6875rem;

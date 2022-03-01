@@ -1,12 +1,9 @@
 
 .grid{
 
-
-
   .close{
     display: none !important;
   }
-
 
   .container{
     background-color: white;
@@ -20,13 +17,14 @@
     min-height: 100vh;
     width: 20rem;
     background-color:  $light-back-main-color;
-    color: white;
+    color: $white;
 
     #logo{
       max-width: rem(155px);
       max-height: rem(155px);
 
     }
+
     .profil-card{
       display: none;
     }

@@ -28,6 +28,10 @@ i{
   color: $white;
 }
 
+button {
+  cursor: pointer;
+}
+
 
 .container {
   margin: auto;
@@ -230,6 +234,7 @@ height: 50%
   font-size: 1rem;
   line-height: 29px;
   position: relative;
+
 }
 
 .bold{

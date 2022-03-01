@@ -26,7 +26,11 @@ class User {
 
     public function register()
     {
-        $user = new UserModel();
+
+        $userManager = new UserModel();
+        $userManager->getById(33);
+        print_r($userManager);
+        //$this->sendRegisterMail($user);
         $session = new Session();
 
         if(!empty($_POST)) {

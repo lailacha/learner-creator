@@ -1,33 +1,46 @@
-.button{
+.button {
+  font-size: rem(16);
+  text-decoration: none;
   display: inline-block;
   padding: 1em 2em;
   color: $white;
-  background-color: $grey;
-  border: none;
-  transition: background-color 0.3s;
+  text-transform: uppercase;
+  background: $linear;
+  border: 1px solid;
+  transition: background 0.3s;
   cursor: pointer;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: 500;
 
-  &:hover{
-    background-color: lighten($grey, 10%);
+  &:hover {
+    transition: color 0.3s;
+
+    color: $text-color;
+    background: $white;
+    border: 1px solid;
+    border-color: $blue;
   }
-  &--success{
+
+
+  &--small {
+    font-size: rem(8);
+  }
+
+  &--success {
     background-color: $green;
-    &:hover{
+
+    &:hover {
       background-color: lighten($green, 10%);
     }
   }
-  &--alert{
+
+  &--alert {
     background-color: $red;
+
+    &:hover {
+      background-color: lighten($red, 10%);
+    }
   }
 
-
-
-
-
-}
-
-.icon {
-  width: 25px;
-  height: 25px;
-  border: none;
 }

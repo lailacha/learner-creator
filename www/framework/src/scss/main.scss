@@ -1,13 +1,16 @@
 @import "variables";
-@import "components/grid";
-@import "functions" ;
-@import "fonts" ;
-@import "globals" ;
+@import "fonts";
+@import "functions";
+@import "globals";
+
 @import "components/button";
 @import "components/banner";
-@import "components/sidebar";
-@import "components/dashboard";
-@import "components/profilCard";
-@import "components/mainContainer";
-@import "components/dropdown";
+@import "components/search";
+@import "components/charte";
+@import "components/suggestions";
+@import "components/sidebar_right";
+@import "components/sidebar_left";
 @import "components/slider";
+
+
+//@import "components/toggle-switch";

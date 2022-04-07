@@ -7,13 +7,13 @@ class Security
 
     public static function checkRoute($route): bool
     {
-        $session = new Session();
-
-        $roleUser = $session->get("role");
-
         $security = $route['security'] ?? null;
 
-        if (!is_null($security) && $roleUser != 'admin') {
+        $session = new Session();
+
+        $rolesUser = $session->get("roles");
+
+        if (!is_null($security) && !in_array("admin", $rolesUser)) {
             return false;
         }
 

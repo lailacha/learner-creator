@@ -1,6 +1,11 @@
 <?php
 namespace App;
 
+
+// à enlever la partie suivante pour autoriser l'acces à tous les routes
+session_start();
+$_SESSION['role'] = 'admin';
+//
 require "conf.inc.php";
 
 //E

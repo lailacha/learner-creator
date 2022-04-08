@@ -8,10 +8,12 @@
 /nous-contacter:
   controller: main
   action: contact
+  auth: true
 
 /login:
   controller: user
   action: login
+
 
 /logout:
   controller: user
@@ -24,4 +26,4 @@
 /dashboard:
   controller: admin
   action: home
-  security: true
+  security: admin

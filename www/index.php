@@ -3,10 +3,11 @@
 namespace App;
 
 
-// à enlever la partie suivante pour autoriser l'acces à tous les routes
+// à enlever la partie suivante c'est pour autoriser l'acces à tous les routes
 session_start();
 
-$_SESSION["roles"] = ["admin", "user"];
+//$_SESSION["id"] = 1;
+$_SESSION["roles"] = ["admin"];
 //
 require "conf.inc.php";
 
@@ -45,8 +46,10 @@ if (empty($routes[$uri]) || empty($routes[$uri]["controller"]) || empty($routes[
 
 
 if (!Security::checkRoute($routes[$uri])) {
-    die("NotAuthorized");
+    die("Not Authorized");
 }
+
+Security::checkAuth($routes[$uri]);
 
 
 $controller = ucfirst(strtolower($routes[$uri]["controller"]));

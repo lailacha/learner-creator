@@ -17,7 +17,7 @@ services:
     image: mysql:5.7
     container_name: mysql
     ports :
-      - "3306:3306"
+      - "3305:3305"
     environment:
       MYSQL_DATABASE: mvcdocker2
       MYSQL_ROOT_PASSWORD: password

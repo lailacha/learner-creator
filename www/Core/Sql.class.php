@@ -38,14 +38,15 @@ abstract class Sql
 
     public function save(): void
     {
-
-
+        
+        
         $colums = get_object_vars($this);
         $varToExclude = get_class_vars(get_class());
         $colums = array_diff_key($colums, $varToExclude);
 
         if(is_null($this->getId())){
             $sql = "INSERT INTO ".$this->table." (". implode(",", array_keys($colums)) .") VALUES (:". implode(",:", array_keys($colums)) .")";
+            
         }else{
             $update = [];
             foreach ($colums as $key=>$value) {
@@ -56,8 +57,38 @@ abstract class Sql
 
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute( $colums );
+        
+       
 
         //Si ID null alors insert sinon update
+    }
+    public function login($data){
+
+        $bdd = new \PDO( DBDRIVER.":host=".DBHOST.";port=".DBPORT.";dbname=".DBNAME , DBUSER , DBPWD
+                , [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING]);
+
+        $value = $data[key($data)];
+        $email = htmlspecialchars($value);
+        $sql = "SELECT * FROM " . $this->table . " WHERE ".key($data)." = '" . $value . "'";
+        $sql1 = "SELECT password FROM " . $this->table . " WHERE ".key($data)." = '" . $value . "'";
+        $reponse = $bdd->query($sql);
+        $donnees = $reponse->fetch();
+        //var_dump($donnees);
+
+        $reponse1 = $bdd->query($sql1);
+        $donnees1 = $reponse1->fetch();
+        
+
+        if (password_verify($_POST["password"], $donnees1[0])) {
+            echo 'Password is valid!';
+        } else {
+            echo 'Invalid password.';
+        }
+
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute();
+        
+
     }
 
 

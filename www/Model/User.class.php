@@ -14,6 +14,7 @@ class User extends Sql
     protected $password;
     protected $token = null;
 
+   
     public function __construct()
     {
         //echo "constructeur du Model User";
@@ -131,11 +132,13 @@ class User extends Sql
     {
         //Pré traitement par exemple
         //echo "pre traitement";
+       
         parent::save();
     }
 
     public function getRegisterForm(): array
     {
+        
         return [
             "config" => [
                 "method" => "POST",
@@ -146,6 +149,25 @@ class User extends Sql
                 "submit" => "Sign in"
             ],
             "inputs" => [
+            "firstname" => [
+                "placeholder" => "Enter your name",
+                "type" => "text",
+                "id" => "firstnameRegister",
+                "class" => "formRegister",
+                "required" => true,
+                "min" => 2,
+                "max" => 25,
+                "error" => " Votre prénom doit faire entre 2 et 25 caractères",
+            ],    
+            "lastname" => [
+                "type" => "text",
+                "placeholder" => "Votre nom de famille ...",
+                "id" => "testRegister",
+                "required" => true,
+                "value" => "testRegister",
+                "class" => "formRegister",
+                "error" => " Votre nom doit faire entre 2 et 100 caractères",
+            ],    
             "email" => [
                     "placeholder" => "Votre email ...",
                     "type" => "email",
@@ -173,25 +195,7 @@ class User extends Sql
                     "error" => "Votre confirmation de mot de passe ne correspond pas",
                     "confirm" => "password"
                 ],
-                "firstname" => [
-                    "placeholder" => "Votre prénom ...",
-                    "type" => "text",
-                    "id" => "firstnameRegister",
-                    "class" => "formRegister",
-                    "min" => 2,
-                    "max" => 25,
-                    "error" => " Votre prénom doit faire entre 2 et 25 caractères",
-                ],
-
-                "lastname" => [
-                    "type" => "text",
-                    "placeholder" => "Votre nom de famille ...",
-
-                    "id" => "testRegister",
-                    "value" => "testRegister",
-                    "class" => "formRegister",
-                    "error" => " Votre nom doit faire entre 2 et 100 caractères",
-                ],
+               
                 "g-recaptcha-response" => [
                     "type" => "captcha",
                     "error" => "Veuillez valider le captcha si vous êtes un humain :)",
@@ -277,5 +281,28 @@ class User extends Sql
             ]
         ];
     }
+    public function getForgetPswdForm(): array
+    {
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "",
+                "id" => "formLogin",
+                "class" => "formLogin",
+                "submit" => "Se connecter"
+            ],
+            "inputs" => [
+                "email" => [
+                    "placeholder" => "Votre email ...",
+                    "type" => "email",
+                    "id" => "emailRegister",
+                    "class" => "formRegister",
+                    "required" => true,
+                ],
+                
+            ]
+        ];
+    }
+
 
 }

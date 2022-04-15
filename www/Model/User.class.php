@@ -281,28 +281,6 @@ class User extends Sql
             ]
         ];
     }
-    public function getForgetPswdForm(): array
-    {
-        return [
-            "config" => [
-                "method" => "POST",
-                "action" => "",
-                "id" => "formLogin",
-                "class" => "formLogin",
-                "submit" => "Valider"
-            ],
-            "inputs" => [
-                "email" => [
-                    "placeholder" => "Votre email ...",
-                    "type" => "email",
-                    "id" => "emailRegister",
-                    "class" => "formRegister",
-                    "required" => true,
-                ],
-                
-            ]
-        ];
-    }
 
 
 }

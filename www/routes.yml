@@ -21,6 +21,11 @@
   controller: user
   action: register
 
+
+/recover-password:
+  controller: user
+  action: recoverPassword
+
 /dashboard:
   controller: admin
   action: home

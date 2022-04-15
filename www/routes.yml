@@ -30,3 +30,11 @@
   controller: admin
   action: home
   security: true
+
+/mail:
+  controller: user
+  action: sendRegisterMail
+
+/verifyAccount:
+  controller: user
+  action: verifyAccount

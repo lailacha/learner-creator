@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Core\Helpers;
-use App\Core\RecoverPassword;
+use App\Core\ReceivePassword;
 use App\Core\Session;
 use App\Core\User as UserClean;
 use App\Core\Verificator;
@@ -12,6 +12,7 @@ use App\Core\Mail;
 use App\Core\FormBuilder;
 use App\Core\Recaptcha;
 use App\Model\User as UserModel;
+use App\Model\ReceivePassword as ReceivePasswordModel;
 
 class User {
 
@@ -36,15 +37,16 @@ class User {
     public function recoverPassword()
     {
         $user = new UserModel();
+        $receivePassword = new ReceivePasswordModel();
 
         if (!empty($_POST)) {
             print_r($user->getBy("email", $_POST['email']));
-            RecoverPassword::GenerateToken();
+            ReceivePassword::GenerateToken();
 //            print_r($_POST);
         }
 
         $view = new View("forgotPassword");
-        $form = FormBuilder::render($user->getForgetPswdForm());
+        $form = FormBuilder::render($receivePassword->getForgetPswdForm());
         $view->assign("form", $form);
 
     }

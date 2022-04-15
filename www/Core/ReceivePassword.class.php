@@ -2,8 +2,13 @@
 
 namespace App\Core;
 
-class RecoverPassword
+class ReceivePassword
 {
+    public function __construct()
+    {
+
+    }
+
     public static function GenerateToken()
     {
 

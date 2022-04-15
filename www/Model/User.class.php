@@ -289,7 +289,7 @@ class User extends Sql
                 "action" => "",
                 "id" => "formLogin",
                 "class" => "formLogin",
-                "submit" => "Se connecter"
+                "submit" => "Valider"
             ],
             "inputs" => [
                 "email" => [

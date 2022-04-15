@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Controller;
+
 use App\Core\Helpers;
+use App\Core\RecoverPassword;
 use App\Core\Session;
 use App\Core\User as UserClean;
 use App\Core\Verificator;
@@ -10,13 +12,13 @@ use App\Core\FormBuilder;
 use App\Core\Recaptcha;
 use App\Model\User as UserModel;
 
-class User {
-
+class User
+{
     public function login()
     {
         $user = new UserModel();
 
-        if(!empty($_POST)) {
+        if (!empty($_POST)) {
 
             $user->setEmail(htmlspecialchars($_POST["email"]));
             $user->setPassword(htmlspecialchars($_POST["password"]));
@@ -30,6 +32,23 @@ class User {
         $view->assign("form", $form);
     }
 
+    public function recoverPassword()
+    {
+        $user = new UserModel();
+
+        if (!empty($_POST)) {
+            print_r($user->getBy("email", $_POST['email']));
+            RecoverPassword::sendMail();
+//            print_r($_POST);
+        }
+
+        $view = new View("forgotPassword");
+        $form = FormBuilder::render($user->getForgetPswdForm());
+        $view->assign("form", $form);
+
+    }
+
+
     public function logout()
     {
         echo "Se déconnecter";
@@ -40,16 +59,15 @@ class User {
     {
         $user = new UserModel();
         $session = new Session();
-        
-        if(!empty($_POST)) {
-            
-          
+
+        if (!empty($_POST)) {
+
+
             $data = array_merge($_POST, $_FILES);
             $verification = Verificator::checkForm($user->getRegisterForm(), $data);
-            
-            if($verification)
-            {
-//                $user = $user->setId(33);
+
+            if ($verification) {
+//                $user = $user->getBy("id", 33);
 //
 //                $user->setEmail("y.sssvhvhvhvsjjjjsss@gmail.com");
 //
@@ -62,22 +80,20 @@ class User {
                 $user->setLastname(htmlspecialchars($_POST["lastname"]));
                 $user->setEmail(htmlspecialchars($_POST["email"]));
                 $user->setPassword(htmlspecialchars($_POST["password"]));
-                
+
                 $user->generateToken((Helpers::createToken()));
 
                 $user->save();
-                
+
             }
-            
-            $session->set("success","Your registration is OK!" );
+
+            $session->set("success", "Your registration is OK!");
         }
 
         $view = new View("Register");
         $form = FormBuilder::render($user->getRegisterForm());
         $view->assign("form", $form);
     }
-
-
 
 
 }

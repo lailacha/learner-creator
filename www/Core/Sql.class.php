@@ -22,23 +22,33 @@ abstract class Sql
         $this->table = DBPREFIXE.end($getCalledClassExploded);
     }
 
-
     /**
-     * @param null $id
+     * @param string $type email | id
+     * @param string $param
+     * @return false|mixed|object
      */
-    public function setId(?int $id)
+
+    public function getBy(string $type, string $param)
     {
-        $sql = "SELECT * FROM ".$this->table." WHERE id=:id";
+
+       $sql = "SELECT * FROM ".$this->table." WHERE ".$type."=:$type";
+
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute( [$type=>$param] );
+        return $queryPrepared->fetchObject(get_called_class());
+
+
+ /*      $sql = "SELECT * FROM ".$this->table." WHERE id=:id";
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute( ["id"=>$id] );
-        return $queryPrepared->fetchObject(get_called_class());
+        return $queryPrepared->fetchObject(get_called_class());*/
 
     }
 
 
     public function save(): void
     {
-        
+
         
         $colums = get_object_vars($this);
         $varToExclude = get_class_vars(get_class());
@@ -87,9 +97,9 @@ abstract class Sql
 
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute();
-        
 
     }
+
 
 
 

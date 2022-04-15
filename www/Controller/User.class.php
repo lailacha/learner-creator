@@ -39,7 +39,7 @@ class User {
 
         if (!empty($_POST)) {
             print_r($user->getBy("email", $_POST['email']));
-            RecoverPassword::sendMail();
+            RecoverPassword::GenerateToken();
 //            print_r($_POST);
         }
 

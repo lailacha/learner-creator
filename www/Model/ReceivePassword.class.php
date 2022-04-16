@@ -6,18 +6,39 @@ use App\Core\Sql;
 
 class ReceivePassword extends Sql
 {
-    protected  $id = null;
+    protected $id = null;
     protected $idUser;
+    private $email;
     protected $status = 0;
     protected $token = null;
 
     /**
-     * @param null $id
+     * @return mixed
      */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
+        $this->email = $email;
+    }
+
+
     public function __construct()
     {
-        //echo "constructeur du Model User";
         parent::__construct();
+        parent::setTable(DBPREFIXE . "receive_password");
+    }
+
+    public function save(): void
+    {
+
+        parent::save();
     }
 
     /**
@@ -26,14 +47,6 @@ class ReceivePassword extends Sql
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param null $id
-     */
-    public function setId($id): void
-    {
-        $this->id = $id;
     }
 
     /**
@@ -76,10 +89,8 @@ class ReceivePassword extends Sql
         return $this->token;
     }
 
-    /**
-     * @param null $token
-     */
-    public function setToken($token): void
+
+    public function setToken(string $token): void
     {
         $this->token = $token;
     }
@@ -107,11 +118,6 @@ class ReceivePassword extends Sql
             ]
         ];
     }
-
-
-
-
-
 
 
 }

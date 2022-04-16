@@ -33,23 +33,6 @@ class User
         $view->assign("form", $form);
     }
 
-    public function recoverPassword()
-    {
-        $user = new UserModel();
-        $receivePassword = new ReceivePasswordModel();
-
-        if (!empty($_POST)) {
-            print_r($user->getBy("email", $_POST['email']));
-            ReceivePassword::GenerateToken();
-//            print_r($_POST);
-        }
-
-        $view = new View("forgotPassword");
-        $form = FormBuilder::render($receivePassword->getForgetPswdForm());
-        $view->assign("form", $form);
-
-    }
-
 
     public function logout()
     {
@@ -97,6 +80,37 @@ class User
         $view->assign("form", $form);
     }
 
+    public function recoverPassword()
+    {
+        $user = new UserModel();
+        $receivePasswordManager = new ReceivePasswordModel();
+        $receivePass = new ReceivePassword();
+
+        if (!empty($_POST)) {
+            echo "<pre>";
+
+            $user = $user->getBy("email", $_POST['email']);
+
+            $idUser = $user->getId();
+
+            $receivePasswordManager->setToken(Helpers::createToken());
+            $receivePasswordManager->setIdUser($idUser);
+            $receivePasswordManager->setEmail($user->getEmail());
+            $receivePasswordManager->save();
+            $receivePass->sendPasswordResetEmail($receivePasswordManager);
+
+        }
+
+        $view = new View("forgotPassword");
+        $form = FormBuilder::render($receivePasswordManager->getForgetPswdForm());
+        $view->assign("form", $form);
+
+    }
+
+    public function changePassword()
+    {
+        echo "aze";
+    }
 
 }
 

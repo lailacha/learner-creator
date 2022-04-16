@@ -44,11 +44,17 @@ abstract class Sql
     public function getBy(string $type, string $param)
     {
 
-        $sql = "SELECT * FROM ".$this->table." WHERE ".$type."=:$type";
+       $sql = "SELECT * FROM ".$this->table." WHERE ".$type."=:$type";
 
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute( [$type=>$param] );
         return $queryPrepared->fetchObject(get_called_class());
+
+
+ /*      $sql = "SELECT * FROM ".$this->table." WHERE id=:id";
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute( ["id"=>$id] );
+        return $queryPrepared->fetchObject(get_called_class());*/
 
     }
 
@@ -59,6 +65,7 @@ abstract class Sql
         $queryPrepared->execute( ["value"=>$value] );
         return $queryPrepared->fetchObject(get_called_class());
     }
+
 
     public function getOneByMany($attributes){
 
@@ -77,14 +84,25 @@ abstract class Sql
         return $queryPrepared->fetchObject(get_called_class());
     }
 
+    public function getOneByOne($attribute, $value){
+
+        $sql = "SELECT * FROM ".$this->table." WHERE ".$attribute."=:value";
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute( ["value"=>$value] );
+        return $queryPrepared->fetchObject(get_called_class());
+    }
+
     public function save(): void
     {
+
+        
         $colums = get_object_vars($this);
         $varToExclude = get_class_vars(get_class());
         $colums = array_diff_key($colums, $varToExclude);
 
         if(is_null($this->getId())){
             $sql = "INSERT INTO ".$this->table." (". implode(",", array_keys($colums)) .") VALUES (:". implode(",:", array_keys($colums)) .")";
+            
         }else{
             $update = [];
             foreach ($colums as $key=>$value) {
@@ -95,6 +113,8 @@ abstract class Sql
 
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute( $colums );
+        
+       
 
         //Si ID null alors insert sinon update
     }
@@ -113,7 +133,7 @@ abstract class Sql
 
         $reponse1 = $bdd->query($sql1);
         $donnees1 = $reponse1->fetch();
-
+        
 
         if (password_verify($_POST["password"], $donnees1[0])) {
             echo 'Password is valid!';
@@ -126,8 +146,21 @@ abstract class Sql
 
     }
 
+    /**
+     * @return string
+     */
+    public function getTable(): string
+    {
+        return $this->table;
+    }
 
-
+    /**
+     * @param string $table
+     */
+    public function setTable(string $table): void
+    {
+        $this->table = $table;
+    }
 
 
 }

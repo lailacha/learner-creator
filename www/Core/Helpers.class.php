@@ -5,8 +5,9 @@ namespace App\Core;
 class Helpers
 {
 
-public static function createToken(){
-		return substr(md5(uniqid(true)), 0, 10); 
+public static function createToken() : string{
+    $bytes = random_bytes(128);
+    return substr(str_shuffle(bin2hex($bytes)), 0, 255);
 	}
 
 }

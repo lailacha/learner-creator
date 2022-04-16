@@ -21,10 +21,14 @@
   controller: user
   action: register
 
-
 /recover-password:
   controller: user
   action: recoverPassword
+
+
+/change-password:
+  controller: user
+  action: changePassword
 
 /dashboard:
   controller: admin

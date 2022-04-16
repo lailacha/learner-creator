@@ -7,8 +7,8 @@ use PDO;
 abstract class Sql
 {
 
-    private $pdo;
-    private $table;
+    protected $pdo;
+    protected $table;
 
 
     public function __construct()
@@ -24,6 +24,20 @@ abstract class Sql
         $getCalledClassExploded = explode("\\", strtolower(get_called_class())); // App\Model\User
         $this->table = DBPREFIXE . end($getCalledClassExploded);
     }
+
+
+    /**
+     * @param null $id
+     */
+    public function setId(?int $id)
+    {
+        $sql = "SELECT * FROM ".$this->table." WHERE id=:id";
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute( ["id"=>$id] );
+        return $queryPrepared->fetchObject(get_called_class());
+
+    }
+
 
     /**
      * @param string $type email | id
@@ -46,6 +60,11 @@ abstract class Sql
                $queryPrepared->execute( ["id"=>$id] );
                return $queryPrepared->fetchObject(get_called_class());*/
 
+    }
+
+    public function getLastInsertId(): string
+    {
+        return $this->pdo->lastInsertId();
     }
 
     /**

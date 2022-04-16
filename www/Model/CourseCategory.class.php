@@ -65,8 +65,17 @@ class CourseCategory extends Sql
         $query = "SELECT id, name FROM ".$this->table." ORDER BY name ASC";
         $req = $this->pdo->prepare($query);
         $req->execute();
-        $res = $req->fetchAll();
-
+        $res = $req->fetchAll(PDO::FETCH_ASSOC);
         return $res;
+    }
+
+    public function getCategoryForm(): array
+    {
+      return ["config" => ["method" => "POST", "action" => "", "submit" => "Ajouter"],
+              "inputs" => [
+                  "name" => ["type" => "text", "placeholder" => "Nom de la catégorie", "required" => true],
+                  "description" => ["type" => "text", "placeholder" => "Description de la catégorie", "required" => true]
+              ]
+      ];
     }
 }

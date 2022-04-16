@@ -19,6 +19,13 @@
   param: [ "name", "description", "cover", "category" ]
 
 -
+  path: /createLesson
+  controller: lesson
+  action: create
+  method: POST
+  param: [ "title", "text", "video", "course" ]
+
+-
   controller: main
   action: contact
   path: /contact

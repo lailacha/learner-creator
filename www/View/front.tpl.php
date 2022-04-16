@@ -10,107 +10,107 @@
     <script src="../../framework/dist/main.js"></script>
 </head>
 <body class="flex grid" >
-<nav class="sidebar-left close">
-    <header>
-        <div class="image-text">
+    <nav class="sidebar-left close">
+        <header>
+            <div class="image-text">
                 <span class="image">
                     <img src="../../framework/assets/images/logo.png"
                          alt="">
                 </span>
+            </div>
+
+            <i class='bx bx-chevron-right toggle'></i>
+        </header>
+
+        <div class="menu-bar">
+            <div class="menu">
+
+                <li class="search-box">
+                    <i class='bx bx-search icon'></i>
+                    <input type="text" placeholder="Search...">
+                </li>
+
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-home-alt icon'></i>
+                            <span class="text nav-text">Dashboard</span>
+                        </a>
+                    </li>
+
+
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-bell icon'></i>
+                            <span class="text nav-text">Notifications</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bxs-graduation icon'></i>
+                            <span class="text nav-text">My courses</span>
+                        </a>
+                    </li>
+
+
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-pie-chart-alt icon'></i>
+                            <span class="text nav-text">Analytics</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-wallet icon'></i>
+                            <span class="text nav-text">Wallets</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-user-circle icon'></i>
+                            <span class="text nav-text">My account</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="bottom-content">
+                <li class="">
+                    <a href="#">
+                        <i class='bx bx-log-out icon'></i>
+                        <span class="text nav-text">Logout</span>
+                    </a>
+                </li>
+
+                <li class="mode">
+                    <div class="sun-moon">
+                        <i class='bx bx-moon icon moon'></i>
+                        <i class='bx bx-sun icon sun'></i>
+                    </div>
+                    <span class="mode-text text">Dark mode</span>
+
+                    <div class="toggle-switch">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+
+            </div>
         </div>
 
-        <i class='bx bx-chevron-right toggle'></i>
-    </header>
+    </nav>
+    <div class="container w-100 flex jc-center">
 
-    <div class="menu-bar">
-        <div class="menu">
-
-            <li class="search-box">
-                <i class='bx bx-search icon'></i>
-                <input type="text" placeholder="Search...">
-            </li>
-
-            <ul class="menu-links">
-                <li class="nav-link">
-                    <a href="#">
-                        <i class='bx bx-home-alt icon'></i>
-                        <span class="text nav-text">Dashboard</span>
-                    </a>
-                </li>
-
-
-                <li class="nav-link">
-                    <a href="#">
-                        <i class='bx bx-bell icon'></i>
-                        <span class="text nav-text">Notifications</span>
-                    </a>
-                </li>
-
-                <li class="nav-link">
-                    <a href="#">
-                        <i class='bx bxs-graduation icon'></i>
-                        <span class="text nav-text">My courses</span>
-                    </a>
-                </li>
-
-
-                <li class="nav-link">
-                    <a href="#">
-                        <i class='bx bx-pie-chart-alt icon'></i>
-                        <span class="text nav-text">Analytics</span>
-                    </a>
-                </li>
-
-                <li class="nav-link">
-                    <a href="#">
-                        <i class='bx bx-wallet icon'></i>
-                        <span class="text nav-text">Wallets</span>
-                    </a>
-                </li>
-
-                <li class="nav-link">
-                    <a href="#">
-                        <i class='bx bx-user-circle icon'></i>
-                        <span class="text nav-text">My account</span>
-                    </a>
-                </li>
-
-            </ul>
-        </div>
-
-        <div class="bottom-content">
-            <li class="">
-                <a href="#">
-                    <i class='bx bx-log-out icon'></i>
-                    <span class="text nav-text">Logout</span>
-                </a>
-            </li>
-
-            <li class="mode">
-                <div class="sun-moon">
-                    <i class='bx bx-moon icon moon'></i>
-                    <i class='bx bx-sun icon sun'></i>
-                </div>
-                <span class="mode-text text">Dark mode</span>
-
-                <div class="toggle-switch">
-                    <span class="switch"></span>
-                </div>
-            </li>
-
-        </div>
-    </div>
-
-</nav>
-<div class="container w-100 flex jc-center">
-
-    <div class="flex column col-md-8 pl-2 jc-center">
+        <div class="flex column col-md-8 pl-2 jc-center">
 
         <?php include "./View/Partial/error-message.partial.php"; ?>
 
-        <?php include $this->view.".View.php";?>
+    <?php include $this->view.".View.php";?>
+        </div>
     </div>
-</div>
 
 <section>
     <nav class="sidebar-right">
@@ -366,82 +366,82 @@
         tinycomments_author: 'Author name',
     });
 
-    /*  var ctx = document.getElementById('myChart').getContext("2d");
+  /*  var ctx = document.getElementById('myChart').getContext("2d");
 
-      var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-      gradientStroke.addColorStop(0, '#2F7DC0');
+    var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+    gradientStroke.addColorStop(0, '#2F7DC0');
 
-      var gradientFill = ctx.createLinearGradient(300, 0, 300, 200);
-      gradientFill.addColorStop(0.6, "rgba(47, 118, 192, 0.8)");
-      gradientFill.addColorStop(1, "rgba(59, 205, 179, 0.4)");
+    var gradientFill = ctx.createLinearGradient(300, 0, 300, 200);
+    gradientFill.addColorStop(0.6, "rgba(47, 118, 192, 0.8)");
+    gradientFill.addColorStop(1, "rgba(59, 205, 179, 0.4)");
 
-      var myChart = new Chart(ctx, {
-          type: 'line',
-          data: {
-              labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-              datasets: [{
-                  label: "Data",
-                  borderColor: gradientStroke,
-                  pointBorderColor: gradientStroke,
-                  pointBackgroundColor: gradientStroke,
-                  pointHoverBackgroundColor: gradientStroke,
-                  pointHoverBorderColor: gradientStroke,
-                  pointBorderWidth: 10,
-                  pointHoverRadius: 10,
-                  pointHoverBorderWidth: 1,
-                  pointRadius: 3,
-                  fill: true,
-                  backgroundColor: gradientFill,
-                  borderWidth: 4,
-                  data: [3.3, 2.3, 1.9, 1.8, 1.9, 2.4, 2.7, 2.9, 3, 2.9, 2.7, 2.5],
-              }]
-          },
-          options: {
-              animation: {
-                  easing: "easeInOutBack"
-              },
-              legend: {
-                  display: false,
-              },
-              tooltips: {
-                  callbacks: {
-                      label: function (tooltipItem) {
-                          return tooltipItem.yLabel;
-                      }
-                  }
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            datasets: [{
+                label: "Data",
+                borderColor: gradientStroke,
+                pointBorderColor: gradientStroke,
+                pointBackgroundColor: gradientStroke,
+                pointHoverBackgroundColor: gradientStroke,
+                pointHoverBorderColor: gradientStroke,
+                pointBorderWidth: 10,
+                pointHoverRadius: 10,
+                pointHoverBorderWidth: 1,
+                pointRadius: 3,
+                fill: true,
+                backgroundColor: gradientFill,
+                borderWidth: 4,
+                data: [3.3, 2.3, 1.9, 1.8, 1.9, 2.4, 2.7, 2.9, 3, 2.9, 2.7, 2.5],
+            }]
+        },
+        options: {
+            animation: {
+                easing: "easeInOutBack"
+            },
+            legend: {
+                display: false,
+            },
+            tooltips: {
+                callbacks: {
+                    label: function (tooltipItem) {
+                        return tooltipItem.yLabel;
+                    }
+                }
 
-              },
-              scales: {
-                  yAxes: [{
-                      ticks: {
-                          fontColor: "rgba(0,0,0,0.5)",
-                          fontStyle: "bold",
-                          beginAtZero: true,
-                          maxTicksLimit: 5,
-                          padding: 20
-                      },
-                      gridLines: {
-                          drawTicks: false,
-                          display: false
-                      }
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        fontColor: "rgba(0,0,0,0.5)",
+                        fontStyle: "bold",
+                        beginAtZero: true,
+                        maxTicksLimit: 5,
+                        padding: 20
+                    },
+                    gridLines: {
+                        drawTicks: false,
+                        display: false
+                    }
 
-                  }],
-                  xAxes: [{
-                      gridLines: {
-                          zeroLineColor: "transparent"
-                      },
-                      ticks: {
-                          padding: 20,
+                }],
+                xAxes: [{
+                    gridLines: {
+                        zeroLineColor: "transparent"
+                    },
+                    ticks: {
+                        padding: 20,
 
-                          fontColor: "rgba(0,0,0,0.5)",
-                          fontStyle: "bold"
-                      }
-                  }]
-              }
-          }
-      });
+                        fontColor: "rgba(0,0,0,0.5)",
+                        fontStyle: "bold"
+                    }
+                }]
+            }
+        }
+    });
 
-  */
+*/
 </script>
 
 </body>

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Core;
 
 
@@ -75,7 +74,7 @@ class Route
         if(class_exists($controller))
         {
 
-            $controller = new $controller($httpRequest,$config);
+            $controller = new $controller($httpRequest, $this, new Session() );
             if(method_exists($controller, $this->action))
             {
                 $httpRequest->bindParam();
@@ -91,6 +90,11 @@ class Route
             die("La classe Controller n'existe pas");
         }
 
+    }
+
+    public function redirect($url)
+    {
+        header("Location: ".$url);
     }
 
 }

@@ -11,6 +11,11 @@ class Course extends Sql
     protected $name;
     protected string $description;
     protected int $category;
+    protected int $cover;
+    protected int $user;
+
+
+
 
     /**
      * @return int
@@ -81,7 +86,39 @@ class Course extends Sql
     {
         $this->description = $descirption;
     }
-    
+
+    /**
+     * @return int
+     */
+    public function getCover(): int
+    {
+        return $this->cover;
+    }
+
+    /**
+     * @param int $cover
+     */
+    public function setCover(int $cover): void
+    {
+        $this->cover = $cover;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getUser(): int
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param int $user
+     */
+    public function setUser(int $user): void
+    {
+        $this->user = $user;
+    }
 
     public function getCourseForm()
     {
@@ -118,18 +155,29 @@ class Course extends Sql
                 "class" => "file",
                 "error" => " Votre image doit être de la bonne extension",
             ],
+//                "category" => [
+//                    "type" => "select",
+//                    "id" => "jjj",
+//                    "class" => "formRegister",
+//                    "options" => [
+//                       "test" => ["libelle" => "Math", "value" => "1"],
+//                       "test2" => [ "libelle" => "French ", "value" => "2",  "selected" => "selected"]],
+//
+//            ]
                 "category" => [
                     "type" => "select",
                     "id" => "jjj",
                     "class" => "formRegister",
                     "options" => [
-                       "test" => ["libelle" => "Math", "value" => "1"],
-                       "test2" => [ "libelle" => "French ", "value" => "2",  "selected" => "selected"]],
+                     "data" =>
+                         $categoryManager->getCategory(),
+                        "property" => "name",
+                         "value" => "id",
+                        "selected" => 1
 
-            ]
-                ]
-
-            ];
+            ]]]];
     }
+
+
 
 }

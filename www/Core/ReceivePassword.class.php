@@ -23,7 +23,7 @@ class ReceivePassword
         $this->idUser = $receivePassword->getIdUser();
         $this->token = $receivePassword->getToken();
 
-        $html = '<a href="http://localhost/change-password?token=' . $this->token . '&id=' . $this->idUser . '&mail=' . $this->email . '"><h2>Click here to change your password!</h2></a>';
+        $html = '<a href="http://localhost/changePassword?token=' . $this->token . '&mail=' . $this->email . '&id=' . $this->idUser .'"><h2>Click here to change your password!</h2></a>';
         $confirmMail = new Mail();
         $confirmMail->setSubject("Last step to change your password...");
         $confirmMail->setContent($html);

@@ -21,12 +21,12 @@
   controller: user
   action: register
 
-/recover-password:
+/recoverPassword:
   controller: user
   action: recoverPassword
 
 
-/change-password:
+/changePassword:
   controller: user
   action: changePassword
 

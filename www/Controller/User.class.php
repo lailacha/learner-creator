@@ -121,6 +121,7 @@ class User
 
 
         $query = new QueryBuilder();
+
         $query->from('receive_password')
             ->where('iduser = :iduser', 'token = :token')
             ->setParams([
@@ -139,8 +140,10 @@ class User
         $heureDifference = (int)$heureDifference;
 
 
+
         if ($count === 1 && $result['status'] == 0 && $heureDifference < 48) {
             $view = new View("changePassword");
+
             if (!empty($_POST)) {
                 $data = array_merge($_POST, $_FILES);
                 // Plus tard faut utiliser Class verificator pour verifier le password

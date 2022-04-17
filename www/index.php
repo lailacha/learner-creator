@@ -19,6 +19,7 @@ function myAutoloader( $class )
 
 spl_autoload_register("App\myAutoloader");
 
+use App\Core\QueryBuilder;
 use App\Core\Security;
 
 $fileRoutes = "routes.yml";
@@ -81,3 +82,22 @@ if( !method_exists($objectController, $action) ){
 }
 
 $objectController->$action();
+
+
+/*
+Exemple utilisation querybuilder
+
+
+echo "<pre>";
+$query = new QueryBuilder();
+
+$test = $query->from('user')
+    ->where('email = :email')
+    ->setParam('email',"oussama.dahbi98@gmail.com")
+    ->orderBy("id", "DESC")
+    ->fetchAll();
+
+
+print_r($test);
+
+*/

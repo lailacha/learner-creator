@@ -1,3 +1,4 @@
 db_data
 www/.env*
 /www/framework/webpack/node_modules/
+.idea/

@@ -31,7 +31,7 @@ if(file_exists($fileRoutes)){
 }
 
 
-$uri = $_SERVER["REQUEST_URI"];
+$uri = explode("?", $_SERVER["REQUEST_URI"])[0];
 
 /**
  * TODO Remove when router is operationnal with dynamic arguments

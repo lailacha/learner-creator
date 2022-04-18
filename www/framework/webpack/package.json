@@ -14,7 +14,7 @@
   "devDependencies": {
     "laravel-mix": "^5.0.0",
     "resolve-url-loader": "^3.1.0",
-    "sass": "^1.50.0",
+    "sass": "^1.23.0",
     "sass-loader": "^8.0.0",
     "vue-template-compiler": "^2.6.10"
   }

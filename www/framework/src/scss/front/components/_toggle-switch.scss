@@ -1,0 +1,35 @@
+.toggle-switch {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  min-width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+
+
+  & .switch {
+    position: relative;
+    height: rem(22);
+    width: 40px;
+    border-radius: 25px;
+    background-color: $toggle-color;
+    transition: $tran;
+
+
+    &::before {
+      content: '';
+      position: absolute;
+      height: 15px;
+      width: 15px;
+      border-radius: 50%;
+      top: 50%;
+      left: 5px;
+      transform: translateY(-50%);
+      background-color: $sidebar-color;
+      transition: $tran;
+    }
+  }
+}

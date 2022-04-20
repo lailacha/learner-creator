@@ -1,19 +1,27 @@
 <?php
+
 namespace App;
 
+
+// à enlever la partie suivante c'est pour autoriser l'acces à tous les routes
+session_start();
+
+//$_SESSION["id"] = 1;
+$_SESSION["roles"] = ["admin"];
+//
 require "conf.inc.php";
 
 //E
 
-function myAutoloader( $class )
+function myAutoloader($class)
 {
     // $class -> "Core\Security" "Model\User
-    $class = str_ireplace("App\\","",$class);
+    $class = str_ireplace("App\\", "", $class);
     // $class -> "Core/Security" "Model/User
-    $class = str_replace("\\","/",$class);
+    $class = str_replace("\\", "/", $class);
     // $class -> "Core/Security"
-    if(file_exists($class.".class.php")){
-        include $class.".class.php";
+    if (file_exists($class . ".class.php")) {
+        include $class . ".class.php";
     }
 }
 
@@ -24,60 +32,52 @@ use App\Core\Security;
 
 $fileRoutes = "routes.yml";
 
-if(file_exists($fileRoutes)){
+if (file_exists($fileRoutes)) {
     $routes = yaml_parse_file($fileRoutes);
-}else{
+} else {
     die("Le fichier de routing n'existe pas");
 }
 
-
 $uri = explode("?", $_SERVER["REQUEST_URI"])[0];
 
-/**
- * TODO Remove when router is operationnal with dynamic arguments
- */
-if(preg_match("/verifyAccount/i", $uri))
-    {
-   $uri = "/verifyAccount";
 
-}
 
-if(empty($routes[$uri]) || empty($routes[$uri]["controller"]) || empty($routes[$uri]["action"])){
+if (empty($routes[$uri]) || empty($routes[$uri]["controller"]) || empty($routes[$uri]["action"])) {
     die("Page 404");
 }
 
 
-if(!Security::checkRoute($routes[$uri])){
-    die("NotAuthorized");
+if (!Security::checkRoute($routes[$uri])) {
+    die("Not Authorized");
 }
+
+Security::checkAuth($routes[$uri]);
 
 
 $controller = ucfirst(strtolower($routes[$uri]["controller"]));
 $action = strtolower($routes[$uri]["action"]);
 
 
-
-
 // $uri = /login
 // $Controller = User
 // $action = login
 
-$controllerFile = "Controller/".$controller.".class.php";
-if(!file_exists($controllerFile)){
+$controllerFile = "Controller/" . $controller . ".class.php";
+if (!file_exists($controllerFile)) {
     die("Le fichier Controller n'existe pas");
 }
 
 include $controllerFile;
 
-$controller = "App\\Controller\\".$controller;
-if( !class_exists($controller)){
+$controller = "App\\Controller\\" . $controller;
+if (!class_exists($controller)) {
     die("La classe n'existe pas");
 }
 
 $objectController = new $controller();
 
 
-if( !method_exists($objectController, $action) ){
+if (!method_exists($objectController, $action)) {
     die("La methode n'existe pas");
 }
 

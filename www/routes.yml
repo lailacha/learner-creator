@@ -35,6 +35,11 @@
   action: home
   security: true
 
+/users:
+  controller: admin
+  action: users
+  security: true
+
 /mail:
   controller: user
   action: sendRegisterMail

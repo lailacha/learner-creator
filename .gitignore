@@ -2,3 +2,5 @@ db_data
 www/.env*
 /www/framework/webpack/node_modules/
 .idea/
+.idea/workspace.xml
+.idea/php.xml

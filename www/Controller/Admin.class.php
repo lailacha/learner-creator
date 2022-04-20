@@ -19,4 +19,8 @@ class Admin{
     }
 
 
+    public function users()
+    {
+
+    }
 }

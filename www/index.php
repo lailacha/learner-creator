@@ -40,7 +40,10 @@ if (file_exists($fileRoutes)) {
 
 $uri = explode("?", $_SERVER["REQUEST_URI"])[0];
 
-
+if (!empty($uri) && $uri[-1] === "/" && strlen($uri) > 1){
+    $uri = substr($uri, 0,-1);
+    header('Location: '.$uri, true, 301);
+}
 
 if (empty($routes[$uri]) || empty($routes[$uri]["controller"]) || empty($routes[$uri]["action"])) {
     die("Page 404");

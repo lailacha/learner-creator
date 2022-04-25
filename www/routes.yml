@@ -43,6 +43,11 @@
   action: users
   security: admin
 
+/users/delete:
+  controller: admin
+  action: users
+  security: admin
+
 /mail:
   controller: user
   action: sendRegisterMail

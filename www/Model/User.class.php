@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Core\QueryBuilder;
 use App\Core\Sql;
 
 class User extends Sql
@@ -14,7 +15,7 @@ class User extends Sql
     protected $password;
     protected $token = null;
 
-   
+
     public function __construct()
     {
         //echo "constructeur du Model User";
@@ -132,13 +133,28 @@ class User extends Sql
     {
         //Pré traitement par exemple
         //echo "pre traitement";
-       
+
         parent::save();
+    }
+
+    public function getAllUsers(): array
+    {
+        $query = new QueryBuilder();
+        return $query->from('user')->fetchAll();
+    }
+
+    function deleteUser(int $id)
+    {
+        $sql = "DELETE FROM ".DBPREFIXE ."user WHERE id = :id";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(':id',$id,\PDO::PARAM_INT);
+        $statement->execute();
+
     }
 
     public function getRegisterForm(): array
     {
-        
+
         return [
             "config" => [
                 "method" => "POST",
@@ -149,26 +165,26 @@ class User extends Sql
                 "submit" => "Sign in"
             ],
             "inputs" => [
-            "firstname" => [
-                "placeholder" => "Enter your name",
-                "type" => "text",
-                "id" => "firstnameRegister",
-                "class" => "formRegister",
-                "required" => true,
-                "min" => 2,
-                "max" => 25,
-                "error" => " Votre prénom doit faire entre 2 et 25 caractères",
-            ],    
-            "lastname" => [
-                "type" => "text",
-                "placeholder" => "Votre nom de famille ...",
-                "id" => "testRegister",
-                "required" => true,
-                "value" => "testRegister",
-                "class" => "formRegister",
-                "error" => " Votre nom doit faire entre 2 et 100 caractères",
-            ],    
-            "email" => [
+                "firstname" => [
+                    "placeholder" => "Enter your name",
+                    "type" => "text",
+                    "id" => "firstnameRegister",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "min" => 2,
+                    "max" => 25,
+                    "error" => " Votre prénom doit faire entre 2 et 25 caractères",
+                ],
+                "lastname" => [
+                    "type" => "text",
+                    "placeholder" => "Votre nom de famille ...",
+                    "id" => "testRegister",
+                    "required" => true,
+                    "value" => "testRegister",
+                    "class" => "formRegister",
+                    "error" => " Votre nom doit faire entre 2 et 100 caractères",
+                ],
+                "email" => [
                     "placeholder" => "Votre email ...",
                     "type" => "email",
                     "id" => "emailRegister",
@@ -178,8 +194,8 @@ class User extends Sql
                     "unicity" => true,
                     "errorUnicity" => "Un compte existe déjà avec cet email"
                 ],
-              "password" => [
-                  "placeholder" => "Votre mot de passe ...",
+                "password" => [
+                    "placeholder" => "Votre mot de passe ...",
                     "type" => "password",
                     "id" => "pwdRegister",
                     "class" => "formRegister",
@@ -195,11 +211,11 @@ class User extends Sql
                     "error" => "Votre confirmation de mot de passe ne correspond pas",
                     "confirm" => "password"
                 ],
-               
+
                 "g-recaptcha-response" => [
                     "type" => "captcha",
                     "error" => "Veuillez valider le captcha si vous êtes un humain :)",
-              ],
+                ],
 ////To test types of inputs
 //                "ville" => [
 //                    "type" => "checkbox",
@@ -248,7 +264,7 @@ class User extends Sql
 //                "error" => " Votre photo doit être de la bonne extension",
 //
 //            ]
-        ],
+            ],
         ];
     }
 

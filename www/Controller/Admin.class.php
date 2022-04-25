@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Core\View;
+use App\Model\User as UserModel;
 
-class Admin{
+class Admin
+{
 
 
-    public function home()
+    public function home(): void
     {
         //Connecté à la bdd
         //j'ai récup le prenom
@@ -19,8 +21,25 @@ class Admin{
     }
 
 
-    public function users()
+    public function users(): void
     {
+        $user = new UserModel();
+        $listUsers = $user->getAllUsers();
+
+        $action = explode("/", $_SERVER["REQUEST_URI"])[2] ?? null;
+        $action = explode("?", $action)[0] ?? null;
+        $idUser = $_GET['id'] ?? null;
+
+
+        if ($action === "delete" && !empty($idUser)){
+            $user->deleteUser($idUser);
+            header('Location: /users');
+        }
+        elseif ($action === "view" && !empty($idUser)){
+
+        }
+        $view = new View("users", "back");
+        $view->assign("listUsers", $listUsers);
 
     }
 }

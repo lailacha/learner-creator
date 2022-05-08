@@ -29,7 +29,6 @@ class User extends BaseController {
 
         }
 
-
         $view = new View("login");
         $form = FormBuilder::render($user->getLoginForm());
         $view->assign("form", $form);
@@ -38,6 +37,7 @@ class User extends BaseController {
 
     public function logout()
     {
+        session_destroy();
         echo "Se déconnecter";
     }
 
@@ -50,10 +50,9 @@ class User extends BaseController {
         if (!empty($_POST)) {
 
 
-            $data = array_merge($_POST, $_FILES);
-            $verification = Verificator::checkForm($user->getRegisterForm(), $data);
+            $verification = Verificator::checkForm($user->getRegisterForm(),  $this->request);
 
-            if ($verification) {
+            if (!$verification) {
 //                $user = $user->getBy("id", 33);
 //
 //                $user->setEmail("y.sssvhvhvhvsjjjjsss@gmail.com");
@@ -75,10 +74,11 @@ class User extends BaseController {
                 $user->generateToken((Helpers::createToken()));
 
                 $user->save();
+                $session->addFlashMessage("success", "Your registration is OK!");
+
 
             }
-
-            $session->set("success", "Your registration is OK!");
+            $session->addFlashMessage("error", $verification[0]);
         }
 
         $view = new View("Register");

@@ -3,15 +3,30 @@
   flex-direction: column;
   max-width: rem(400);
 
-  input:not([type="file"]){
+  input:not([type="file"]) input:not([type="submit"]){
     margin-top: 3px;
     border: 1px solid $light-back-main-color;
     border-radius: 4px;
     min-height: 27px;
   }
 
+  input[type="text"]{
+    min-height: 1rem;
+    padding: 0.5rem;
+  }
+
+  select {
+    font-size: 16px;
+    border: 1px solid #CCC;
+    height: 34px;
+  }
+
+  input {
+    margin-bottom: 1rem;
+  }
   label{
     margin-top: rem(20);
+    margin-bottom: 0.5rem;
     color: lighten($light-back-main-color, 20);
   }
 

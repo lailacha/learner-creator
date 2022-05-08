@@ -1,11 +1,17 @@
 <?php
+
 namespace App;
 
 require "conf.inc.php";
 use App\Core\HttpRequest;
 use App\Core\Router;
+use App\Core\QueryBuilder;
+use App\Core\Security;
 
 //E
+
+
+
 
 function myAutoloader( $class )
 {
@@ -22,8 +28,10 @@ function myAutoloader( $class )
 spl_autoload_register("App\myAutoloader");
 
 
-use App\Core\QueryBuilder;
-use App\Core\Security;
+session_start();
+
+
+
 
 try
 {

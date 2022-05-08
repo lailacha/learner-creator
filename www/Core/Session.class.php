@@ -7,7 +7,26 @@ namespace App\Core;
 class Session
 {
 
-    public static function get(string $key, $default = null)
+    private static $instance;
+
+    public static function getInstance()
+    {
+        if(!isset(self::$instance))
+        {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    public function ensureStarted()
+    {
+            if(session_status() === PHP_SESSION_NONE){
+                session_start();
+            }
+
+    }
+
+    public function get(string $key, $default = null)
     {
         if(array_key_exists($key, $_SESSION))
         {
@@ -20,16 +39,22 @@ class Session
 
     }
 
-    public static function delete(string $key): void
+    public function set(string $key, $value = null): void
     {
-        unset($_SESSION[$key]);
-    }
-
-
-    //function to add session flash messages
-    public function addFlash(string $key, $value = null): void
-    {
+        $this->ensureStarted();
         $_SESSION[$key] = $value;
     }
 
+    public function addFlashMessage(string $key, $value = null): void
+    {
+        $this->ensureStarted();
+        $_SESSION["flash-message"][$key] = $value;
+    }
+
+
+    public function delete(string $key): void
+    {
+        $this->ensureStarted();
+        unset($_SESSION[$key]);
+    }
 }

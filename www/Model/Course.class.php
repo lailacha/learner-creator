@@ -3,19 +3,27 @@
 namespace App\Model;
 
 use App\Core\Sql;
+use App\Core\QueryBuilder;
 use App\Model\CourseCategory;
+use App\Model\CourseChapter;
+use App\Model\File;
 
 class Course extends Sql
 {
     protected  $id = null;
     protected $name;
     protected string $description;
+    protected $created_at;
     protected int $category;
     protected int $cover;
     protected int $user;
+    protected ?int $status;
 
 
-
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     /**
      * @return int
@@ -31,12 +39,6 @@ class Course extends Sql
     public function setCategory(int $category): void
     {
         $this->category = $category;
-    }
-
-    public function __construct()
-    {
-        //echo "constructeur du Model User";
-        parent::__construct();
     }
 
 
@@ -88,13 +90,30 @@ class Course extends Sql
     }
 
     /**
-     * @return int
+     * @return File
      */
-    public function getCover(): int
+    public function getCover()
     {
-        return $this->cover;
+        $fileManager = new File();
+        return $fileManager->setId($this->cover);
     }
 
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * @param mixed $created_at
+     */
+    public function setCreatedAt($created_at): void
+    {
+        $this->created_at = $created_at;
+    }
     /**
      * @param int $cover
      */
@@ -118,6 +137,50 @@ class Course extends Sql
     public function setUser(int $user): void
     {
         $this->user = $user;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int|null $status
+     */
+    public function setStatus(?int $status): void
+    {
+        $this->status = $status;
+    }
+
+    public function getUnapprovedCoursesByUser($user_id)
+    {
+        $query = new QueryBuilder();
+        return  $query->select('*')
+            ->from('course')
+            ->where('user = :user')
+            ->where('status = :status')
+            ->setParams([
+                'user' => $user_id,
+                'status' => 0
+            ])
+            ->fetchAllByClass(Course::class);
+    }
+
+    // à optimiser avec un innerjoin au lieu de plusieurs requêtes
+    public function getCategoryName(): string
+    {
+        $categoryManager = new CourseCategory();
+        $category = $categoryManager->setId($this->getCategory());
+        return $category->getName();
+    }
+
+    public function getChapters()
+    {
+        $CourseChapterManager = new CourseChapter();
+        return $CourseChapterManager->getAllBy("course", $this->getId());
     }
 
     public function getCourseForm()
@@ -153,17 +216,9 @@ class Course extends Sql
                 "type" => "file",
                 "id" => "course-cover",
                 "class" => "file",
-                "error" => " Votre image doit être de la bonne extension",
+                    "required" => true,
+                    "error" => " Votre image doit être de la bonne extension",
             ],
-//                "category" => [
-//                    "type" => "select",
-//                    "id" => "jjj",
-//                    "class" => "formRegister",
-//                    "options" => [
-//                       "test" => ["libelle" => "Math", "value" => "1"],
-//                       "test2" => [ "libelle" => "French ", "value" => "2",  "selected" => "selected"]],
-//
-//            ]
                 "category" => [
                     "type" => "select",
                     "id" => "jjj",
@@ -176,6 +231,60 @@ class Course extends Sql
                         "selected" => 1
 
             ]]]];
+    }
+
+    public function getEditCourseForm(){
+        $categoryManager = new CourseCategory();
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "/edit/course?id=".$this->getId(),
+                "id" => "formEditCourse",
+                "enctype" => "multipart/form-data",
+                "class" => "form course",
+                "submit" => "Save course"
+            ],
+            "inputs" => [
+                "name" => [
+                    "placeholder" => "Nom du cours",
+                    "type" => "text",
+                    "id" => "courseName",
+                    "class" => "formCreateCourse",
+                    "value" => $this->getName(),
+                    "required" => true,
+                    "error" => "Votre nom doit faire entre 15 et 20 caractères"
+                ],
+                "description" => [
+                    "placeholder" => "",
+                    "type" => "textarea",
+                    "id" => "courseName",
+                    "class" => "editable",
+                    "required" => true,
+                    "value" => $this->getDescription(),
+                    "error" => "Votre nom doit faire entre 15 et 20 caractères"
+                ],
+                "cover" => [
+                    "type" => "file",
+                    "id" => "course-cover",
+                    "class" => "file",
+                    "error" => " Votre image doit être de la bonne extension",
+                ],
+                "id" => [
+                    "type" => "hidden",
+                    "value" => $this->getId(),
+                ],
+                "category" => [
+                    "type" => "select",
+                    "id" => "jjj",
+                    "class" => "formRegister",
+                    "options" => [
+                        "data" =>
+                            $categoryManager->getCategory(),
+                        "property" => "name",
+                        "value" => "id",
+                        "selected" => $this->getCategory()
+
+                ]]]];
     }
 
 

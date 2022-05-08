@@ -3,18 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard front</title>
-    <link rel="stylesheet" type="text/css" href="../../framework/dist/main.css"/>
-    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script src="../../framework/dist/main.js"></script>
+    <script src="https://kit.fontawesome.com/abaaf4d322.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js" charset="utf-8"></script>
     <script src="https://cdn.tiny.cloud/1/iam35x4cabb1nisnr71bcn2cpamtw3nk67uokoq3b288i0ay/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-    <script src="../../framework/dist/main.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <link rel="stylesheet" type="text/css" href="../../framework/dist/main.css"/>
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body class="flex grid" >
     <nav class="sidebar-left close">
         <header>
             <div class="image-text">
                 <span class="image">
-                    <img src="../../framework/assets/images/logo.png"
+                    <img src="../../framework/assets/images/logo-learner.png"
                          alt="">
                 </span>
             </div>
@@ -47,10 +52,11 @@
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
-                            <i class='bx bxs-graduation icon'></i>
+                        <a href="/createCourse">
+
+                        <i class='bx bxs-graduation icon'></i>
                             <span class="text nav-text">My courses</span>
-                        </a>
+                    </a>
                     </li>
 
 
@@ -102,33 +108,32 @@
         </div>
 
     </nav>
-    <div class="container w-100 flex jc-center">
+    <div class="container column w-100 pl-3 mt-1">
 
-        <div class="flex column col-md-8 pl-2 jc-center">
 
         <?php include "./View/Partial/error-message.partial.php"; ?>
 
     <?php include $this->view.".View.php";?>
-        </div>
     </div>
 
 <section>
     <nav class="sidebar-right">
 
 
-        <div id="part1">
+        <div id="profile-container">
             <figure>
-                <img src="../../framework/assets/images/img_2.png">
+                <img src="../../framework/assets/images/avatar.png">
             </figure>
             <div>
-                <h3>Emma Marchand</h3>
+                <h3><?php echo \App\Model\User::getUserConnected()->getFirstname(). " ".\App\Model\User::getUserConnected()->getLastname() ?></h3>
 
                 <a href="#">
-                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    Edit my profile
+                    <svg class="ml-1" width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 10.292V13H2.70796L10.6946 5.01333L7.98667 2.30537L0 10.292ZM12.7888 2.91918C13.0704 2.63755 13.0704 2.18261 12.7888 1.90099L11.099 0.211221C10.8174 -0.0704069 10.3624 -0.0704069 10.0808 0.211221L8.75934 1.5327L11.4673 4.24066L12.7888 2.91918Z"
                               fill="#8B8CFB"/>
                     </svg>
-                    test</a>
+                    </a>
             </div>
 
         </div>
@@ -366,82 +371,94 @@
         tinycomments_author: 'Author name',
     });
 
-  /*  var ctx = document.getElementById('myChart').getContext("2d");
 
-    var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-    gradientStroke.addColorStop(0, '#2F7DC0');
 
-    var gradientFill = ctx.createLinearGradient(300, 0, 300, 200);
-    gradientFill.addColorStop(0.6, "rgba(47, 118, 192, 0.8)");
-    gradientFill.addColorStop(1, "rgba(59, 205, 179, 0.4)");
+    $(document).ready(function() {
+        $('#example').DataTable();
+    } );
 
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            datasets: [{
-                label: "Data",
-                borderColor: gradientStroke,
-                pointBorderColor: gradientStroke,
-                pointBackgroundColor: gradientStroke,
-                pointHoverBackgroundColor: gradientStroke,
-                pointHoverBorderColor: gradientStroke,
-                pointBorderWidth: 10,
-                pointHoverRadius: 10,
-                pointHoverBorderWidth: 1,
-                pointRadius: 3,
-                fill: true,
-                backgroundColor: gradientFill,
-                borderWidth: 4,
-                data: [3.3, 2.3, 1.9, 1.8, 1.9, 2.4, 2.7, 2.9, 3, 2.9, 2.7, 2.5],
-            }]
-        },
-        options: {
-            animation: {
-                easing: "easeInOutBack"
-            },
-            legend: {
-                display: false,
-            },
-            tooltips: {
-                callbacks: {
-                    label: function (tooltipItem) {
-                        return tooltipItem.yLabel;
-                    }
-                }
 
-            },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        fontColor: "rgba(0,0,0,0.5)",
-                        fontStyle: "bold",
-                        beginAtZero: true,
-                        maxTicksLimit: 5,
-                        padding: 20
-                    },
-                    gridLines: {
-                        drawTicks: false,
-                        display: false
-                    }
-
-                }],
-                xAxes: [{
-                    gridLines: {
-                        zeroLineColor: "transparent"
-                    },
-                    ticks: {
-                        padding: 20,
-
-                        fontColor: "rgba(0,0,0,0.5)",
-                        fontStyle: "bold"
-                    }
-                }]
-            }
-        }
+    //toggle nav-link
+    $('.nav-link').click(function() {
+        $('.nav-link').removeClass('active');
+        $(this).addClass('active');
     });
+    /*  var ctx = document.getElementById('myChart').getContext("2d");
 
-*/
+      var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+      gradientStroke.addColorStop(0, '#2F7DC0');
+
+      var gradientFill = ctx.createLinearGradient(300, 0, 300, 200);
+      gradientFill.addColorStop(0.6, "rgba(47, 118, 192, 0.8)");
+      gradientFill.addColorStop(1, "rgba(59, 205, 179, 0.4)");
+
+      var myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+              datasets: [{
+                  label: "Data",
+                  borderColor: gradientStroke,
+                  pointBorderColor: gradientStroke,
+                  pointBackgroundColor: gradientStroke,
+                  pointHoverBackgroundColor: gradientStroke,
+                  pointHoverBorderColor: gradientStroke,
+                  pointBorderWidth: 10,
+                  pointHoverRadius: 10,
+                  pointHoverBorderWidth: 1,
+                  pointRadius: 3,
+                  fill: true,
+                  backgroundColor: gradientFill,
+                  borderWidth: 4,
+                  data: [3.3, 2.3, 1.9, 1.8, 1.9, 2.4, 2.7, 2.9, 3, 2.9, 2.7, 2.5],
+              }]
+          },
+          options: {
+              animation: {
+                  easing: "easeInOutBack"
+              },
+              legend: {
+                  display: false,
+              },
+              tooltips: {
+                  callbacks: {
+                      label: function (tooltipItem) {
+                          return tooltipItem.yLabel;
+                      }
+                  }
+
+              },
+              scales: {
+                  yAxes: [{
+                      ticks: {
+                          fontColor: "rgba(0,0,0,0.5)",
+                          fontStyle: "bold",
+                          beginAtZero: true,
+                          maxTicksLimit: 5,
+                          padding: 20
+                      },
+                      gridLines: {
+                          drawTicks: false,
+                          display: false
+                      }
+
+                  }],
+                  xAxes: [{
+                      gridLines: {
+                          zeroLineColor: "transparent"
+                      },
+                      ticks: {
+                          padding: 20,
+
+                          fontColor: "rgba(0,0,0,0.5)",
+                          fontStyle: "bold"
+                      }
+                  }]
+              }
+          }
+      });
+
+  */
 </script>
 
 </body>

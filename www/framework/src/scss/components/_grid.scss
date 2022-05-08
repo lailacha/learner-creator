@@ -8,7 +8,6 @@ $xl-width: 1900px;
 
 .grid{
   box-sizing: border-box;
-  overflow:hidden;
   .container{
     max-width: $xl-width;
     box-sizing: border-box;
@@ -24,12 +23,14 @@ $xl-width: 1900px;
   $columns: 12;
   $grid-gutter: 30px;
   $breakpoints: (
-          xs: $xs-width,
-          sm: $sm-width,
-          md: $md-width,
+          xl: $xl-width,
           lg: $lg-width,
-          xl: $xl-width
+          md: $md-width,
+          sm: $sm-width,
+          xs: $xs-width,
   );
+
+  $maxBreakpoints: ((300px), (600px), (900px), (1250px), (1900px));
 
   @mixin generateGrid($breakpoint: null) {
     $infix: if($breakpoint == null, '', '-#{$breakpoint}');

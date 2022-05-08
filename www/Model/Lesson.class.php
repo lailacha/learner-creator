@@ -3,39 +3,29 @@
 
 namespace App\Model;
 
+use App\Core\QueryBuilder;
 use App\Core\Sql;
+use App\Model\Course as CourseManager;
+use App\Model\User as UserManager;
+use App\Model\CourseChapter as ChapterManager;
 
 
 class Lesson extends Sql
 {
-  protected $id = null;
-  protected string $title;
-  protected int $video;
-  protected string $text;
-  protected int $user;
-  protected int $course;
+    protected $id = null;
+    protected string $title;
+    protected ?int $video;
+    protected string $text;
+    protected int $user;
+    protected int $chapter;
+    protected string $created_at;
 
-    /**
-     * Lesson constructor.
-     * @param null $id
-     * @param string $title
-     * @param string $video
-     * @param string $text
-     * @param int $user
-     * @param int $course
-     */
-    public function __construct($id, string $title, string $video, string $text, int $user, int $course)
+
+
+    public function __construct()
     {
-
         parent::__construct();
-        $this->id = $id;
-        $this->title = $title;
-        $this->video = $video;
-        $this->text = $text;
-        $this->user = $user;
-        $this->course = $course;
     }
-
 
     /**
      * @return null
@@ -45,13 +35,6 @@ class Lesson extends Sql
         return $this->id;
     }
 
-    /**
-     * @param null $id
-     */
-    public function setId($id): void
-    {
-        $this->id = $id;
-    }
 
     /**
      * @return string
@@ -70,7 +53,7 @@ class Lesson extends Sql
     }
 
     /**
-     * @return int|string
+     * @return int|null $video
      */
     public function getVideo()
     {
@@ -117,31 +100,139 @@ class Lesson extends Sql
         $this->user = $user;
     }
 
+    public function user()
+    {
+        $userManger = new UserManager();
+        return $userManger->setId($this->user);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreatedAt(): string
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * @param string $created_at
+     */
+    public function setCreatedAt(string $created_at): void
+    {
+        $this->created_at = $created_at;
+    }
+
     /**
      * @return int
      */
-    public function getCourse(): int
+    public function getChapter(): int
     {
-        return $this->course;
+        return $this->chapter;
+    }
+
+    public function chapter(): ChapterManager
+    {
+        $chapterManager = new ChapterManager();
+        return $chapterManager->setId($this->chapter);
     }
 
     /**
-     * @param int $course
+     * @param int $chapter
      */
-    public function setCourse(int $course): void
+    public function setChapter(int $chapter): void
     {
-        $this->course = $course;
+        $this->chapter = $chapter;
+    }
+
+    public function course(): CourseManager
+    {
+        $courseManager = new CourseManager();
+        return $courseManager->setId($this->chapter()->getCourse());
     }
 
 
-    public function getCreateLessonForm()
+    public function editLesson()
     {
+
+        $i = 0;
+        $chapters = [];
+        foreach ($this->course()->getChapters() as $chapter) {
+            $chapters[$i]["id"] = $chapter->getId();
+            $chapters[$i]["name"] = $chapter->getName();
+            $i++;
+        }
+
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "/update/lesson",
+                "enctype" => "multipart/form-data",
+                "id" => "formLesson",
+                "class" => "form",
+                "submit" => "Update lesson"
+            ],
+            "inputs" => [
+                "title" => [
+                    "placeholder" => "Name of the lesson",
+                    "type" => "text",
+                    "id" => "titleLesson",
+                    "value" => $this->getTitle(),
+                    "class" => "",
+                    "required" => true,
+                ],
+                "text" => [
+                    "placeholder" => "Describe the lesson",
+                    "class" => "editable",
+                    "type" => "textarea",
+                    "value" => $this->getText(),
+                    "id" => "",
+                    "required" => true,
+                ],
+                "video" => [
+                    "type" => "file",
+                    "id" => "course-video",
+                    "class" => "file",
+                    "error" => " Votre image doit être de la bonne extension (mp4)",
+                ],
+                "lesson_id" => [
+                    "type" => "hidden",
+                    "value" => $this->getId(),
+                ],
+                "chapter" => [
+                    "type" => "select",
+                    "id" => "jjj",
+                    "class" => "formRegister",
+                    "required" => "true",
+                    "options" => [
+                        "data" =>
+                            $chapters,
+                        "property" => "name",
+                        "value" => "id",
+                        "selected" => $this->getChapter()
+
+                    ]]
+            ]
+        ];
+    }
+
+
+    public function getCreateLessonForm(Course $course)
+    {
+        $i = 0;
+        $chapters = [];
+        foreach ($course->getChapters() as $chapter) {
+            $chapters[$i]["id"] = $chapter->getId();
+            $chapters[$i]["name"] = $chapter->getName();
+            $i++;
+        }
+
         return [
             "config" => [
                 "method" => "POST",
                 "action" => "",
+                "enctype" => "multipart/form-data",
                 "id" => "formLesson",
-                "class" => "formLesson",
+                "class" => "form",
                 "submit" => "Create lesson"
             ],
             "inputs" => [
@@ -154,18 +245,30 @@ class Lesson extends Sql
                 ],
                 "text" => [
                     "placeholder" => "Describe the lesson",
-                    "type" => "text",
+                    "type" => "textarea",
+                    "class" => "editable",
                     "id" => "",
-                    "class" => "",
                     "required" => true,
                 ],
-                "text" => [
-                    "placeholder" => "Describe the lesson",
-                    "type" => "text",
-                    "id" => "",
-                    "class" => "",
-                    "required" => true,
-                ]
+                "video" => [
+                    "type" => "file",
+                    "id" => "course-video",
+                    "class" => "file",
+                    "error" => " Votre image doit être de la bonne extension",
+                ],
+                "chapter" => [
+                    "type" => "select",
+                    "id" => "jjj",
+                    "class" => "formRegister",
+                    "required" => "true",
+                    "options" => [
+                        "data" =>
+                            $chapters,
+                        "property" => "name",
+                        "value" => "id",
+                        "selected" => 1
+
+                    ]]
             ]
         ];
     }

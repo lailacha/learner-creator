@@ -12,6 +12,24 @@
   transition: $tran;
   z-index: 100;
   border-top-right-radius: 10px;
+
+
+  .menu-links{
+    margin: 0;
+    padding: 0 20px 0 0;
+  }
+
+
+  .nav-link.active{
+    a{
+    background: $primary-color;
+
+    }
+    span{
+      color: $white;
+    }
+  }
+
   & header {
     position: relative;
 
@@ -148,7 +166,7 @@
   }
 
   & .menu-bar {
-    height: calc(100% - 55px);
+    heigh: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

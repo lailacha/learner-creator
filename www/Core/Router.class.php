@@ -28,6 +28,13 @@ class Router
 
         $routeFound = array_filter($this->listRoutes,function($route) use ($httpRequest){
             $method = $route["method"] ?? "GET";
+
+          /*  if (!Security::checkRoute($route)) {
+                die("Not Authorized");
+            }*/
+
+            //Security::checkAuth($route);
+
              return preg_match("#^" . $route["path"] . "$#", $httpRequest->getUrl()) && $method === $httpRequest->getMethod();
         });
         $numberRoute = count($routeFound);

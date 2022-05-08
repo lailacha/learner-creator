@@ -2,7 +2,9 @@
 
 namespace App\Model;
 
+use App\Core\Session;
 use App\Core\Sql;
+use App\Model\User as UserModel;
 
 class User extends Sql
 {
@@ -110,6 +112,11 @@ class User extends Sql
         $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
 
+    public function fullName(): ?string
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
     /**
      * @return null
      */
@@ -134,6 +141,17 @@ class User extends Sql
         //echo "pre traitement";
        
         parent::save();
+    }
+
+
+    public static function getUserConnected() {
+        $session = new Session();
+        if($session->get("user") != null) {
+            $userManager = new UserModel();
+            $userConnected =  $userManager->setId($session->get("user")["id"]);
+            return $userConnected;
+        }
+        return false;
     }
 
     public function getRegisterForm(): array

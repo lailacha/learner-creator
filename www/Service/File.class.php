@@ -3,6 +3,7 @@
 
 namespace App\Service;
 use App\Model\File as FileModel;
+use App\Core\Session;
 
 class File
 {
@@ -23,16 +24,18 @@ class File
         $this->name = pathinfo($this->path, PATHINFO_FILENAME);
     }
 
-    public function upload(string $directory = "assets", int $category){
+    public function upload(string $directory = "assets", int $category, bool $isVideo = false)
+    {
+        $session = new Session();
 
         //verify if the file is an image
-        if(!getimagesize($this->tmp_name)){
-            die("The file is not an image");
+        if(!$isVideo && !getimagesize($this->tmp_name)){
+            throw new \RuntimeException("The file is not an image");
         }
 
         //verify file size is less than 5MB
         if($this->size > (5*MB)){
-            die("The file is too large");
+            throw new \RuntimeException('The file is to large (max 5MB)');
         }
 
         //get extension of file
@@ -48,11 +51,20 @@ class File
         }
 
 
-        $extensions = ["jpeg", "png", "svg", "jpg"];
-        if(!in_array($this->extension, $extensions, true))
+        $imgExtensions = ["jpeg", "png", "svg", "jpg"];
+        $videoExtensions = ["mp4", "mov", "ogg"];
+
+        if(!$isVideo &&!in_array($this->extension, $imgExtensions, true))
         {
-            die("The file do not use good extension");
+            throw new \RuntimeException('The file do not have a valid extension (jpeg, png, svg, jpg)');
         }
+
+        if($isVideo &&!in_array($this->extension, $videoExtensions, true))
+        {
+            throw new \RuntimeException('The file do not have a valid extension (mp4, mov, ogg)');
+        }
+
+
         if (move_uploaded_file($this->tmp_name,  $directory.$this->name.".".$this->extension)) {
 
             //store file in database
@@ -61,14 +73,13 @@ class File
                 $file->setName($this->name);
                 $file->setExtension($extension);
                 $file->setCategory($category);
-                $file->setPath($directory.$this->name.".".$extension);
+                $file->setPath(substr($directory, 1).$this->name.".".$extension);
                 $file->save();
             } catch (\Exception $e) {
                  echo $e->getMessage();
                 return false;
             }
 
-            echo "The file has been uploaded";
             return $file;
 
 

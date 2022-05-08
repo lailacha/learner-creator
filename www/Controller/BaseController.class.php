@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Core\HttpRequest;
 use App\Core\Route;
 use App\Core\Session;
+use App\Core\View;
 
 class BaseController
 {
@@ -19,6 +20,20 @@ class BaseController
         $this->request = $request;
         $this->route = $route;
         $this->session = $session;
-    }   
+    }
+
+    /**
+     * @return Session
+     */
+    public function getSession(): Session
+    {
+        return $this->session;
+    }
+
+    public function abort($code = 404) : void
+    {
+        http_response_code($code);
+        $view = new View($code, "front");
+    }
 
 }

@@ -23,6 +23,7 @@ class FormBuilder
                 $input["type"] === "select" ?   $html .= self::renderSelect($name,$input) : "";
                 $input["type"] === "file" || $input["type"] === "text" || $input["type"] === "password"|| $input["type"] === "email" ?   $html .= self::renderInput($name,$input) : "";
                 $input["type"] === "captcha" ?  $html .= (new Recaptcha())->renderRecaptcha() : "";
+                $input["type"] === "hidden" ?  $html .= self::renderHidden($name,$input) : "";
         }
 
         $html .= " <input type='submit' value='".($config["config"]["submit"] ?? '')."'>";
@@ -53,9 +54,16 @@ class FormBuilder
         return $data;
     }
 
+    //render input type hidden
+    private static function renderHidden(string $name, array $input): string
+    {
+        $data = " <input type='hidden' id='".($input["id"] ?? '')."' name='".($name ?? '')."'  value='".($input["value"] ?? '')."'>";
+        return $data;
+    }
+
+
     private static function renderSelect(string $name, array $select): string
     {
-
         //array of options example
     /*    "category" => [
             "type" => "select",
@@ -130,6 +138,7 @@ class FormBuilder
     {
             $data = "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
             $data .= " <textarea class='".($textarea["class"] ?? '')."' id='".($textarea["id"] ?? '')."' cols='".($textarea["cols"] ?? '')."' placeholder='".($textarea["content"] ?? '')."' rows='".($textarea["rows"] ?? '')."' name='".($name ?? "")."'>";
+            $data .= $textarea["value"] ?? "";
             $data .= "</textarea>";
         return $data;
     }
@@ -138,7 +147,7 @@ class FormBuilder
     private static function renderInput(string $name, array $input): string
     {
         $data = "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
-        $data .= " <input type='".($input["type"] ?? 'text')."'  class='".($input["class"] ?? '')."'  id='".($input["id"] ?? '')."' placeholder='".($input["placeholder"] ?? '')."' name='".($name ?? "")."'/>";
+        $data .= " <input value='".($input["value"] ?? '')."'  type='".($input["type"] ?? 'text')."'  class='".($input["class"] ?? '')."'  id='".($input["id"] ?? '')."' placeholder='".($input["placeholder"] ?? '')."' name='".($name ?? "")."'/>";
         return $data;
     }
 

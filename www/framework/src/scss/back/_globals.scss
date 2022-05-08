@@ -55,77 +55,7 @@ button {
     display: none;
   }
 }
-/*  Spacing  */
-$baseSpace: 0.8rem;
-$spaceRange: 5;
 
-.mr-a{
-  margin-right: auto;
-}
-
-.ml-a{
-  margin-left: auto;
-}
-
-@for $i from 0 through $spaceRange {
-  .m-#{$i} {
-    margin: calc(#{$baseSpace} * #{$i}) !important;
-  }
-  .mt-#{$i} {
-    margin-top: calc(#{$baseSpace} * #{$i}) !important;
-  }
-  .mb-#{$i} {
-    margin-bottom: calc(#{$baseSpace} * #{$i}) !important;
-  }
-  .mr-#{$i} {
-    margin-right: calc(#{$baseSpace} * #{$i}) !important;
-  }
-  .ml-#{$i} {
-    margin-left: calc(#{$baseSpace} * #{$i}) !important;
-  }
-
-
-  .p-#{$i} {
-    padding: calc(#{$baseSpace} * #{$i}) !important;
-  }
-
-  .pt-#{$i} {
-    padding-top: calc(#{$baseSpace} * #{$i}) !important;
-  }
-  .pb-#{$i} {
-    padding-bottom: calc(#{$baseSpace} * #{$i}) !important;
-  }
-  .pr-#{$i} {
-    padding-right: calc(#{$baseSpace} * #{$i}) !important;
-  }
-  .pl-#{$i} {
-    padding-left: calc(#{$baseSpace} * #{$i}) !important;
-  }
-}
-
-
-
-.h-25{
-  height: 25%;
-}
-
-.h-50{
-height: 50%
-}
-
-.h-100{
-  height: 100%;
-}
-
-.xs-space{
-  margin-top: 20px
-}
-
-
-.no-gutters {
-  margin-right: 0;
-  margin-left: 0;
-}
 
 /* Border */
 
@@ -142,31 +72,6 @@ height: 50%
 }
 
 
-
-/*  Colors */
-
-.bg-violet{
-  background-color: $violet-electric;
-}
-.bg-white{
-  background-color: $white;
-}
-
-.white{
-  color: $white;
-}
-
-.back-light-main-color{
-  color: $light-back-main-color;
-}
-
-.back-lighter-main-color{
-  color: lighten($light-back-main-color, 20);
-}
-
-.lighter-text{
-  color: #D4C6C6;
-}
 
 
 /*  Fonts */

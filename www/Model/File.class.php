@@ -72,6 +72,14 @@ class File extends Sql
     }
 
     /**
+     * @return mixed
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
      * @param int $category
      */
     public function setCategory(int $category): void

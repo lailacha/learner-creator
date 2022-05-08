@@ -78,6 +78,7 @@ class Route
             if(method_exists($controller, $this->action))
             {
                 $httpRequest->bindParam();
+                $controller->getSession()->ensureStarted();
                 $controller->{$this->action}();
             }
             else
@@ -95,6 +96,11 @@ class Route
     public function redirect($url)
     {
         header("Location: ".$url);
+    }
+
+    public function goBack()
+    {
+        header("Location: ".$_SERVER['HTTP_REFERER']);
     }
 
 }

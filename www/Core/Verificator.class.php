@@ -2,10 +2,12 @@
 
 namespace App\Core;
 
+use App\Core\Session;
+
 class Verificator
 {
 
-    public static function checkForm($config, $request): array
+    public static function checkForm($config, HttpRequest $request): array
     {
         $data = $request->getData();
         $captcha = new Recaptcha();
@@ -13,13 +15,20 @@ class Verificator
 
        
         if( count($config["inputs"]) != count($data)){
-            die("Tentative de hack");
+                $errors[] = "Le nombre d'inputs ne correspond pas au nombre d'inputs envoyés";
+//             echo var_dump(array_keys($config["inputs"]));
+//             echo "<br>";
+//                echo var_dump(array_keys($data));
         }
 
         foreach ($config["inputs"] as $name=>$input)
         {
 
             if(!empty($input["required"]) && empty($data[$name]) ){
+                $errors[]=$name ." ne peut pas être vide";
+            }
+
+            if(!empty($input["required"]) && $input["type"] === "file" && $data[$name]["error"] === 4){
                 $errors[]=$name ." ne peut pas être vide";
             }
 

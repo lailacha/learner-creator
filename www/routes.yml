@@ -3,6 +3,11 @@
   action: home
   path: /
 
+-
+  path: /404
+  controller: BaseController
+  action: abort
+
 
 -
   path: /createCourse
@@ -19,11 +24,91 @@
   param: [ "name", "description", "cover", "category" ]
 
 -
+  path: /delete/course
+  controller: course
+  action: delete
+  method: GET
+  param: [ "id" ]
+
+-
+  path: /create/chapter
+  controller: CourseChapter
+  action: create
+  method: GET
+  param: [ "course_id"]
+
+-
+  path: /create/chapter
+  controller: CourseChapter
+  action: create
+  method: POST
+  param: [ "course_id", "name", "description" ]
+
+
+-
+  path: /show/course
+  controller: course
+  action: getOneCourse
+  method: GET
+  param: [ "id" ]
+
+
+-
+  path: /edit/course
+  controller: course
+  action: edit
+  method: GET
+  param: ["id" ]
+
+
+-
+  path: /edit/course
+  controller: course
+  action: edit
+  method: POST
+  param: [ "id","name", "description", "cover", "category" ]
+
+-
+  path: /createLesson
+  controller: lesson
+  action: index
+  method: GET
+  param: [ "course_id"]
+
+-
   path: /createLesson
   controller: lesson
   action: create
   method: POST
-  param: [ "title", "text", "video", "course" ]
+  param: [ "title", "text", "video", "course", "chapter" ]
+
+-
+  path: /show/lesson
+  controller: lesson
+  action: getOneLesson
+  method: GET
+  param: [ "lesson_id" ]
+
+-
+  path: /edit/lesson
+  controller: lesson
+  action: edit
+  method: GET
+  param: ["lesson_id" ]
+
+-
+  path: /update/lesson
+  controller: lesson
+  action: update
+  method: POST
+  param: [ "lesson_id", "title", "text", "video", "course", "chapter" ]
+
+-
+  path: /delete/lesson
+  controller: lesson
+  action: delete
+  method: GET
+  param: [ "lesson_id" ]
 
 -
   controller: main
@@ -41,6 +126,14 @@
   controller: user
   action: login
   path: /login
+  method: GET
+
+-
+  controller: user
+  action: login
+  path: /login
+  method: POST
+  param: [ "email", "password" ]
 
 
 -
@@ -61,13 +154,21 @@
   action: register
   method: POST
   path: /register
-  param: [ ]
-
+  param: ["firstname", "lastname","email", "password", "passwordConfirm", "g-recaptcha-response"]
 
 -
   controller: user
   action: recoverPassword
   path: /recoverPassword
+  method: POST
+  param: ["email"]
+
+-
+  controller: user
+  action: recoverPassword
+  path: /recoverPassword
+  method: GET
+  param: ["email"]
 
 
 -

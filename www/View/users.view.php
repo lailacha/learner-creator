@@ -19,8 +19,18 @@
             <td><?= $user['status'] == 1 ? "Valid" : "Non valid"?></td>
 
             <td class="action">
-                <a class="button view">view</a>
-                <a class="button delete" href="<?= $_SERVER['REQUEST_URI']."/delete?id=".$user['id']?>">Delete</a>
+
+                <form action="" method="post">
+                    <input type="hidden" name="_method" id="" value="edit" >
+                    <input type="hidden" name="id_user" id="" value="<?= $user['id'] ?>" >
+                    <input type="submit" name="editer" value="editer" class="button edit" id="">
+                </form>
+
+                <form action="" method="post">
+                    <input type="hidden" name="_method" id="" value="delete" >
+                    <input type="hidden" name="id_user" id="" value="<?= $user['id'] ?>" >
+                    <input type="submit" name="delete" value="delete" class="button delete" id="">
+                </form>
             </td>
         </tr>
     <?php endforeach; ?>

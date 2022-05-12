@@ -145,11 +145,67 @@ class User extends Sql
 
     function deleteUser(int $id)
     {
-        $sql = "DELETE FROM ".DBPREFIXE ."user WHERE id = :id";
+        $sql = "DELETE FROM " . DBPREFIXE . "user WHERE id = :id";
         $statement = $this->pdo->prepare($sql);
-        $statement->bindValue(':id',$id,\PDO::PARAM_INT);
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
         $statement->execute();
 
+    }
+
+    public function getEditUserForm(): array
+    {
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "",
+                "id" => "formEditUser",
+                "enctype" => "multipart/form-data",
+                "class" => "form edit",
+                "submit" => "Modifier"
+            ],
+            "inputs" => [
+                "firstname" => [
+                    "placeholder" => $this->getFirstname(),
+                    "value" => $this->getFirstname(),
+                    "type" => "text",
+                    "id" => "firstnameRegister",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "min" => 2,
+                    "max" => 25,
+                    "error" => " Votre prénom doit faire entre 2 et 25 caractères",
+                ],
+                "lastname" => [
+                    "type" => "text",
+                    "placeholder" => $this->getLastname(),
+                    "value" => $this->getLastname(),
+                    "id" => "testRegister",
+                    "required" => true,
+                    "class" => "formRegister",
+                    "error" => " Votre nom doit faire entre 2 et 100 caractères",
+                ],
+                "email" => [
+                    "placeholder" => $this->getEmail(),
+                    "value" => $this->getEmail(),
+                    "type" => "email",
+                    "id" => "emailRegister",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "error" => "Email incorrect",
+                    "unicity" => true,
+                    "errorUnicity" => "Un compte existe déjà avec cet email"
+                ],
+                "id" => [
+                    "value" => $this->getId(),
+                    "type" => "hidden",
+                    "id" => "idUser",
+                    "class" => "formRegister",
+                ],
+
+
+
+            ],
+        ];
     }
 
     public function getRegisterForm(): array

@@ -43,9 +43,9 @@
   action: users
   security: admin
 
-/users/delete:
+/editUser:
   controller: admin
-  action: users
+  action: editUser
   security: admin
 
 /mail:

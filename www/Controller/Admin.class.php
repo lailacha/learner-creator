@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Core\FormBuilder;
 use App\Core\View;
 use App\Model\User as UserModel;
 
@@ -26,20 +27,46 @@ class Admin
         $user = new UserModel();
         $listUsers = $user->getAllUsers();
 
-        $action = explode("/", $_SERVER["REQUEST_URI"])[2] ?? null;
-        $action = explode("?", $action)[0] ?? null;
-        $idUser = $_GET['id'] ?? null;
+        $action = $_POST['_method'] ?? null;
+        $idUser = $_POST['id_user'] ?? null;
 
 
         if ($action === "delete" && !empty($idUser)){
             $user->deleteUser($idUser);
             header('Location: /users');
         }
-        elseif ($action === "view" && !empty($idUser)){
-
+        elseif ($action === "edit" && !empty($idUser)){
+            header('location: /editUser?id='.$idUser);
         }
         $view = new View("users", "back");
         $view->assign("listUsers", $listUsers);
 
+    }
+
+
+    public function editUser(): void
+    {
+        $idUser = $_GET['id'] ?? null;
+        $user = new UserModel();
+        $user = $user->getBy('id',$idUser);
+        if ($user){
+            $form = FormBuilder::render($user->getEditUserForm());
+            $view = new View("editUser", "back");
+            $view->assign("user", $user);
+            $view->assign("form", $form);
+            if ($_POST){
+                $user = $user->getBy("id", $_POST['id']);
+                $user->setEmail($_POST['email']);
+                $user->setLastname($_POST['lastname']);
+                $user->setFirstname($_POST['firstname']);
+                $user->save();
+
+                header('Location: /users');
+
+            }
+        }
+        else{
+            die("user non trouvable");
+        }
     }
 }

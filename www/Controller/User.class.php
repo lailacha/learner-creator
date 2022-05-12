@@ -35,14 +35,12 @@ class User
         $view->assign("form", $form);
     }
 
-
     public function logout()
     {
         echo "Se déconnecter";
     }
 
-
-    public function register()
+    public function register(): void
     {
         $user = new UserModel();
         $session = new Session();
@@ -81,7 +79,7 @@ class User
         $view->assign("form", $form);
     }
 
-    public function recoverPassword()
+    public function recoverPassword(): void
     {
         $user = new UserModel();
         $receivePasswordManager = new ReceivePasswordModel();
@@ -108,7 +106,7 @@ class User
 
     }
 
-    public function changePassword()
+    public function changePassword(): void
     {
 
 
@@ -172,6 +170,9 @@ class User
 
 
     }
+
+
+
 
 }
 

@@ -152,7 +152,7 @@
   param: [ "lesson_id" ]
 
 
-- 
+-
   path: /store/progress
   controller: LessonProgress
   action: store
@@ -254,12 +254,17 @@
   action: changePassword
   path: /changePassword
 
--
+/editUser:
+  controller: admin
+  action: editUser
+  security: admin
+
+/mail:
   controller: user
   action: sendRegisterMail
   path: /mail
 
--
+/verifyAccount:
   controller: user
   action: verifyAccount
   path: /verifyAccount

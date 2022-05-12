@@ -6,7 +6,6 @@
     <tr>
         <th>Nom Complet</th>
         <th>Email</th>
-        <th>Role</th>
         <th>Status de compte</th>
         <th>Action</th>
     </tr>
@@ -26,7 +25,6 @@
             </td>
         </tr>
     <?php endforeach; ?>
-
     </tbody>
 
 </table>

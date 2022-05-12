@@ -2,17 +2,20 @@
 
 namespace App\Controller;
 
-use App\Core\Helpers;
-use App\Core\ReceivePassword;
-use App\Core\Session;
-use App\Model\Course;
-use App\Core\Verificator;
-use App\Core\View;
+use DateTime;
 use App\Core\Mail;
+use App\Core\View;
+use App\Core\Helpers;
+use App\Core\Session;
+use App\Service\File;
+use App\Core\Recaptcha;
 use App\Core\FormBuilder;
+use App\Core\Verificator;
+use App\Core\QueryBuilder;
+use App\Core\ReceivePassword;
+use App\Core\User as UserClean;
 use App\Model\User as UserModel;
 use App\Model\ReceivePassword as ReceivePasswordModel;
-use App\Service\File;
 
 
 class User extends BaseController
@@ -26,12 +29,13 @@ class User extends BaseController
             $this->session->set('role', $role);
 
         if (!empty($_POST)) {
+
             $user->setEmail(htmlspecialchars($_POST["email"]));
             $user->setPassword(htmlspecialchars($_POST["password"]));
             $user->login(["email" => $_POST['email']], ["password" => $_POST['password']]);
         }
         $view = new View("login", "home");
-        
+
         $form = FormBuilder::render($user->getLoginForm());
         $view->assign("form", $form);
     }
@@ -40,7 +44,7 @@ class User extends BaseController
 
     public function logout()
     {
-        
+
         session_destroy();
         echo "Se déconnecter";
     }
@@ -48,7 +52,7 @@ class User extends BaseController
 
     public function register()
     {
-        
+
         $user = new UserModel();
         $session = new Session();
 
@@ -58,16 +62,6 @@ class User extends BaseController
             $verification = Verificator::checkForm($user->getRegisterForm(), $this->request);
 
             if (!$verification) {
-//                $user = $user->getBy("id", 33);
-//
-//                $user->setEmail("y.sssvhvhvhvsjjjjsss@gmail.com");
-//
-//                //$user->setPassword("Test1234");
-//                //$user->setLastname("SKrzypCZK   ");
-//                //$user->setFirstname("  YveS");
-//                //$user->generateToken();
-//
-//                $user->save();
 
                 $user->setFirstname(htmlspecialchars($_POST["firstname"]));
                 $user->setLastname(htmlspecialchars($_POST["lastname"]));
@@ -90,7 +84,7 @@ class User extends BaseController
         $view->assign("form", $form);
     }
 
-    public function recoverPassword()
+    public function recoverPassword(): void
     {
         $user = new UserModel();
         $receivePasswordManager = new ReceivePasswordModel();
@@ -117,11 +111,6 @@ class User extends BaseController
 
     }
 
-    public function changePassword()
-    {
-        echo "aze";
-    }
-
     /**
      * @param UserModel $user
      *
@@ -141,26 +130,67 @@ class User extends BaseController
 
     }
 
-    /**
-     * Called when user click on validation email.
-     * Check if the account is correct, and set the status to verified.
-     *
-     */
-    public function verifyAccount()
+    public function changePassword(): void
     {
-        $userManager = new UserModel();
-        $user = $userManager->getOneByMany(["token" => $this->request->get("token"), "email" => ["mail"]]);
 
-        if (!$user) {
-            // TODO ADD flash message when available
-            echo "Il n'y a pas d'utilisateur";
-            return;
+
+        $user = new UserModel();
+        $receivePasswordManager = new ReceivePasswordModel();
+
+        $token = $_GET['token'] ?? null;
+        $email = $_GET['email'] ?? null;
+        $idUser = $_GET['id'] ?? null;
+
+
+        $query = new QueryBuilder();
+
+        $query->from('receive_password')
+            ->where('iduser = :iduser', 'token = :token')
+            ->setParams([
+                "iduser" => $idUser,
+                "token" => $token
+            ]);
+
+        $result = $query->fetch();
+
+        $count = (clone $query)->count();
+
+        $dateFinal = new DateTime();
+        $dateDebut = new DateTime($result['createdAt']);
+        $dateDifference = $dateFinal->diff($dateDebut);
+        $heureDifference = $dateDifference->days * 24 + (int)$dateDifference->format('%H');
+        $heureDifference = (int)$heureDifference;
+
+
+
+        if ($count === 1 && $result['status'] == 0 && $heureDifference < 48) {
+            $view = new View("changePassword");
+
+            if (!empty($_POST)) {
+                $data = array_merge($_POST, $_FILES);
+                // Plus tard faut utiliser Class verificator pour verifier le password
+                $receivePasswordManager = $receivePasswordManager->getBy('id', $result['id']);
+                $receivePasswordManager->setStatus(1);
+                $receivePasswordManager->save();
+                $user = $user->getBy('id', $idUser);
+                $user->setPassword($_POST['password']);
+                $user->save();
+
+            }
+            else{
+
+                $form = FormBuilder::render($receivePasswordManager->getChangePswdForm());
+                $view->assign("form", $form);
+
+            }
+
+
+
         } else {
-            $user->setStatus(1);
-            $user->save();
 
-            echo "Your account is validated !";
-        }
+            die("Veuillez refaire votre demande");
+
+    }
 
 
     }
@@ -189,61 +219,55 @@ class User extends BaseController
         $form = FormBuilder::render($user->getEditProfileForm());
         $view->assign("form", $form);
         $view->assign("user", $user);
-    }
 
-    public function delete(): void
-    {
-        $user = new UserModel();
-        $id_user = $this->request->get("id") ?? null;
-        if ($id_user) {
-            $user->deleteUser($id_user);
-            header('Location: /users');
-        }
     }
 
     public function saveProfile()
     {
         $user = UserModel::getUserConnected();
         $errors = Verificator::checkForm($user->getEditProfileForm(), $this->request);
-        if (!$errors) {
+        if(!$errors)
+        {
 
-            if (!empty($this->request->get('firstname')) && $this->request->get('firstname') !== $user->getFirstname()) {
+            if(!empty($this->request->get('firstname')) && $this->request->get('firstname') !== $user->getFirstname())
+            {
                 $user->setFirstname($this->request->get('firstname'));
             }
 
-            if (!empty($this->request->get('lastname')) && $this->request->get('lastname') !== $user->getLastname()) {
+            if(!empty($this->request->get('lastname')) && $this->request->get('lastname') !== $user->getLastname())
+            {
                 $user->setLastname($this->request->get('lastname'));
             }
 
-                {
-                    $user->setFirstname($this->request->get('firstname'));
-                    $user->setLastname($this->request->get('lastname'));
-                }
-                if(!empty($this->request->get("avatar")) && $this->request->get("avatar") !== $user->getAvatar() && isset($_FILES['avatar']) && $_FILES['avatar']['error'] === 0) {
-
-                    try {
-                        $file = new File($_FILES["avatar"]);
-                        $file = $file->upload( "avatar", 3);
-                    } catch (\Exception $e) {
-                        $this->session->addFlashMessage("error", $e->getMessage());
-                        $this->route->redirect("/edit/profile");
-                        return;
-                    }
-                    $user->setAvatar($file->getLastInsertId());
-                }
-
-                $user->save();
-                $this->session->addFlashMessage("success", "Votre profile a bien été modifié");
-                $this->route->redirect("/edit/profile");
-
+            {
+                $user->setFirstname($this->request->get('firstname'));
+                $user->setLastname($this->request->get('lastname'));
             }
-            else{
-                $this->session->addFlashMessage("error",$errors[0]);
-                $this->route->redirect("/edit/profile");
+            if(!empty($this->request->get("avatar")) && $this->request->get("avatar") !== $user->getAvatar() && isset($_FILES['avatar']) && $_FILES['avatar']['error'] === 0) {
 
+                try {
+                    $file = new File($_FILES["avatar"]);
+                    $file = $file->upload( "avatar", 3);
+                } catch (\Exception $e) {
+                    $this->session->addFlashMessage("error", $e->getMessage());
+                    $this->route->redirect("/edit/profile");
+                    return;
+                }
+                $user->setAvatar($file->getLastInsertId());
             }
+
+            $user->save();
+            $this->session->addFlashMessage("success", "Votre profile a bien été modifié");
+            $this->route->redirect("/edit/profile");
 
         }
+        else{
+            $this->session->addFlashMessage("error",$errors[0]);
+            $this->route->redirect("/edit/profile");
+
+        }
+    }
+
 }
 
 

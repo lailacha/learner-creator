@@ -319,6 +319,12 @@ class User extends Sql
         return false;
     }
 
+    function deleteUser(int $id)
+    {
+        $sql = "DELETE FROM ".DBPREFIXE ."user WHERE id = :id";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(':id',$id,\PDO::PARAM_INT);
+        $statement->execute();
 
     public function getEditProfileForm()
     {
@@ -368,6 +374,62 @@ class User extends Sql
         ];
     }
 
+        public function getEditUserForm(): array
+    {
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "",
+                "id" => "formEditUser",
+                "enctype" => "multipart/form-data",
+                "class" => "form edit",
+                "submit" => "Modifier"
+            ],
+            "inputs" => [
+                "firstname" => [
+                    "placeholder" => $this->getFirstname(),
+                    "value" => $this->getFirstname(),
+                    "type" => "text",
+                    "id" => "firstnameRegister",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "min" => 2,
+                    "max" => 25,
+                    "error" => " Votre prénom doit faire entre 2 et 25 caractères",
+                ],
+                "lastname" => [
+                    "type" => "text",
+                    "placeholder" => $this->getLastname(),
+                    "value" => $this->getLastname(),
+                    "id" => "testRegister",
+                    "required" => true,
+                    "class" => "formRegister",
+                    "error" => " Votre nom doit faire entre 2 et 100 caractères",
+                ],
+                "email" => [
+                    "placeholder" => $this->getEmail(),
+                    "value" => $this->getEmail(),
+                    "type" => "email",
+                    "id" => "emailRegister",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "error" => "Email incorrect",
+                    "unicity" => true,
+                    "errorUnicity" => "Un compte existe déjà avec cet email"
+                ],
+                "id" => [
+                    "value" => $this->getId(),
+                    "type" => "hidden",
+                    "id" => "idUser",
+                    "class" => "formRegister",
+                ],
+
+
+
+            ],
+        ];
+    }
+
     public function getRegisterForm(): array
     {
         return [
@@ -380,6 +442,25 @@ class User extends Sql
                 "submit" => "Sign in"
             ],
             "inputs" => [
+                "firstname" => [
+                    "placeholder" => "Enter your name",
+                    "type" => "text",
+                    "id" => "firstnameRegister",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "min" => 2,
+                    "max" => 25,
+                    "error" => " Votre prénom doit faire entre 2 et 25 caractères",
+                ],
+                "lastname" => [
+                    "type" => "text",
+                    "placeholder" => "Votre nom de famille ...",
+                    "id" => "testRegister",
+                    "required" => true,
+                    "value" => "testRegister",
+                    "class" => "formRegister",
+                    "error" => " Votre nom doit faire entre 2 et 100 caractères",
+                ],
                 "email" => [
                     "placeholder" => "Votre email ...",
                     "type" => "email",
@@ -406,25 +487,6 @@ class User extends Sql
                     "required" => true,
                     "error" => "Votre confirmation de mot de passe ne correspond pas",
                     "confirm" => "password"
-                ],
-                "firstname" => [
-                    "placeholder" => "Votre prénom ...",
-                    "type" => "text",
-                    "id" => "firstnameRegister",
-                    "class" => "formRegister",
-                    "min" => 2,
-                    "max" => 25,
-                    "error" => " Votre prénom doit faire entre 2 et 25 caractères",
-                ],
-
-                "lastname" => [
-                    "type" => "text",
-                    "placeholder" => "Votre nom de famille ...",
-
-                    "id" => "testRegister",
-                    "value" => "testRegister",
-                    "class" => "formRegister",
-                    "error" => " Votre nom doit faire entre 2 et 100 caractères",
                 ],
                 "g-recaptcha-response" => [
                     "type" => "captcha",

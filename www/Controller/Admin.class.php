@@ -32,15 +32,40 @@ class Admin extends BaseController
         $view->assign("listUsers", $listUsers);
     }
 
+    // public function editUser(): void
+    // {
+
+    //     $user = new UserModel();
+    //     $id_user = $this->request->get("id");
+    //     $user = $user->getBy('id', $id_user);
+
+
+    //     if ($user) {
+
+    //     $action = $_POST['_method'] ?? null;
+    //     $idUser = $_POST['id_user'] ?? null;
+
+
+    //     if ($action === "delete" && !empty($idUser)){
+    //         $user->deleteUser($idUser);
+    //         header('Location: /users');
+    //     }
+    //     elseif ($action === "edit" && !empty($idUser)){
+    //         header('location: /editUser?id='.$idUser);
+    //     }
+    //     $view = new View("users", "back");
+    //     $view->assign("listUsers", $listUsers);
+
+    // }
+    // }
+
+
     public function editUser(): void
     {
-
+        $idUser = $_GET['id'] ?? null;
         $user = new UserModel();
-        $id_user = $this->request->get("id");
-        $user = $user->getBy('id', $id_user);
-
-
-        if ($user) {
+        $user = $user->getBy('id',$idUser);
+        if ($user){
             $form = FormBuilder::render($user->getEditUserForm());
             $view = new View("editUser", "back");
             $view->assign("user", $user);

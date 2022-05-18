@@ -21,6 +21,7 @@ class FormBuilder
             $input["type"] === "radio" ?   $html .= self::renderRadio($name,$input) : "";
             $input["type"] === "textarea" ?   $html .= self::renderTextarea($name,$input) : "";
             $input["type"] === "select" ?   $html .= self::renderSelect($name,$input) : "";
+            $input["type"] === "select-multiple" ?   $html .= self::renderSelectMultiple($name,$input) : "";
             $input["type"] === "file" || $input["type"] === "text" || $input["type"] === "password"|| $input["type"] === "submit"|| $input["type"] === "email" ?   $html .= self::renderInput($name,$input) : "";
             $input["type"] === "captcha" ?  $html .= (new Recaptcha())->renderRecaptcha() : "";
             $input["type"] === "hidden" ?  $html .= self::renderHidden($name,$input) : "";
@@ -64,33 +65,9 @@ class FormBuilder
 
     private static function renderSelect(string $name, array $select): string
     {
-        //array of options example
-        /*    "category" => [
-                "type" => "select",
-                "id" => "jjj",
-                "class" => "formRegister",
-                "options" => [
-                    "test" => ["libelle" => "Math", "value" => "1"],
-                    "test2" => [ "libelle" => "French ", "value" => "2",  "selected" => "selected"]],
-
-        options => [
-     data:[[   "id" => "",
-        "name" => "",
-        "category,],
-
-         [   "id" => "",
-        "name" => "",
-        "category,]
-
-        ]]
-        , property: "name",
-        value: id,
-        class: "formRegister",
-        selected: 1,
-
-            ]*/
 
         $value = $select["options"]["value"] ?? "";
+
         $property = $select["options"]["property"] ?? "";
         $selected = $select["options"]["selected"] ?? "";
 
@@ -122,15 +99,17 @@ class FormBuilder
     private static function renderSelectMultiple(string $name, array $select): string
     {
         $selected = $select["selected"] ?? "";
-        $data = "<select class='".($select["class"] ?? '')."' name='".($name ?? '')."' id='".($option["id"] ?? '')."' multiple>";
+        $data = "<select class='".($select["class"] ?? '')."' name='".($name ?? '')."' id='".($select["id"] ?? '')."' multiple >";
+
         foreach ($select["options"] as $option){
             $data .= " <option  ". ($selected === $name  ? "selected" :  '')." value='".($option["value"] ?? '')."' >";
             $data .= $option["libelle"];
             $data .= "";
             $data .= " </option>";
-
         }
+
         $data .= "</select>";
+
         return $data;
     }
 

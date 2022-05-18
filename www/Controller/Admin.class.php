@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Core\FormBuilder;
 use App\Core\View;
+use App\Model\RequestTeacher;
 use App\Model\User as UserModel;
 
 class Admin
@@ -68,5 +69,14 @@ class Admin
         else{
             die("user non trouvable");
         }
+    }
+
+    public function requestTeachers()
+    {
+        $requestManager = new RequestTeacher();
+        $listRequestsTeacher = $requestManager->getAllRequestInProgress();
+        $view = new View("requestTeachers","back");
+        $view->assign("listRequestsTeacher", $listRequestsTeacher);
+
     }
 }

@@ -56,4 +56,11 @@
   controller: user
   action: verifyAccount
 
+/teacher/new:
+    controller: teacher
+    action: new
+
+/teachers/requestInProgress:
+    controller: admin
+    action: requestTeachers
 

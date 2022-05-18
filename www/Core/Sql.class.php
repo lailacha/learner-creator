@@ -57,7 +57,6 @@ abstract class Sql
 
         if (is_null($this->getId())) {
             $sql = "INSERT INTO " . $this->table . " (" . implode(",", array_keys($colums)) . ") VALUES (:" . implode(",:", array_keys($colums)) . ")";
-
         } else {
             $update = [];
             foreach ($colums as $key => $value) {

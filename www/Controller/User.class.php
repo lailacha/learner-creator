@@ -5,15 +5,15 @@ namespace App\Controller;
 use App\Core\Helpers;
 use App\Core\ReceivePassword;
 use App\Core\Session;
-use App\Core\User as UserClean;
+use App\Model\Course;
 use App\Core\Verificator;
 use App\Core\View;
 use App\Core\Mail;
-use App\Controller\BaseController;
 use App\Core\FormBuilder;
-use App\Core\Recaptcha;
 use App\Model\User as UserModel;
 use App\Model\ReceivePassword as ReceivePasswordModel;
+use App\Service\File;
+
 
 class User extends BaseController {
 
@@ -125,42 +125,114 @@ class User extends BaseController {
      */
         public function sendRegisterMail(UserModel $user)
         {
-            $html = '<a href="http://localhost:84/verifyAccount?token='.$user->getToken().'&mail='.$user->getEmail().'"><h2>Click here to validate your account!</h2></a>';
+            $html = '<a href="http://localhost:84/verifyAccount?token=' . $user->getToken() . '&mail=' . $user->getEmail() . '"><h2>Click here to validate your account!</h2></a>';
 
             $confirmMail = new Mail();
             $confirmMail->setSubject("Last step to validate your account...");
             $confirmMail->setContent($html);
             $confirmMail->setApiKey(MAILJET_API_KEY);
             $confirmMail->setReceiver($user->getEmail());
-            $confirmMail->setReceiverName($user->getFirstname(). " ".$user->getLastname());
+            $confirmMail->setReceiverName($user->getFirstname() . " " . $user->getLastname());
             $confirmMail->sendMail();
 
+        }
+            /**
+             * Called when user click on validation email.
+             * Check if the account is correct, and set the status to verified.
+             *
+             */
+            public function verifyAccount()
+            {
+                $userManager = new UserModel();
+                $user = $userManager->getOneByMany(["token" => $_GET["token"], "email" => $_GET["mail"]]);
 
-    /**
-     * Called when user click on validation email.
-     * Check if the account is correct, and set the status to verified.
-     *
-     */
-        public function verifyAccount()
+                if (!$user) {
+                    // TODO ADD flash message when available
+                    echo "Il n'y a pas d'utilisateur";
+                    return;
+                } else {
+                    $user->setStatus(1);
+                    $user->save();
+
+                    echo "Your account is validated !";
+                }
+
+
+            }
+
+
+        public function show()
         {
             $userManager = new UserModel();
-           $user = $userManager->getOneByMany(["token" =>  $_GET["token"], "email" => $_GET["mail"]]);
+            $user = $userManager->setId($this->request->get("user_id"));
 
-           if(!$user){
-               // TODO ADD flash message when available
-                echo "Il n'y a pas d'utilisateur";
-                return;
-           }else{
-               $user->setStatus(1);
-               $user->save();
+            $courseManger = new Course();
+            $courses = $courseManger->getAllBy('user', $user->getId());
 
-               echo "Your account is validated !";
-           }
-
+            $view = new View("showProfile", "back");
+            $view->assign('user', $user);
+            $view->assign('courses', $courses);
 
         }
 
 
+        public function edit()
+        {
+            $view = new View("editProfile");
+            $user = UserModel::getUserConnected();
+
+            $form = FormBuilder::render($user->getEditProfileForm());
+            $view->assign("form", $form);
+            $view->assign("user", $user);
+
+        }
+
+        public function saveProfile()
+        {
+            $user = UserModel::getUserConnected();
+            $errors = Verificator::checkForm($user->getEditProfileForm(), $this->request);
+            if(!$errors)
+            {
+
+                if(!empty($this->request->get('firstname')) && $this->request->get('firstname') !== $user->getFirstname())
+                {
+                    $user->setFirstname($this->request->get('firstname'));
+                }
+
+                if(!empty($this->request->get('lastname')) && $this->request->get('lastname') !== $user->getLastname())
+                {
+                    $user->setLastname($this->request->get('lastname'));
+                }
+
+                {
+                    $user->setFirstname($this->request->get('firstname'));
+                    $user->setLastname($this->request->get('lastname'));
+                }
+                if(!empty($this->request->get("avatar")) && $this->request->get("avatar") !== $user->getAvatar())
+                {
+                    if(isset($_FILES['avatar']) && $_FILES['avatar']['error'] === 0){
+
+                        try {
+                            $file = new File($_FILES["avatar"]);
+                            $file = $file->upload( "avatar", 3);
+                        } catch (\Exception $e) {
+                            $this->session->addFlashMessage("error", $e->getMessage());
+                            return;
+                        }
+                        $user->setAvatar($file->getLastInsertId());
+                    }
+
+                }
+
+                $user->save();
+                $this->session->addFlashMessage("success", "Votre profile a bien été modifié");
+                $this->route->redirect("/edit/profile");
+
+            }
+            else{
+                $this->session->addFlashMessage("error",$errors[0]);
+            }
+        }
 }
 
 

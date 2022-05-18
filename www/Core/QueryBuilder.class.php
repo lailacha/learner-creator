@@ -68,6 +68,13 @@ class QueryBuilder
         return $this;
     }
 
+    public function innerJoin(string $table, string $condition): self
+    {
+        $table = DBPREFIXE . $table;
+        $this->from .= " INNER JOIN " . $table . " ON  " . $condition;
+        return $this;
+    }
+
     public function orderBy(string $key, string $direction): self
     {
         $direction = strtoupper($direction);
@@ -102,7 +109,7 @@ class QueryBuilder
         } else {
             $result = $queryPrepared->fetch($this->pdo::FETCH_ASSOC);
         }
-        return $result ? $result : null;
+        return $result ?: null;
     }
 
     public function fetchAll(): array

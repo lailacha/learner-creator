@@ -1,0 +1,18 @@
+#courses-list
+{
+  display: flex;
+  img{
+    width: 200px;
+    height: 200px;
+
+    margin-right: 2rem;
+
+  }
+
+  .courses-list-container
+  {
+    display: flex;
+    flex-direction: column;
+  }
+
+}

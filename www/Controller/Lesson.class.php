@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use App\Model\LessonCommentaire;
 use App\Model\CourseChapter as CourseChapterModel;
 use App\Model\Lesson as LessonManager;
 use App\Model\Course as CourseManager;
@@ -61,7 +62,14 @@ class Lesson extends BaseController
             $video = $fileManager->getBy('id', $lesson->getVideo())->getPath();
             $view->assign('video', $video);
         }
+
+        $commentaireManager = new LessonCommentaire();
+        $commentaireForm = FormBuilder::render($commentaireManager->getCommentaireForm($lesson->getId()));
+        $comments = $commentaireManager->getWithUserByLesson($lesson->getId());
+
         $chapters = $lesson->course()->getChapters();
+        $view->assign('comments', $comments);
+        $view->assign('form', $commentaireForm);
         $view->assign('lesson', $lesson);
         $view->assign('chapters', $chapters);
     }

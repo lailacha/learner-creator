@@ -9,9 +9,8 @@ use App\Core\QueryBuilder;
 use App\Core\Security;
 
 //E
-
-
-
+session_start();
+$_SESSION['role'] = 'admin';
 
 function myAutoloader( $class )
 {
@@ -26,9 +25,6 @@ function myAutoloader( $class )
 }
 
 spl_autoload_register("App\myAutoloader");
-
-
-session_start();
 
 
 

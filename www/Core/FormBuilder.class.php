@@ -33,8 +33,11 @@ class FormBuilder
 
     private static function renderCheckbox(string $name, array $checkbox): string
     {
-         $data = "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
-         $data .= " <input type='checkbox' class='".($checkbox["class"] ?? '')."' ".($checkbox["checked"] ?? '')." id='".($checkbox["id"] ?? '')."' name='".($name ?? '')."'  value='".($checkbox["value"] ?? '')."'>";
+        if(isset($data["label"]))
+        {
+            $data .= "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
+        }
+        $data .= " <input type='checkbox' class='".($checkbox["class"] ?? '')."' ".($checkbox["checked"] ?? '')." id='".($checkbox["id"] ?? '')."' name='".($name ?? '')."'  value='".($checkbox["value"] ?? '')."'>";
          $data .= " <input type='hidden' name='".($name ?? '')."'  value='0'>";
 
         return $data;
@@ -136,7 +139,11 @@ class FormBuilder
 
     private static function renderTextarea(string $name, array $textarea): string
     {
-            $data = "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
+            $data= "";
+            if(isset($data["label"]))
+            {
+                $data .= "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
+            }
             $data .= " <textarea class='".($textarea["class"] ?? '')."' id='".($textarea["id"] ?? '')."' cols='".($textarea["cols"] ?? '')."' placeholder='".($textarea["content"] ?? '')."' rows='".($textarea["rows"] ?? '')."' name='".($name ?? "")."'>";
             $data .= $textarea["value"] ?? "";
             $data .= "</textarea>";
@@ -147,8 +154,10 @@ class FormBuilder
     private static function renderInput(string $name, array $input): string
     {
         $data = "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
-        $data .= " <input value='".($input["value"] ?? '')."'  type='".($input["type"] ?? 'text')."'  class='".($input["class"] ?? '')."'  id='".($input["id"] ?? '')."' placeholder='".($input["placeholder"] ?? '')."' name='".($name ?? "")."'/>";
+        $data .= " <input value='".($input["value"] ?? '')."'  type='".($input["type"] ?? 'text')."'  class='".($input["class"] ?? '')."'  id='".($input["id"] ?? '')."' placeholder='".($input["placeholder"] ?? '')."' ".($input["disabled"] ?? "")." name='".($name ?? "")."'./>";
         return $data;
     }
+
+
 
 }

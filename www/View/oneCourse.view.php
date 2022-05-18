@@ -11,7 +11,7 @@
         <p><?php echo $course->getDescription(); ?></p>
         <label class="mt-5" for="">Category of the course:</label>
         <p><?php echo $course->getCategoryName(); ?></p>
-        <img class="cover"  src="<?php echo $course->getCover()->getPath() ?>" alt="">
+        <img class="cover"  src="<?php echo $course->cover() ?>" alt="">
         <div class="flex">
             <a href="/createCourse" class="mt-2">
                 <button>Go back to the course creator</button>

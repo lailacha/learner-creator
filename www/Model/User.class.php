@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\Core\Session;
 use App\Core\Sql;
+use App\Model\File as FileModel;
 use App\Model\User as UserModel;
 
 class User extends Sql
@@ -12,6 +13,7 @@ class User extends Sql
     protected $firstname = null;
     protected $lastname = null;
     protected $email;
+    protected $avatar;
     protected $status = 0;
     protected $password;
     protected $token = null;
@@ -117,6 +119,31 @@ class User extends Sql
         return $this->firstname . ' ' . $this->lastname;
     }
 
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    public function avatar()
+    {
+        $fileManager = new FileModel();
+        if ($this->getAvatar() !== null) {
+
+            return $fileManager->getBy('id', $this->getAvatar())->getPath();
+        }
+
+        return null;
+
+    }
+
+    /**
+     * @param mixed $avatar
+     */
+    public function setAvatar($avatar): void
+    {
+        $this->avatar = $avatar;
+    }
+
     /**
      * @return null
      */
@@ -152,6 +179,50 @@ class User extends Sql
             return $userConnected;
         }
         return false;
+    }
+
+
+    public function getEditProfileForm()
+    {
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "/save/profile",
+                "id" => "formRegister",
+                "enctype" => "multipart/form-data",
+                "class" => "form editProfilForm",
+                "submit" => "Edit"
+            ],
+            "inputs" => [
+                "avatar" => [
+                    "type" => "file",
+                    "id" => "avatar",
+                    "class" => "file",
+                    "required" => false,
+                    "error" => " Votre image doit être de la bonne extension",
+                ],
+                "firstname" => [
+                    "placeholder" => "Enter your name",
+                    "type" => "text",
+                    "id" => "firstnameRegister",
+                    "value" => $this->getFirstname(),
+                    "class" => "formRegister",
+                    "required" => true,
+                    "min" => 2,
+                    "max" => 25,
+                    "error" => " Votre prénom doit faire entre 2 et 25 caractères",
+                ],
+                "lastname" => [
+                    "type" => "text",
+                    "placeholder" => "Votre nom de famille ...",
+                    "id" => "testRegister",
+                    "required" => true,
+                    "value" => $this->getLastname(),
+                    "class" => "formRegister",
+                    "error" => " Votre nom doit faire entre 2 et 100 caractères",
+                ],
+            ],
+        ];
     }
 
     public function getRegisterForm(): array

@@ -44,11 +44,11 @@
                 </div>
             </div>
 
-            <main class="col-lg-9 col-md-8 col-xs-12 main-container flex ai-start column dashboard" style="padding-left: 3rem;">
+            <div class="container column pl-3 mt-1 bg-white col-md-8">
 
     <?php include $this->view.".View.php";?>
 
-            </main>
+            </div>
         </div>
     </div>
     </div>

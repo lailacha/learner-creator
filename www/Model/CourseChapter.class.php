@@ -97,7 +97,7 @@ class CourseChapter extends Sql
         return ["config" => ["method" => "POST", "class" => "form" ,"action" => "/create/chapter?course_id=".$this->getCourse(), "submit" => "Save"],
             "inputs" => [
                 "name" => ["type" => "text", "placeholder" => "Nom du chapitre", "required" => true],
-                "description" => ["type" => "text", "placeholder" => "Description du chpitre", "required" => true],
+                "description" => ["type" => "text", "placeholder" => "Description du chapitre", "required" => true],
                 "course_id" => ["type" => "hidden", "value" => $this->getCourse()],
             ]
         ];

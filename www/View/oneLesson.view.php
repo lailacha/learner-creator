@@ -1,7 +1,7 @@
 
 <div class="col-md-12 flex course">
     <div class="course-wrapper col-md-8">
-        <div class="bg-primary p-1">
+        <div class="bg-primary p-1 breadcrumb">
             <h3 class="white m-0"><?php echo $lesson->course()->getName()." > ".$lesson->chapter()->getName()." > ".$lesson->getTitle(); ?> </h3>
         </div>
         <h1><?php echo $lesson->getTitle(); ?>
@@ -23,6 +23,14 @@
             <p class="mb-0"> Author: <?php echo $lesson->user()->fullname(); ?></p>
             <p>Date: <?php echo $lesson->getCreatedAt(); ?></p>
         </div>
+        <div class="flex row">
+            <?php if (isset($form)) : ?>
+                <?php echo $form ?>
+
+            <?php endif; ?>
+        </div>
+        <?php include "./View/Partial/showComments.partial.php"; ?>
+
         <div class="flex">
             <a href="/show/course?id=<?php echo $lesson->course()->getId() ?>" class="mt-2">
                 <button>Go back to the course</button>

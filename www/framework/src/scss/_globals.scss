@@ -80,6 +80,10 @@ $spaceRange: 5;
   display: flex;
 }
 
+.flex-wrap{
+  flex-wrap: wrap;
+}
+
 .column{
   flex-direction: column !important;
 }

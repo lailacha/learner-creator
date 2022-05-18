@@ -110,6 +110,12 @@
   method: GET
   param: [ "lesson_id" ]
 
+- path: /create/comment
+  controller: LessonCommentaire
+  action: store
+  method: POST
+  param: ["content", "lesson_id"]
+
 -
   controller: main
   action: contact
@@ -176,7 +182,6 @@
   action: changePassword
   path: /changePassword
 
-
 -
   controller: user
   action: sendRegisterMail
@@ -188,8 +193,30 @@
   path: /verifyAccount
 
 -
+  controller: user
+  action: show
+  method: GET
+  path: /show/profile
+  param: ["user_id"]
+
+-
+  controller: user
+  action: edit
+  method: GET
+  path: /edit/profile
+  param: []
+
+-
+  controller: user
+  action: saveProfile
+  method: POST
+  path: /save/profile
+  param: ["firstname", "lastname", "avatar"]
+
+
+-
   controller: admin
   action: home
-  security: true
+  security: "admin"
   path: /dashboard
 

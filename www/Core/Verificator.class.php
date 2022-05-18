@@ -13,8 +13,7 @@ class Verificator
         $captcha = new Recaptcha();
         $errors = [];
 
-       
-        if( count($config["inputs"]) != count($data)){
+        if( count($config["inputs"]) !== count($data)){
                 $errors[] = "Le nombre d'inputs ne correspond pas au nombre d'inputs envoyés";
 //             echo var_dump(array_keys($config["inputs"]));
 //             echo "<br>";
@@ -32,7 +31,7 @@ class Verificator
                 $errors[]=$name ." ne peut pas être vide";
             }
 
-            if($input["type"]=="email" &&  !self::checkEmail($data[$name])) {
+            if($input["type"] === "email" &&  !self::checkEmail($data[$name])) {
                 $errors[]=$input["error"];
             }
 

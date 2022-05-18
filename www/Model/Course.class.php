@@ -7,6 +7,7 @@ use App\Core\QueryBuilder;
 use App\Model\CourseCategory;
 use App\Model\CourseChapter;
 use App\Model\File;
+use App\Model\File as FileModel;
 
 class Course extends Sql
 {
@@ -90,12 +91,11 @@ class Course extends Sql
     }
 
     /**
-     * @return File
+     * @return int
      */
     public function getCover()
     {
-        $fileManager = new File();
-        return $fileManager->setId($this->cover);
+            return $this->cover;
     }
 
 
@@ -120,6 +120,19 @@ class Course extends Sql
     public function setCover(int $cover): void
     {
         $this->cover = $cover;
+    }
+
+
+    public function cover(): ?string
+    {
+        $fileManager = new FileModel();
+        if ($this->getCover() !== null) {
+
+
+            return $fileManager->getBy('id', $this->getCover())->getPath();
+        }
+
+        return null;
     }
 
 

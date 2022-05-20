@@ -254,20 +254,24 @@
   action: changePassword
   path: /changePassword
 
-/editUser:
-  controller: admin
-  action: editUser
-  security: admin
 
-/mail:
+-
   controller: user
   action: sendRegisterMail
   path: /mail
 
-/verifyAccount:
-  controller: user
-  action: verifyAccount
-  path: /verifyAccount
+-
+  controller: admin
+  action: editUser
+  path:   /editUser
+  security: ["admin"]
+  param: [ "user_id" ]
+
+
+-
+    controller: user
+    action: verifyAccount
+    path: /verifyAccount
 
 -
   controller: user
@@ -289,6 +293,32 @@
   method: POST
   path: /save/profile
   param: ["firstname", "lastname", "avatar"]
+
+-
+  controller: admin
+  action: editUser
+  security: admin
+  method: POST
+  path: /edit/user
+  param: ["id"]
+
+
+-
+  controller: user
+  action: delete
+  security: admin
+  method: GET
+  path: /delete/user
+  param: ["id"]
+
+
+
+    - controller: teacher
+      action: index
+      method: GET
+      path: /teacher/new
+
+
 
 -
   controller: AppearanceSettings

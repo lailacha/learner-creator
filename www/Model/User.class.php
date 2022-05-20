@@ -3,11 +3,10 @@
 namespace App\Model;
 
 use App\Core\QueryBuilder;
+use App\Model\File as FileModel;
+use App\Model\User as UserModel;
 use App\Core\Session;
 use App\Core\Sql;
-use App\Model\File as FileModel;
-use App\Model\User as userManager;
-use App\Model\User as UserModel;
 
 class User extends Sql
 {
@@ -319,179 +318,118 @@ class User extends Sql
         return false;
     }
 
-    function deleteUser(int $id)
-    {
-        $sql = "DELETE FROM ".DBPREFIXE ."user WHERE id = :id";
-        $statement = $this->pdo->prepare($sql);
-        $statement->bindValue(':id',$id,\PDO::PARAM_INT);
-        $statement->execute();
-
     public function getEditProfileForm()
-    {
-        return [
-            "config" => [
-                "method" => "POST",
-                "action" => "/save/profile",
-                "id" => "formRegister",
-                "enctype" => "multipart/form-data",
-                "class" => "form editProfilForm",
-                "submit" => "Edit"
-            ],
-            "inputs" => [
-                "avatar" => [
-                    "type" => "file",
-                    "id" => "avatar",
-                    "class" => "file",
-                    "required" => false,
-                    "error" => " Votre image doit être de la bonne extension",
+        {
+            return [
+                "config" => [
+                    "method" => "POST",
+                    "action" => "/save/profile",
+                    "id" => "formRegister",
+                    "enctype" => "multipart/form-data",
+                    "class" => "form editProfilForm",
+                    "submit" => "Edit"
                 ],
-                "firstname" => [
-                    "placeholder" => "Enter your name",
-                    "type" => "text",
-                    "id" => "firstnameRegister",
-                    "value" => $this->getFirstname(),
-                    "class" => "formRegister",
-                    "required" => true,
-                    "min" => 2,
-                    "max" => 25,
-                    "error" => " Votre prénom doit faire entre 2 et 25 caractères",
-                ],
-                "lastname" => [
-                    "type" => "text",
-                    "placeholder" => "Votre nom de famille ...",
-                    "id" => "testRegister",
-                    "required" => true,
-                    "value" => $this->getLastname(),
-                    "class" => "formRegister",
-                    "error" => " Votre nom doit faire entre 2 et 100 caractères",
-                ],
-                "custom" => [
-                    "type" => "custom",
-                 "html" => "<label>Mail:</label>
+                "inputs" => [
+                    "avatar" => [
+                        "type" => "file",
+                        "id" => "avatar",
+                        "class" => "file",
+                        "required" => false,
+                        "error" => " Votre image doit être de la bonne extension",
+                    ],
+                    "firstname" => [
+                        "placeholder" => "Enter your name",
+                        "type" => "text",
+                        "id" => "firstnameRegister",
+                        "value" => $this->getFirstname(),
+                        "class" => "formRegister",
+                        "required" => true,
+                        "min" => 2,
+                        "max" => 25,
+                        "error" => " Votre prénom doit faire entre 2 et 25 caractères",
+                    ],
+                    "lastname" => [
+                        "type" => "text",
+                        "placeholder" => "Votre nom de famille ...",
+                        "id" => "testRegister",
+                        "required" => true,
+                        "value" => $this->getLastname(),
+                        "class" => "formRegister",
+                        "error" => " Votre nom doit faire entre 2 et 100 caractères",
+                    ],
+                    "custom" => [
+                        "type" => "custom",
+                        "html" => "<label>Mail:</label>
                   <p> {$this->getEmail()}</p>"
+                    ],
                 ],
-            ],
-        ];
-    }
+            ];
+        }
 
-        public function getEditUserForm(): array
-    {
-        return [
-            "config" => [
-                "method" => "POST",
-                "action" => "",
-                "id" => "formEditUser",
-                "enctype" => "multipart/form-data",
-                "class" => "form edit",
-                "submit" => "Modifier"
-            ],
-            "inputs" => [
-                "firstname" => [
-                    "placeholder" => $this->getFirstname(),
-                    "value" => $this->getFirstname(),
-                    "type" => "text",
-                    "id" => "firstnameRegister",
-                    "class" => "formRegister",
-                    "required" => true,
-                    "min" => 2,
-                    "max" => 25,
-                    "error" => " Votre prénom doit faire entre 2 et 25 caractères",
-                ],
-                "lastname" => [
-                    "type" => "text",
-                    "placeholder" => $this->getLastname(),
-                    "value" => $this->getLastname(),
-                    "id" => "testRegister",
-                    "required" => true,
-                    "class" => "formRegister",
-                    "error" => " Votre nom doit faire entre 2 et 100 caractères",
-                ],
-                "email" => [
-                    "placeholder" => $this->getEmail(),
-                    "value" => $this->getEmail(),
-                    "type" => "email",
-                    "id" => "emailRegister",
-                    "class" => "formRegister",
-                    "required" => true,
-                    "error" => "Email incorrect",
-                    "unicity" => true,
-                    "errorUnicity" => "Un compte existe déjà avec cet email"
-                ],
-                "id" => [
-                    "value" => $this->getId(),
-                    "type" => "hidden",
-                    "id" => "idUser",
-                    "class" => "formRegister",
-                ],
+        public function getRegisterForm(): array
+        {
 
+            return [
+                "config" => [
+                    "method" => "POST",
+                    "action" => "",
+                    "id" => "formRegister",
+                    "enctype" => "multipart/form-data",
+                    "class" => "form register",
+                    "submit" => "Sign in"
+                ],
+                "inputs" => [
+                    "firstname" => [
+                        "placeholder" => "Enter your name",
+                        "type" => "text",
+                        "id" => "firstnameRegister",
+                        "class" => "formRegister",
+                        "required" => true,
+                        "min" => 2,
+                        "max" => 25,
+                        "error" => " Votre prénom doit faire entre 2 et 25 caractères",
+                    ],
+                    "lastname" => [
+                        "type" => "text",
+                        "placeholder" => "Votre nom de famille ...",
+                        "id" => "testRegister",
+                        "required" => true,
+                        "value" => "testRegister",
+                        "class" => "formRegister",
+                        "error" => " Votre nom doit faire entre 2 et 100 caractères",
+                    ],
+                    "email" => [
+                        "placeholder" => "Votre email ...",
+                        "type" => "email",
+                        "id" => "emailRegister",
+                        "class" => "formRegister",
+                        "required" => true,
+                        "error" => "Email incorrect",
+                        "unicity" => true,
+                        "errorUnicity" => "Un compte existe déjà avec cet email"
+                    ],
+                    "password" => [
+                        "placeholder" => "Votre mot de passe ...",
+                        "type" => "password",
+                        "id" => "pwdRegister",
+                        "class" => "formRegister",
+                        "required" => true,
+                        "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
+                    ],
+                    "passwordConfirm" => [
+                        "placeholder" => "Confirmation ...",
+                        "type" => "password",
+                        "id" => "pwdConfirmRegister",
+                        "class" => "formRegister",
+                        "required" => true,
+                        "error" => "Votre confirmation de mot de passe ne correspond pas",
+                        "confirm" => "password"
+                    ],
 
-
-            ],
-        ];
-    }
-
-    public function getRegisterForm(): array
-    {
-        return [
-            "config" => [
-                "method" => "POST",
-                "action" => "",
-                "id" => "formRegister",
-                "enctype" => "multipart/form-data",
-                "class" => "form register",
-                "submit" => "Sign in"
-            ],
-            "inputs" => [
-                "firstname" => [
-                    "placeholder" => "Enter your name",
-                    "type" => "text",
-                    "id" => "firstnameRegister",
-                    "class" => "formRegister",
-                    "required" => true,
-                    "min" => 2,
-                    "max" => 25,
-                    "error" => " Votre prénom doit faire entre 2 et 25 caractères",
-                ],
-                "lastname" => [
-                    "type" => "text",
-                    "placeholder" => "Votre nom de famille ...",
-                    "id" => "testRegister",
-                    "required" => true,
-                    "value" => "testRegister",
-                    "class" => "formRegister",
-                    "error" => " Votre nom doit faire entre 2 et 100 caractères",
-                ],
-                "email" => [
-                    "placeholder" => "Votre email ...",
-                    "type" => "email",
-                    "id" => "emailRegister",
-                    "class" => "formRegister",
-                    "required" => true,
-                    "error" => "Email incorrect",
-                    "unicity" => true,
-                    "errorUnicity" => "Un compte existe déjà avec cet email"
-                ],
-                "password" => [
-                    "placeholder" => "Votre mot de passe ...",
-                    "type" => "password",
-                    "id" => "pwdRegister",
-                    "class" => "formRegister",
-                    "required" => true,
-                    "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
-                ],
-                "passwordConfirm" => [
-                    "placeholder" => "Confirmation ...",
-                    "type" => "password",
-                    "id" => "pwdConfirmRegister",
-                    "class" => "formRegister",
-                    "required" => true,
-                    "error" => "Votre confirmation de mot de passe ne correspond pas",
-                    "confirm" => "password"
-                ],
-                "g-recaptcha-response" => [
-                    "type" => "captcha",
-                    "error" => "Veuillez valider le captcha si vous êtes un humain :)",
-                ],
+                    "g-recaptcha-response" => [
+                        "type" => "captcha",
+                        "error" => "Veuillez valider le captcha si vous êtes un humain :)",
+                    ],
 ////To test types of inputs
 //                "ville" => [
 //                    "type" => "checkbox",
@@ -540,61 +478,62 @@ class User extends Sql
 //                "error" => " Votre photo doit être de la bonne extension",
 //
 //            ]
-            ],
-        ];
-    }
-
-
-    public function getLoginForm(): array
-    {
-        return [
-            "config" => [
-                "method" => "POST",
-                "action" => "/login",
-                "id" => "formLogin",
-                "class" => "formLogin",
-                "submit" => "Se connecter"
-            ],
-            "inputs" => [
-                "email" => [
-                    "placeholder" => "Votre email ...",
-                    "type" => "email",
-                    "id" => "login",
-                    "class" => "fadeIn second",
-                    "required" => true,
                 ],
-                "password" => [
-                    "placeholder" => "Votre mot de passe ...",
-                    "type" => "password",
-                    "id" => "password",
-                    "class" => "fadeIn third",
-                    "required" => true,
+            ];
+        }
+
+
+
+        public function getLoginForm(): array
+        {
+            return [
+                "config" => [
+                    "method" => "POST",
+                    "action" => "/login",
+                    "id" => "formLogin",
+                    "class" => "formLogin",
+                    "submit" => "Se connecter"
+                ],
+                "inputs" => [
+                    "email" => [
+                        "placeholder" => "Votre email ...",
+                        "type" => "email",
+                        "id" => "login",
+                        "class" => "fadeIn second",
+                        "required" => true,
+                    ],
+                    "password" => [
+                        "placeholder" => "Votre mot de passe ...",
+                        "type" => "password",
+                        "id" => "password",
+                        "class" => "fadeIn third",
+                        "required" => true,
+                    ]
                 ]
-            ]
-        ];
-    }
+            ];
+        }
 
-    public function getForgetPswdForm(): array
-    {
-        return [
-            "config" => [
-                "method" => "POST",
-                "action" => "",
-                "id" => "formLogin",
-                "class" => "formLogin",
-                "submit" => "Se connecter"
-            ],
-            "inputs" => [
-                "email" => [
-                    "placeholder" => "Votre email ...",
-                    "type" => "email",
-                    "id" => "emailRegister",
-                    "class" => "formRegister",
-                    "required" => true,
+        public function getForgetPswdForm(): array
+        {
+            return [
+                "config" => [
+                    "method" => "POST",
+                    "action" => "",
+                    "id" => "formLogin",
+                    "class" => "formLogin",
+                    "submit" => "Se connecter"
                 ],
+                "inputs" => [
+                    "email" => [
+                        "placeholder" => "Votre email ...",
+                        "type" => "email",
+                        "id" => "emailRegister",
+                        "class" => "formRegister",
+                        "required" => true,
+                    ],
 
-            ]
-        ];
-    }
+                ]
+            ];
+        }
 
 }

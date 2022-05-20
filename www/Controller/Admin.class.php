@@ -8,6 +8,7 @@ use App\Model\File;
 use App\Model\RequestTeacher;
 use App\Model\Role;
 use App\Model\User as UserModel;
+use App\Controller\BaseController;
 
 class Admin extends BaseController
 {
@@ -62,7 +63,7 @@ class Admin extends BaseController
 
     public function editUser(): void
     {
-        $idUser = $_GET['id'] ?? null;
+        $idUser = $this->request->get('user_id');
         $user = new UserModel();
         $user = $user->getBy('id',$idUser);
         if ($user){

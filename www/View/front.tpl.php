@@ -119,9 +119,8 @@
 <section>
     <nav class="sidebar-right">
 
-
         <div id="profile-container">
-            <?php if(\App\Model\User::getUserConnected()->avatar() !== null): ?>
+            <?php if(\App\Model\User::getUserConnected()->getAvatar() !== 0): ?>
             <figure>
                 <img src="<?php echo \App\Model\User::getUserConnected()->avatar(); ?>">
             </figure>

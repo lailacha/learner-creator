@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Core\View;
+use App\Controller\BaseController;
 
-class Main{
+class Main extends BaseController{
 
     public function home()
     {

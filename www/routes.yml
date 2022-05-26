@@ -43,10 +43,17 @@
   action: users
   security: admin
 
-/editUser:
-  controller: admin
-  action: editUser
+/delete/user:
+  controller: user
+  action: delete
   security: admin
+
+
+/edit/user:
+  controller: user
+  action: edit
+  security: admin
+
 
 /mail:
   controller: user

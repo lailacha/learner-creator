@@ -138,7 +138,6 @@ class User
         $heureDifference = (int)$heureDifference;
 
 
-
         if ($count === 1 && $result['status'] == 0 && $heureDifference < 48) {
             $view = new View("changePassword");
 
@@ -152,14 +151,12 @@ class User
                 $user->setPassword($_POST['password']);
                 $user->save();
 
-            }
-            else{
+            } else {
 
                 $form = FormBuilder::render($receivePasswordManager->getChangePswdForm());
                 $view->assign("form", $form);
 
             }
-
 
 
         } else {
@@ -171,7 +168,40 @@ class User
 
     }
 
+    public function delete(): void
+    {
+        $user = new UserModel();
+        $id_user = $_GET['id'] ?? null;
+        if ($id_user) {
+            $user->deleteUser($id_user);
+        }
 
+    }
+
+
+    public function edit(): void
+    {
+        $user = new UserModel();
+        $id_user = $_GET['id'] ?? null;
+        $user = $user->getBy('id', $id_user);
+        if ($user) {
+            $form = FormBuilder::render($user->getEditUserForm());
+            $view = new View("editUser", "back");
+            $view->assign("user", $user);
+            $view->assign("form", $form);
+            if ($_POST) {
+                $user = $user->getBy("id", $_POST['id']);
+                $user->setEmail($_POST['email']);
+                $user->setLastname($_POST['lastname']);
+                $user->setFirstname($_POST['firstname']);
+                $user->save();
+
+                header('Location: /users');
+            }
+        } else {
+            die("user non trouvable");
+        }
+    }
 
 
 }

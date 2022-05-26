@@ -20,17 +20,10 @@
 
             <td class="action">
 
-                <form action="" method="post">
-                    <input type="hidden" name="_method" id="" value="edit" >
-                    <input type="hidden" name="id_user" id="" value="<?= $user['id'] ?>" >
-                    <input type="submit" name="editer" value="editer" class="button edit" id="">
-                </form>
+                <a class="button" href="/delete/user?id=<?= $user['id'] ?>">Delete</a>
+                <a class="button" href="/edit/user?id=<?= $user['id'] ?>">Editer</a>
 
-                <form action="" method="post">
-                    <input type="hidden" name="_method" id="" value="delete" >
-                    <input type="hidden" name="id_user" id="" value="<?= $user['id'] ?>" >
-                    <input type="submit" name="delete" value="delete" class="button delete" id="">
-                </form>
+
             </td>
         </tr>
     <?php endforeach; ?>

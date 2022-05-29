@@ -20,6 +20,7 @@ class Recaptcha
 
     public function checkRecaptcha($code)
     {
+
         if(empty($code)){
             return false;
         }

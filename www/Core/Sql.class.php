@@ -2,25 +2,42 @@
 
 namespace App\Core;
 
+use PDO;
+use App\Core\Session;
+use App\Model\User as userManager;
+
 abstract class Sql
 {
 
     protected $pdo;
-    private $table;
-
+    protected $table;
 
     public function __construct()
     {
         //Plus tard il faudra penser au singleton
-        try {
-            $this->pdo = new \PDO(DBDRIVER . ":host=" . DBHOST . ";port=" . DBPORT . ";dbname=" . DBNAME, DBUSER, DBPWD
-                , [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING]);
-        } catch (\Exception $e) {
-            die("Erreur SQL : " . $e->getMessage());
+        try{
+            $this->pdo = new \PDO( DBDRIVER.":host=".DBHOST.";port=".DBPORT.";dbname=".DBNAME.";charset=utf8mb4" , DBUSER , DBPWD
+                , [\PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+
+        }catch(\Exception $e){
+            die("Erreur SQL : ".$e->getMessage());
         }
 
         $getCalledClassExploded = explode("\\", strtolower(get_called_class())); // App\Model\User
-        $this->table = DBPREFIXE . end($getCalledClassExploded);
+        $this->table = DBPREFIXE.end($getCalledClassExploded);
+    }
+
+
+    /**
+     * @param null $id
+     */
+    public function setId(?int $id)
+    {
+        $sql = "SELECT * FROM ".$this->table." WHERE id=:id";
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute( ["id"=>$id] );
+        return $queryPrepared->fetchObject(get_called_class());
+
     }
 
     /**
@@ -46,6 +63,70 @@ abstract class Sql
 
     }
 
+    /**
+     * @return array
+     */
+    public function getAll()
+    {
+        $sql = "SELECT * FROM ".$this->table;
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute();
+        return $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
+
+    }
+
+    public function getOneByOne($attribute, $value){
+
+        $sql = "SELECT * FROM ".$this->table." WHERE ".$attribute."=:value";
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute( ["value"=>$value] );
+        return $queryPrepared->fetchObject(get_called_class());
+    }
+
+
+    public function getOneByMany($attributes){
+
+        $where = "";
+        end($attributes);
+        $endAttributes = key($attributes);
+        foreach ($attributes as $key=>$value) {
+            $where .= $key."=:".$key;
+            if($key !== $endAttributes)
+                $where .= " AND ";
+        }
+        $sql = "SELECT * FROM ".$this->table." WHERE ".$where."";
+
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute( $attributes);
+        return $queryPrepared->fetchObject(get_called_class());
+    }
+
+    public function getLastInsertId(): string
+    {
+        return $this->pdo->lastInsertId();
+    }
+
+
+    /**
+     * @param string $field
+     * @param string $value
+     * @return array
+     */
+    public function getAllBy(string $field, string $value): array
+    {
+        $sql = "SELECT *" . " FROM " . $this->table . " WHERE " . $field . "=:$field";
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute([$field => $value]);
+        return $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
+    }
+
+
+    public function delete() :void
+    {
+        $sql = "DELETE FROM ".$this->table." WHERE id=:id";
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute( ["id"=>$this->getId()] );
+    }
 
     public function save(): void
     {
@@ -92,6 +173,11 @@ abstract class Sql
 
 
         if (password_verify($_POST["password"], $donnees1[0])) {
+            $session = new Session();
+            $userManager = new UserManager();
+            $user = $userManager->getBy("email", $value);
+            $user->setId($donnees['id']);
+            $session->set("user", $donnees);
             echo 'Password is valid!';
         } else {
             echo 'Invalid password.';

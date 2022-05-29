@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Core\View;
+use App\Controller\BaseController;
 
-class Main{
+class Main extends BaseController{
 
     public function home()
     {
@@ -12,8 +13,9 @@ class Main{
     }
 
 
-    public function contact()
+    public function front()
     {
-        $view = new View("contact");
+        $view = new View("contact", "back");
     }
+
 }

@@ -17,25 +17,28 @@ class FormBuilder
 				action='" . ($config["config"]["action"] ?? "") . "'>";
 
         foreach ($config["inputs"] as $name=>$input){
-            $input["type"] === "checkbox" ?   $html .= self::renderCheckbox($name,$input) : "";
-            $input["type"] === "radio" ?   $html .= self::renderRadio($name,$input) : "";
-            $input["type"] === "textarea" ?   $html .= self::renderTextarea($name,$input) : "";
-            $input["type"] === "select" ?   $html .= self::renderSelect($name,$input) : "";
-            $input["type"] === "file" || $input["type"] === "text" || $input["type"] === "password"|| $input["type"] === "submit"|| $input["type"] === "email" ?   $html .= self::renderInput($name,$input) : "";
-            $input["type"] === "captcha" ?  $html .= (new Recaptcha())->renderRecaptcha() : "";
-            $input["type"] === "hidden" ?  $html .= self::renderHidden($name,$input) : "";
+                $input["type"] === "checkbox" ?   $html .= self::renderCheckbox($name,$input) : "";
+                $input["type"] === "radio" ?   $html .= self::renderRadio($name,$input) : "";
+                $input["type"] === "textarea" ?   $html .= self::renderTextarea($name,$input) : "";
+                $input["type"] === "select" ?   $html .= self::renderSelect($name,$input) : "";
+                $input["type"] === "file" || $input["type"] === "text" || $input["type"] === "password"|| $input["type"] === "email" ?   $html .= self::renderInput($name,$input) : "";
+                $input["type"] === "captcha" ?  $html .= (new Recaptcha())->renderRecaptcha() : "";
+                $input["type"] === "hidden" ?  $html .= self::renderHidden($name,$input) : "";
         }
 
         $html .= " <input type='submit' value='".($config["config"]["submit"] ?? '')."'>";
         $html .= "</form>";
-        return $html;
+         return $html;
     }
 
     private static function renderCheckbox(string $name, array $checkbox): string
     {
-        $data = "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
+        if(isset($data["label"]))
+        {
+            $data .= "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
+        }
         $data .= " <input type='checkbox' class='".($checkbox["class"] ?? '')."' ".($checkbox["checked"] ?? '')." id='".($checkbox["id"] ?? '')."' name='".($name ?? '')."'  value='".($checkbox["value"] ?? '')."'>";
-        $data .= " <input type='hidden' name='".($name ?? '')."'  value='0'>";
+         $data .= " <input type='hidden' name='".($name ?? '')."'  value='0'>";
 
         return $data;
 
@@ -47,8 +50,8 @@ class FormBuilder
         foreach ($radio["options"] as $option){
             if(isset($option["label"]))
             {
-                $data .= "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
-            }
+            $data .= "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
+            }   
             $data .= " <input type='radio' ".($option["checked"] ?? '')." class='".($option["class"] ?? '')."' id='".($option["id"] ?? '')."' name='".($name ?? "")."'>";
         }
         return $data;
@@ -65,30 +68,30 @@ class FormBuilder
     private static function renderSelect(string $name, array $select): string
     {
         //array of options example
-        /*    "category" => [
-                "type" => "select",
-                "id" => "jjj",
-                "class" => "formRegister",
-                "options" => [
-                    "test" => ["libelle" => "Math", "value" => "1"],
-                    "test2" => [ "libelle" => "French ", "value" => "2",  "selected" => "selected"]],
+    /*    "category" => [
+            "type" => "select",
+            "id" => "jjj",
+            "class" => "formRegister",
+            "options" => [
+                "test" => ["libelle" => "Math", "value" => "1"],
+                "test2" => [ "libelle" => "French ", "value" => "2",  "selected" => "selected"]],
 
-        options => [
-     data:[[   "id" => "",
-        "name" => "",
-        "category,],
+    options => [
+ data:[[   "id" => "",
+    "name" => "",
+    "category,],
 
-         [   "id" => "",
-        "name" => "",
-        "category,]
+     [   "id" => "",
+    "name" => "",
+    "category,]
 
-        ]]
-        , property: "name",
-        value: id,
-        class: "formRegister",
-        selected: 1,
+    ]]
+    , property: "name",
+    value: id,
+    class: "formRegister",
+    selected: 1,
 
-            ]*/
+        ]*/
 
         $value = $select["options"]["value"] ?? "";
         $property = $select["options"]["property"] ?? "";
@@ -136,10 +139,14 @@ class FormBuilder
 
     private static function renderTextarea(string $name, array $textarea): string
     {
-        $data = "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
-        $data .= " <textarea class='".($textarea["class"] ?? '')."' id='".($textarea["id"] ?? '')."' cols='".($textarea["cols"] ?? '')."' placeholder='".($textarea["content"] ?? '')."' rows='".($textarea["rows"] ?? '')."' name='".($name ?? "")."'>";
-        $data .= $textarea["value"] ?? "";
-        $data .= "</textarea>";
+            $data= "";
+            if(isset($data["label"]))
+            {
+                $data .= "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
+            }
+            $data .= " <textarea class='".($textarea["class"] ?? '')."' id='".($textarea["id"] ?? '')."' cols='".($textarea["cols"] ?? '')."' placeholder='".($textarea["content"] ?? '')."' rows='".($textarea["rows"] ?? '')."' name='".($name ?? "")."'>";
+            $data .= $textarea["value"] ?? "";
+            $data .= "</textarea>";
         return $data;
     }
 
@@ -147,8 +154,10 @@ class FormBuilder
     private static function renderInput(string $name, array $input): string
     {
         $data = "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
-        $data .= " <input value='".($input["value"] ?? '')."'  type='".($input["type"] ?? 'text')."'  class='".($input["class"] ?? '')."'  id='".($input["id"] ?? '')."' placeholder='".($input["placeholder"] ?? '')."' name='".($name ?? "")."'/>";
+        $data .= " <input value='".($input["value"] ?? '')."'  type='".($input["type"] ?? 'text')."'  class='".($input["class"] ?? '')."'  id='".($input["id"] ?? '')."' placeholder='".($input["placeholder"] ?? '')."' ".($input["disabled"] ?? "")." name='".($name ?? "")."'./>";
         return $data;
     }
+
+
 
 }

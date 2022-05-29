@@ -102,8 +102,8 @@ class ReceivePassword extends Sql
             "config" => [
                 "method" => "POST",
                 "action" => "",
-                "id" => "",
-                "class" => "",
+                "id" => "formLogin",
+                "class" => "formLogin",
                 "submit" => "Valider"
             ],
             "inputs" => [
@@ -119,36 +119,5 @@ class ReceivePassword extends Sql
         ];
     }
 
-    public function getChangePswdForm() : array
-    {
-        return [
-            "config"=>[
-                "method"=>"POST",
-                "action"=>"",
-                "id" => "",
-                "class" => "",
-                "submit" => "Valider"
-            ],
-            "inputs"=>[
-                "password" => [
-                    "placeholder" => "Votre mot de passe ...",
-                    "type" => "password",
-                    "id" => "newPassword",
-                    "class" => "formRegister",
-                    "required" => true,
-                    "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
-                ],
-                "passwordConfirm" => [
-                    "placeholder" => "Confirmation ...",
-                    "type" => "password",
-                    "id" => "confirmPassword",
-                    "class" => "formRegister",
-                    "required" => true,
-                    "error" => "Votre confirmation de mot de passe ne correspond pas",
-                    "confirm" => "password"
-                ]
-            ]
-        ];
-    }
 
 }

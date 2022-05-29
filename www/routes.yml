@@ -213,10 +213,33 @@
   path: /save/profile
   param: ["firstname", "lastname", "avatar"]
 
-
 -
   controller: admin
   action: home
   security: "admin"
   path: /dashboard
+
+-
+  controller: admin
+  action: users
+  method: GET
+  path: /users
+  security: "admin"
+
+
+-
+  controller: user
+  action: edit
+  security: admin
+  method: GET
+  path: /edit/user
+  param: ["id"]
+
+-
+  controller: user
+  action: delete
+  security: admin
+  method: GET
+  path: /delete/user
+  param: ["id"]
 

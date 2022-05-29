@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Core\QueryBuilder;
 use App\Core\Session;
 use App\Core\Sql;
 use App\Model\File as FileModel;
@@ -234,17 +235,17 @@ class User extends Sql
                 ],
 
 
-
             ],
         ];
     }
 
 
-    public static function getUserConnected() {
+    public static function getUserConnected()
+    {
         $session = new Session();
-        if($session->get("user") != null) {
+        if ($session->get("user") != null) {
             $userManager = new UserModel();
-            $userConnected =  $userManager->setId($session->get("user")["id"]);
+            $userConnected = $userManager->setId($session->get("user")["id"]);
             return $userConnected;
         }
         return false;
@@ -306,7 +307,7 @@ class User extends Sql
                 "submit" => "Sign in"
             ],
             "inputs" => [
-            "email" => [
+                "email" => [
                     "placeholder" => "Votre email ...",
                     "type" => "email",
                     "id" => "emailRegister",
@@ -316,8 +317,8 @@ class User extends Sql
                     "unicity" => true,
                     "errorUnicity" => "Un compte existe déjà avec cet email"
                 ],
-              "password" => [
-                  "placeholder" => "Votre mot de passe ...",
+                "password" => [
+                    "placeholder" => "Votre mot de passe ...",
                     "type" => "password",
                     "id" => "pwdRegister",
                     "class" => "formRegister",
@@ -355,7 +356,7 @@ class User extends Sql
                 "g-recaptcha-response" => [
                     "type" => "captcha",
                     "error" => "Veuillez valider le captcha si vous êtes un humain :)",
-              ],
+                ],
 ////To test types of inputs
 //                "ville" => [
 //                    "type" => "checkbox",
@@ -404,7 +405,7 @@ class User extends Sql
 //                "error" => " Votre photo doit être de la bonne extension",
 //
 //            ]
-        ],
+            ],
         ];
     }
 
@@ -437,6 +438,7 @@ class User extends Sql
             ]
         ];
     }
+
     public function getForgetPswdForm(): array
     {
         return [

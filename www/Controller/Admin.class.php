@@ -6,7 +6,7 @@ use App\Core\FormBuilder;
 use App\Core\View;
 use App\Model\User as UserModel;
 
-class Admin
+class Admin extends BaseController
 {
 
 

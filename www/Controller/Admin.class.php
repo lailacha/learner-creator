@@ -28,7 +28,6 @@ class Admin
 
         $view = new View("users", "back");
         $view->assign("listUsers", $listUsers);
-
     }
 
 }

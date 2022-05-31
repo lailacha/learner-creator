@@ -172,7 +172,9 @@ class User extends Sql
     public function getAllUsers(): array
     {
         $query = new QueryBuilder();
-        return $query->from('user')->fetchAll();
+        return $query->from('user')
+            ->innerJoin('role', DBPREFIXE.'user.role_id ='.DBPREFIXE.'role.id')
+            ->fetchAll();
     }
 
     function deleteUser(int $id)

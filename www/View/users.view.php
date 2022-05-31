@@ -6,6 +6,7 @@
     <tr>
         <th>Nom Complet</th>
         <th>Email</th>
+        <th>Role</th>
         <th>Status de compte</th>
         <th>Action</th>
     </tr>
@@ -16,6 +17,7 @@
         <tr>
             <td><?= $user['lastname']?> <?= $user['firstname'] ?></td>
             <td><?= $user['email']?></td>
+            <td><?= $user['name']?></td>
             <td><?= $user['status'] == 1 ? "Valid" : "Non valid"?></td>
 
             <td class="action">

@@ -25,7 +25,6 @@ class Admin extends BaseController
     {
         $user = new UserModel();
         $listUsers = $user->getAllUsers();
-
         $view = new View("users", "back");
         $view->assign("listUsers", $listUsers);
     }

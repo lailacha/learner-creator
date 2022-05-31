@@ -228,8 +228,8 @@
 
 
 -
-  controller: user
-  action: edit
+  controller: admin
+  action: editUser
   security: admin
   method: GET
   path: /edit/user

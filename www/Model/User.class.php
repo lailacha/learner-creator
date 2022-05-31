@@ -15,6 +15,7 @@ class User extends Sql
     protected $lastname = null;
     protected $email;
     protected $avatar;
+    protected $role_id = 1;
     protected $status = 0;
     protected $password;
     protected $token = null;
@@ -31,6 +32,22 @@ class User extends Sql
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRoleId(): int
+    {
+        return $this->role_id;
+    }
+
+    /**
+     * @param int $role_id
+     */
+    public function setRoleId(int $role_id): void
+    {
+        $this->role_id = $role_id;
     }
 
 
@@ -171,10 +188,23 @@ class User extends Sql
 
     public function getAllUsers(): array
     {
+        $users = [];
         $query = new QueryBuilder();
+        $results = $query->from('user')
+            ->fetchAllByClass(__CLASS__);
+
+        return $results;
+    }
+
+    public function getRole(): string
+    {
+        $query = new QueryBuilder();
+        $user_id = $this->id;
         return $query->from('user')
-            ->innerJoin('role', DBPREFIXE.'user.role_id ='.DBPREFIXE.'role.id')
-            ->fetchAll();
+            ->innerJoin('role', DBPREFIXE . 'user.role_id =' . DBPREFIXE . 'role.id')
+            ->where(DBPREFIXE . 'user.id = :id')
+            ->setParam('id', $user_id)
+            ->fetch("name");
     }
 
     function deleteUser(int $id)

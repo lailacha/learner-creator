@@ -73,7 +73,6 @@ class Route
 
         if(class_exists($controller))
         {
-
             $controller = new $controller($httpRequest, $this, new Session() );
             if(method_exists($controller, $this->action))
             {

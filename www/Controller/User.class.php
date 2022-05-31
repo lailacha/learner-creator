@@ -186,7 +186,6 @@ class User extends BaseController
         $form = FormBuilder::render($user->getEditProfileForm());
         $view->assign("form", $form);
         $view->assign("user", $user);
-
     }
 
     public function delete(): void

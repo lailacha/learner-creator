@@ -15,14 +15,14 @@
 
     <?php foreach ($listUsers as $user) : ?>
         <tr>
-            <td><?= $user['lastname']?> <?= $user['firstname'] ?></td>
-            <td><?= $user['email']?></td>
-            <td><?= $user['name']?></td>
-            <td><?= $user['status'] == 1 ? "Valid" : "Non valid"?></td>
+            <td><?= $user->getLastname()?> <?= $user->getFirstname() ?></td>
+            <td><?= $user->getEmail()?></td>
+            <td><?= $user->getRole()?></td>
+            <td><?= $user->getStatus() == 1 ? "Valid" : "Non valid"?></td>
 
             <td class="action">
-                <a class="button" href="/delete/user?id=<?= $user['id'] ?>">Delete</a>
-                <a class="button" href="/edit/user?id=<?= $user['id'] ?>">Editer</a>
+                <a class="button" href="/delete/user?id=<?= $user->getId() ?>">Delete</a>
+                <a class="button" href="/edit/user?id=<?= $user->getId() ?>">Editer</a>
             </td>
         </tr>
     <?php endforeach; ?>

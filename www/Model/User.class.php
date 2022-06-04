@@ -283,9 +283,10 @@ class User extends Sql
                     "error" => "Votre confirmation de mot de passe ne correspond pas",
                     "confirm" => "password"
                 ],
+                
             "csrf_token" => [
                     "placeholder" => $_SESSION['csrf_token'],
-                    "type" => "password",
+                    "type" => "text",
                     "id" => "pwdcsrf",
                     "class" => "formRegister",
                     "required" => true,

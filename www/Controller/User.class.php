@@ -81,7 +81,9 @@ class User extends BaseController {
             $session->addFlashMessage("error", $verification[0]);
         }
 
-        $_SESSION["csrf_token"] = 12;
+        # we set csrf_token in session
+        $_SESSION["csrf_token"] = md5(uniqid(mt_rand(), true));
+        
         var_dump($_SESSION);
         $view = new View("Register");
         $form = FormBuilder::render($user->getRegisterForm());

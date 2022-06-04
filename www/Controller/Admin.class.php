@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Core\FormBuilder;
 use App\Core\View;
+use App\Model\Role;
 use App\Model\User as UserModel;
 
 class Admin extends BaseController
@@ -29,11 +30,14 @@ class Admin extends BaseController
         $view->assign("listUsers", $listUsers);
     }
 
-    public function editUser()
+    public function editUser(): void
     {
+
         $user = new UserModel();
-        $id_user = $_GET['id'] ?? null;
+        $id_user = $this->request->get("id");
         $user = $user->getBy('id', $id_user);
+
+
         if ($user) {
             $form = FormBuilder::render($user->getEditUserForm());
             $view = new View("editUser", "back");
@@ -44,12 +48,14 @@ class Admin extends BaseController
                 $user->setEmail($_POST['email']);
                 $user->setLastname($_POST['lastname']);
                 $user->setFirstname($_POST['firstname']);
+                $user->setRoleId($_POST['role']);
                 $user->save();
 
                 header('Location: /users');
             }
         } else {
             die("user non trouvable");
-        }    }
+        }
+    }
 
 }

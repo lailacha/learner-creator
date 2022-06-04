@@ -218,6 +218,8 @@ class User extends Sql
 
     public function getEditUserForm(): array
     {
+        $roleManager = new Role();
+
         return [
             "config" => [
                 "method" => "POST",
@@ -259,6 +261,18 @@ class User extends Sql
                     "unicity" => true,
                     "errorUnicity" => "Un compte existe déjà avec cet email"
                 ],
+                "role" => [
+                    "type" => "select",
+                    "id" => "jjj",
+                    "class" => "formRegister",
+                    "options" => [
+                        "data" =>
+                            $roleManager->getAll(),
+                        "property" => "name",
+                        "value" => "id",
+                        "selected" => 1
+
+                    ]],
                 "id" => [
                     "value" => $this->getId(),
                     "type" => "hidden",

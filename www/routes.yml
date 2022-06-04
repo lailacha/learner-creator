@@ -236,6 +236,14 @@
   param: ["id"]
 
 -
+  controller: admin
+  action: editUser
+  security: admin
+  method: POST
+  path: /edit/user
+  param: ["id"]
+
+-
   controller: user
   action: delete
   security: admin

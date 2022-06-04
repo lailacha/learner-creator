@@ -146,7 +146,7 @@ class User extends BaseController
     public function verifyAccount()
     {
         $userManager = new UserModel();
-        $user = $userManager->getOneByMany(["token" => $_GET["token"], "email" => $_GET["mail"]]);
+        $user = $userManager->getOneByMany(["token" => $this->request->get("token"), "email" => ["mail"]]);
 
         if (!$user) {
             // TODO ADD flash message when available
@@ -191,7 +191,7 @@ class User extends BaseController
     public function delete(): void
     {
         $user = new UserModel();
-        $id_user = $_GET['id'] ?? null;
+        $id_user = $this->request->get("id") ?? null;
         if ($id_user) {
             $user->deleteUser($id_user);
             header('Location: /users');

@@ -81,6 +81,8 @@ class User extends BaseController {
             $session->addFlashMessage("error", $verification[0]);
         }
 
+        $_SESSION["csrf_token"] = 12;
+        var_dump($_SESSION);
         $view = new View("Register");
         $form = FormBuilder::render($user->getRegisterForm());
         $view->assign("form", $form);
@@ -234,14 +236,3 @@ class User extends BaseController {
             }
         }
 }
-
-
-
-
-
-
-
-
-
-
-

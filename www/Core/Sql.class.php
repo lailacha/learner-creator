@@ -161,6 +161,7 @@ abstract class Sql
             , [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING]);
 
         $value = $data[key($data)];
+        var_dump($data);
         $email = htmlspecialchars($value);
         $sql = "SELECT * FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";
         $sql1 = "SELECT password FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";

@@ -227,7 +227,6 @@ class User extends Sql
 
     public function getRegisterForm(): array
     {
-        
         return [
             "config" => [
                 "method" => "POST",
@@ -267,15 +266,15 @@ class User extends Sql
                     "unicity" => true,
                     "errorUnicity" => "Un compte existe déjà avec cet email"
                 ],
-              "password" => [
-                  "placeholder" => "Votre mot de passe ...",
+            "password" => [
+                "placeholder" => "Votre mot de passe ...",
                     "type" => "password",
                     "id" => "pwdRegister",
                     "class" => "formRegister",
                     "required" => true,
                     "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
                 ],
-                "passwordConfirm" => [
+            "passwordConfirm" => [
                     "placeholder" => "Confirmation ...",
                     "type" => "password",
                     "id" => "pwdConfirmRegister",
@@ -284,11 +283,19 @@ class User extends Sql
                     "error" => "Votre confirmation de mot de passe ne correspond pas",
                     "confirm" => "password"
                 ],
-               
-                "g-recaptcha-response" => [
+            "csrf_token" => [
+                    "placeholder" => $_SESSION['csrf_token'],
+                    "type" => "password",
+                    "id" => "pwdcsrf",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "error" => "Le token csrf ne correspond pas",
+                    "confirm" => "password"
+                ],
+            "g-recaptcha-response" => [
                     "type" => "captcha",
                     "error" => "Veuillez valider le captcha si vous êtes un humain :)",
-              ],
+            ],
 ////To test types of inputs
 //                "ville" => [
 //                    "type" => "checkbox",

@@ -1,0 +1,46 @@
+.button {
+  font-size: rem(16);
+  text-decoration: none;
+  display: inline-block;
+  padding: 1em 2em;
+  color: $white;
+  text-transform: uppercase;
+  background: $linear;
+  border: 1px solid;
+  transition: background 0.3s;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: 500;
+
+  &:hover {
+    transition: color 0.3s;
+
+    color: $text-color;
+    background: $white;
+    border: 1px solid;
+    border-color: $blue;
+  }
+
+
+  &--small {
+    font-size: rem(8);
+  }
+
+  &--success {
+    background-color: $green;
+
+    &:hover {
+      background-color: lighten($green, 10%);
+    }
+  }
+
+  &--alert {
+    background-color: $red;
+
+    &:hover {
+      background-color: lighten($red, 10%);
+    }
+  }
+
+}

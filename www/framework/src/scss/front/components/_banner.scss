@@ -1,0 +1,31 @@
+#section2 {
+  & .text-banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    & h1 {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-direction: row;
+      flex-wrap: nowrap;
+    }
+  }
+
+  & figure {
+    display: flex;
+
+    & img {
+      width: 162px;
+      height: 162px;
+    }
+  }
+}
+@media (max-width: 990px) {
+
+  #section2 figure  {
+    display: none;
+  }
+
+}

@@ -1,27 +1,222 @@
-/:
+-
   controller: main
   action: home
+  path: /
+
+-
+  path: /404
+  controller: BaseController
+  action: abort
 
 
+-
+  path: /createCourse
+  controller: course
+  action: index
+  method: GET
+  param: []
+
+-
+  path: /createCourse
+  controller: course
+  action: create
+  method: POST
+  param: [ "name", "description", "cover", "category" ]
+
+-
+  path: /delete/course
+  controller: course
+  action: delete
+  method: GET
+  param: [ "id" ]
+
+-
+  path: /create/chapter
+  controller: CourseChapter
+  action: create
+  method: GET
+  param: [ "course_id"]
+
+-
+  path: /create/chapter
+  controller: CourseChapter
+  action: create
+  method: POST
+  param: [ "course_id", "name", "description" ]
 
 
-/nous-contacter:
+-
+  path: /show/course
+  controller: course
+  action: getOneCourse
+  method: GET
+  param: [ "id" ]
+
+
+-
+  path: /edit/course
+  controller: course
+  action: edit
+  method: GET
+  param: ["id" ]
+
+
+-
+  path: /edit/course
+  controller: course
+  action: edit
+  method: POST
+  param: [ "id","name", "description", "cover", "category" ]
+
+-
+  path: /createLesson
+  controller: lesson
+  action: index
+  method: GET
+  param: [ "course_id"]
+
+-
+  path: /createLesson
+  controller: lesson
+  action: create
+  method: POST
+  param: [ "title", "text", "video", "course", "chapter" ]
+
+-
+  path: /show/lesson
+  controller: lesson
+  action: getOneLesson
+  method: GET
+  param: [ "lesson_id" ]
+
+-
+  path: /edit/lesson
+  controller: lesson
+  action: edit
+  method: GET
+  param: ["lesson_id" ]
+
+-
+  path: /update/lesson
+  controller: lesson
+  action: update
+  method: POST
+  param: [ "lesson_id", "title", "text", "video", "course", "chapter" ]
+
+-
+  path: /delete/lesson
+  controller: lesson
+  action: delete
+  method: GET
+  param: [ "lesson_id" ]
+
+- path: /create/comment
+  controller: LessonCommentaire
+  action: store
+  method: POST
+  param: ["content", "lesson_id"]
+
+-
   controller: main
   action: contact
+  path: /contact
 
-/login:
+
+-
+  path: /front
+  controller: main
+  action: front
+  method: GET
+
+-
   controller: user
   action: login
+  path: /login
+  method: GET
 
-/logout:
+-
+  controller: user
+  action: login
+  path: /login
+  method: POST
+  param: [ "email", "password" ]
+
+
+-
   controller: user
   action: logout
+  path: /logout
 
-/register:
+
+-
   controller: user
   action: register
+  method: GET
+  path: /register
+  param: []
 
-/dashboard:
+-
+  controller: user
+  action: register
+  method: POST
+  path: /register
+  param: ["firstname", "lastname","email", "password", "passwordConfirm", "g-recaptcha-response"]
+
+-
+  controller: user
+  action: recoverPassword
+  path: /recoverPassword
+  method: POST
+  param: ["email"]
+
+-
+  controller: user
+  action: recoverPassword
+  path: /recoverPassword
+  method: GET
+  param: ["email"]
+
+
+-
+  controller: user
+  action: changePassword
+  path: /changePassword
+
+-
+  controller: user
+  action: sendRegisterMail
+  path: /mail
+
+-
+  controller: user
+  action: verifyAccount
+  path: /verifyAccount
+
+-
+  controller: user
+  action: show
+  method: GET
+  path: /show/profile
+  param: ["user_id"]
+
+-
+  controller: user
+  action: edit
+  method: GET
+  path: /edit/profile
+  param: []
+
+-
+  controller: user
+  action: saveProfile
+  method: POST
+  path: /save/profile
+  param: ["firstname", "lastname", "avatar"]
+
+
+-
   controller: admin
   action: home
-  security: true
+  security: "admin"
+  path: /dashboard
+

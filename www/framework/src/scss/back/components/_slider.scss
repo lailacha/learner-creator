@@ -1,0 +1,61 @@
+$slider-width: 576px;
+$slider-height: 384px;
+
+.slider{
+
+  width: $slider-width;
+  height: $slider-height;
+  overflow: hidden;
+  position: relative;
+
+  & .slides-container{
+    display: flex;
+    position: relative;
+    transition: left 1s;
+    left: 0;
+  }
+
+  & .slide{
+    width: $slider-width;
+    height: $slider-height;
+
+    object-fit: cover;
+    object-position: center;
+
+    flex-shrink: 0;
+  }
+
+  & nav{
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+
+
+     button {
+       border: none;
+       &::before {
+         content: "";
+         display: block;
+         width: 25px;
+         height: 25px;
+         background-image: url('../assets/images/arrow.svg');
+         background-size: contain;
+         background-position: center;
+         background-repeat: no-repeat;
+       }
+
+       &.prev {
+         &::before {
+           transform: rotate(180deg);
+         }
+       }
+     }
+
+
+  }
+}

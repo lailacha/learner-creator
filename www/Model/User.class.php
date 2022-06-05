@@ -2,7 +2,10 @@
 
 namespace App\Model;
 
+use App\Core\Session;
 use App\Core\Sql;
+use App\Model\File as FileModel;
+use App\Model\User as UserModel;
 
 class User extends Sql
 {
@@ -10,10 +13,12 @@ class User extends Sql
     protected $firstname = null;
     protected $lastname = null;
     protected $email;
+    protected $avatar;
     protected $status = 0;
     protected $password;
     protected $token = null;
 
+   
     public function __construct()
     {
         //echo "constructeur du Model User";
@@ -109,6 +114,36 @@ class User extends Sql
         $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
 
+    public function fullName(): ?string
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    public function avatar()
+    {
+        $fileManager = new FileModel();
+        if ($this->getAvatar() !== null) {
+
+            return $fileManager->getBy('id', $this->getAvatar())->getPath();
+        }
+
+        return null;
+
+    }
+
+    /**
+     * @param mixed $avatar
+     */
+    public function setAvatar($avatar): void
+    {
+        $this->avatar = $avatar;
+    }
+
     /**
      * @return null
      */
@@ -131,11 +166,68 @@ class User extends Sql
     {
         //Pré traitement par exemple
         //echo "pre traitement";
+       
         parent::save();
+    }
+
+
+    public static function getUserConnected() {
+        $session = new Session();
+        if($session->get("user") != null) {
+            $userManager = new UserModel();
+            $userConnected =  $userManager->setId($session->get("user")["id"]);
+            return $userConnected;
+        }
+        return false;
+    }
+
+
+    public function getEditProfileForm()
+    {
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "/save/profile",
+                "id" => "formRegister",
+                "enctype" => "multipart/form-data",
+                "class" => "form editProfilForm",
+                "submit" => "Edit"
+            ],
+            "inputs" => [
+                "avatar" => [
+                    "type" => "file",
+                    "id" => "avatar",
+                    "class" => "file",
+                    "required" => false,
+                    "error" => " Votre image doit être de la bonne extension",
+                ],
+                "firstname" => [
+                    "placeholder" => "Enter your name",
+                    "type" => "text",
+                    "id" => "firstnameRegister",
+                    "value" => $this->getFirstname(),
+                    "class" => "formRegister",
+                    "required" => true,
+                    "min" => 2,
+                    "max" => 25,
+                    "error" => " Votre prénom doit faire entre 2 et 25 caractères",
+                ],
+                "lastname" => [
+                    "type" => "text",
+                    "placeholder" => "Votre nom de famille ...",
+                    "id" => "testRegister",
+                    "required" => true,
+                    "value" => $this->getLastname(),
+                    "class" => "formRegister",
+                    "error" => " Votre nom doit faire entre 2 et 100 caractères",
+                ],
+            ],
+        ];
     }
 
     public function getRegisterForm(): array
     {
+        
         return [
             "config" => [
                 "method" => "POST",
@@ -146,6 +238,25 @@ class User extends Sql
                 "submit" => "Sign in"
             ],
             "inputs" => [
+            "firstname" => [
+                "placeholder" => "Enter your name",
+                "type" => "text",
+                "id" => "firstnameRegister",
+                "class" => "formRegister",
+                "required" => true,
+                "min" => 2,
+                "max" => 25,
+                "error" => " Votre prénom doit faire entre 2 et 25 caractères",
+            ],    
+            "lastname" => [
+                "type" => "text",
+                "placeholder" => "Votre nom de famille ...",
+                "id" => "testRegister",
+                "required" => true,
+                "value" => "testRegister",
+                "class" => "formRegister",
+                "error" => " Votre nom doit faire entre 2 et 100 caractères",
+            ],    
             "email" => [
                     "placeholder" => "Votre email ...",
                     "type" => "email",
@@ -173,25 +284,7 @@ class User extends Sql
                     "error" => "Votre confirmation de mot de passe ne correspond pas",
                     "confirm" => "password"
                 ],
-                "firstname" => [
-                    "placeholder" => "Votre prénom ...",
-                    "type" => "text",
-                    "id" => "firstnameRegister",
-                    "class" => "formRegister",
-                    "min" => 2,
-                    "max" => 25,
-                    "error" => " Votre prénom doit faire entre 2 et 25 caractères",
-                ],
-
-                "lastname" => [
-                    "type" => "text",
-                    "placeholder" => "Votre nom de famille ...",
-
-                    "id" => "testRegister",
-                    "value" => "testRegister",
-                    "class" => "formRegister",
-                    "error" => " Votre nom doit faire entre 2 et 100 caractères",
-                ],
+               
                 "g-recaptcha-response" => [
                     "type" => "captcha",
                     "error" => "Veuillez valider le captcha si vous êtes un humain :)",
@@ -277,5 +370,29 @@ class User extends Sql
             ]
         ];
     }
+    public function getForgetPswdForm(): array
+    {
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "",
+                "id" => "formLogin",
+                "class" => "formLogin",
+                "submit" => "Se connecter"
+            ],
+            "inputs" => [
+                "email" => [
+                    "placeholder" => "Votre email ...",
+                    "type" => "email",
+                    "id" => "emailRegister",
+                    "class" => "formRegister",
+                    "required" => true,
+                ],
+                
+            ]
+        ];
+    }
+
+
 
 }

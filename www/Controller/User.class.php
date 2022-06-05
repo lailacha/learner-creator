@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Core\Helpers;
+use App\Core\QueryBuilder;
 use App\Core\ReceivePassword;
 use App\Core\Session;
 use App\Model\Course;
@@ -13,10 +14,12 @@ use App\Core\FormBuilder;
 use App\Model\User as UserModel;
 use App\Model\ReceivePassword as ReceivePasswordModel;
 use App\Service\File;
+use DateTime;
 
 
 class User extends BaseController
 {
+
 
     public function login()
     {
@@ -40,6 +43,11 @@ class User extends BaseController
     {
         session_destroy();
         echo "Se déconnecter";
+    }
+
+    public function test()
+    {
+        echo "test";
     }
 
 
@@ -87,7 +95,7 @@ class User extends BaseController
         $view->assign("form", $form);
     }
 
-    public function recoverPassword()
+    public function recoverPassword(): void
     {
         $user = new UserModel();
         $receivePasswordManager = new ReceivePasswordModel();
@@ -114,10 +122,70 @@ class User extends BaseController
 
     }
 
-    public function changePassword()
-    {
-        echo "aze";
-    }
+        public function changePassword(): void
+        {
+            $user = new UserModel();
+            $receivePasswordManager = new ReceivePasswordModel();
+
+            $token = $_GET['token'] ?? null;
+            $email = $_GET['email'] ?? null;
+            $idUser = $_GET['id'] ?? null;
+
+
+            $query = new QueryBuilder();
+
+            $query->from('receive_password')
+                ->where('iduser = :iduser', 'token = :token')
+                ->setParams([
+                    "iduser" => $idUser,
+                    "token" => $token
+                ]);
+
+            $result = $query->fetch();
+
+            $count = (clone $query)->count();
+
+            $dateFinal = new DateTime();
+            $dateDebut = new DateTime($result['createdAt']);
+            $dateDifference = $dateFinal->diff($dateDebut);
+            $heureDifference = $dateDifference->days * 24 + (int)$dateDifference->format('%H');
+            $heureDifference = (int)$heureDifference;
+
+
+
+            if ($count === 1 && $result['status'] == 0 && $heureDifference < 48) {
+                $view = new View("changePassword");
+
+                if (!empty($_POST)) {
+                    $data = array_merge($_POST, $_FILES);
+                    // Plus tard faut utiliser Class verificator pour verifier le password
+                    $receivePasswordManager = $receivePasswordManager->getBy('id', $result['id']);
+                    $receivePasswordManager->setStatus(1);
+                    $receivePasswordManager->save();
+                    $user = $user->getBy('id', $idUser);
+                    $user->setPassword($_POST['password']);
+                    $user->save();
+                    $this->session->addFlashMessage("success", "Your password has been changed");
+                    header('Location: /login');
+                }
+                else{
+
+                    $form = FormBuilder::render($receivePasswordManager->getChangePswdForm());
+                    $view->assign("form", $form);
+
+                }
+
+
+
+            } else {
+
+                die("Veuillez refaire votre demande");
+
+            }
+
+        }
+
+
 
     /**
      * @param UserModel $user
@@ -126,7 +194,7 @@ class User extends BaseController
      */
     public function sendRegisterMail(UserModel $user)
     {
-        $html = '<a href="http://localhost:84/verifyAccount?token=' . $user->getToken() . '&mail=' . $user->getEmail() . '"><h2>Click here to validate your account!</h2></a>';
+        $html = '<a href="http://localhost:84/verifyAccount?token=' . $user->getToken() . '&email=' . $user->getEmail() . '"><h2>Click here to validate your account!</h2></a>';
 
         $confirmMail = new Mail();
         $confirmMail->setSubject("Last step to validate your account...");

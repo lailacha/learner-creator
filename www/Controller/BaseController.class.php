@@ -11,8 +11,8 @@ use App\Core\View;
 class BaseController
 {
 
-    protected $request;
-    protected $route;
+    protected $request = null;
+    protected $route = null;
     protected Session $session;
 
     public function __construct(HttpRequest $request, Route $route, Session $session)
@@ -30,7 +30,7 @@ class BaseController
         return $this->session;
     }
 
-    public function abort($code = 404) : void
+    public function abort($code = 404): void
     {
         http_response_code($code);
         $view = new View($code, "front");

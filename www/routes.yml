@@ -8,6 +8,11 @@
   controller: BaseController
   action: abort
 
+-
+  controller: user
+  action: test
+  method: GET
+  path: /test
 
 -
   path: /createCourse
@@ -180,7 +185,18 @@
 -
   controller: user
   action: changePassword
+  method: GET
   path: /changePassword
+  param: ["token","email", "id"]
+
+
+-
+  controller: user
+  action: changePassword
+  method: POST
+  path: /changePassword
+  param: []
+
 
 -
   controller: user
@@ -234,6 +250,8 @@
   method: GET
   path: /edit/user
   param: ["id"]
+
+
 
 -
   controller: user

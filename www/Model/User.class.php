@@ -286,7 +286,7 @@ class User extends Sql
                 
             "csrf_token" => [
                     "placeholder" => $_SESSION['csrf_token'],
-                    "type" => "text",
+                    "type" => "csrf_token",
                     "id" => "pwdcsrf",
                     "class" => "formRegister",
                     "required" => true,

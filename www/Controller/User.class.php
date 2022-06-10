@@ -28,8 +28,8 @@ class User extends BaseController {
             $user->login(["email" => $_POST['email']]);
 
         }
-
-        $view = new View("login");
+        $view = new View("login", "home");
+        
         $form = FormBuilder::render($user->getLoginForm());
         $view->assign("form", $form);
     }
@@ -37,6 +37,7 @@ class User extends BaseController {
 
     public function logout()
     {
+        
         session_destroy();
         echo "Se déconnecter";
     }
@@ -44,6 +45,7 @@ class User extends BaseController {
 
     public function register()
     {
+        
         $user = new UserModel();
         $session = new Session();
 
@@ -81,7 +83,7 @@ class User extends BaseController {
             $session->addFlashMessage("error", $verification[0]);
         }
 
-        $view = new View("Register");
+        $view = new View("Register","home");
         $form = FormBuilder::render($user->getRegisterForm());
         $view->assign("form", $form);
     }

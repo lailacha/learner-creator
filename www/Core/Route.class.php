@@ -18,6 +18,7 @@ class Route
         $this->action = $route["action"];
         $this->method = $route["method"] ?? "GET";
         $this->param = $route["param"] ?? [];
+        
     }
 
 
@@ -70,13 +71,14 @@ class Route
 
         include $controllerFile;
         $controller = "App\\Controller\\".$this->controller;
-
+        
         if(class_exists($controller))
         {
-
+            
             $controller = new $controller($httpRequest, $this, new Session() );
             if(method_exists($controller, $this->action))
             {
+                
                 $httpRequest->bindParam();
                 $controller->getSession()->ensureStarted();
                 $controller->{$this->action}();

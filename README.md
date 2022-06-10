@@ -25,5 +25,5 @@ define("DBPORT", "3306");
 define("DBPREFIXE", "esgi_");
 ```
 
-### Got to **_http://localhost:8080/_**
+### Got to **_@http://localhost:8080/_**
 The project is ready :tada:

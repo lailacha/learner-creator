@@ -1,18 +1,27 @@
-<div class="container flex jc-center">
-        <div class="flex ai-center jc-center column form-register">
-            <h1>Se connecter</h1>
 
-            <?php if (isset($form)) : ?>
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+   
+    <h2 class="active"> Sign In </h2>
+    
+   <h2> <a class="inactive underlineHover" href="/register">Sign Up</a></h2>
+
+   
+   
+    
+    
+    <form>
+      <?php if (isset($form)) : ?>
                 <?php echo $form ?>
 
             <?php endif; ?>
-        </div>
+            
+    </form>
 
-
-      <!--  <form action="?" method="POST">
-            <div class="g-recaptcha" data-sitekey="6LdqSEAeAAAAAIrfjm8MfW03lxfTzmxiyVcWuSgy"></div>
-            <br/>
-            <input type="submit" value="Submit">
-        </form>-->
+   
+    <div id="formFooter">
+      <a class="underlineHover" href="#">Forgot Password?</a>
     </div>
 
+  </div>
+</div>

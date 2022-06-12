@@ -24,12 +24,10 @@ class Security
         {
             return false;
         }
-        return true;
 
     }
 
-    public
-    static function checkAuth($route): void
+    public static function checkAuth($route): void
     {
         $auth = $route['auth'] ?? null;
         $idUser = Session::getInstance()->get("id");
@@ -40,6 +38,5 @@ class Security
         }
 
     }
-
 
 }

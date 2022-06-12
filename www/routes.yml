@@ -313,10 +313,10 @@
 
 
 
-    - controller: teacher
-      action: index
-      method: GET
-      path: /teacher/new
+- controller: teacher
+  action: index
+  method: GET
+  path: /teacher/new
 
 
 
@@ -422,3 +422,9 @@
   method: GET
   path: /refuse/requestTeacher
   param: ["id"]
+
+-  
+  controller: teacher
+  action: add
+  method: GET
+  path: /add/teacher

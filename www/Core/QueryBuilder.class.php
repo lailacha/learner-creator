@@ -22,8 +22,8 @@ class QueryBuilder
     public function __construct()
     {
         try {
-            $this->pdo = new PDO(DBDRIVER . ":host=" . DBHOST . ";port=" . DBPORT . ";dbname=" . DBNAME.";charset=utf8mb4", DBUSER, DBPWD
-                , [PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING]);
+            $this->pdo = new \PDO(DBDRIVER . ":host=" . DBHOST . ";port=" . DBPORT . ";dbname=" . DBNAME . ";charset=utf8mb4", DBUSER, DBPWD
+                , [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING]);
         } catch (\Exception $e) {
             die("Erreur SQL : " . $e->getMessage());
         }

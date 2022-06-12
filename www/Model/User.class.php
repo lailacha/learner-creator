@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\Core\QueryBuilder;
 use App\Model\File as FileModel;
+use App\Model\User as userManager;
 use App\Model\User as UserModel;
 use App\Core\Session;
 use App\Core\Sql;
@@ -207,6 +208,7 @@ class User extends Sql
 
     }
 
+    
     public function getAllUsers(): array
     {
         $users = [];

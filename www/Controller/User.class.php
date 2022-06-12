@@ -21,13 +21,12 @@ class User extends BaseController
     public function login()
     {
         $user = new UserModel();
+        $session = Session::getInstance();
+        if (!empty($_POST) && $user->login($_POST['email'], $_POST['password'])) {
+            $role = $user->getRole($session->get('user')["id"]);
+            $session->set('role', $role);
 
-        if (!empty($_POST)) {
-
-            $user->setEmail(htmlspecialchars($_POST["email"]));
-            $user->setPassword(htmlspecialchars($_POST["password"]));
-            $user->login(["email" => $_POST['email']]);
-
+            header('Location: /edit/profile');
         }
 
         $view = new View("login");

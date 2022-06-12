@@ -18,7 +18,7 @@
             <td><?= $user->getLastname()?> <?= $user->getFirstname() ?></td>
             <td><?= $user->getEmail()?></td>
             <td><?= $user->getRole()?></td>
-            <td><?= $user->getStatus() == 1 ? "Valid" : "Non valid"?></td>
+            <td><?= $user->getStatus() === 1 ? "Valid" : "Non valid"?></td>
 
             <td class="action">
                 <a class="button" href="/delete/user?id=<?= $user->getId() ?>">Delete</a>
@@ -26,12 +26,6 @@
             </td>
         </tr>
     <?php endforeach; ?>
-
-
-
-
-
-
 
     </tbody>
 

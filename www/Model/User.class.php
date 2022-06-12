@@ -6,6 +6,7 @@ use App\Core\QueryBuilder;
 use App\Core\Session;
 use App\Core\Sql;
 use App\Model\File as FileModel;
+use App\Model\User as userManager;
 use App\Model\User as UserModel;
 
 class User extends Sql
@@ -186,6 +187,27 @@ class User extends Sql
         parent::save();
     }
 
+    public function login($email, $password): bool
+    {
+        $query = new QueryBuilder();
+        $user = $query->from('user')
+            ->where('email = :email')
+            ->setParam('email', $email)
+            ->fetch();
+
+
+        $session = new Session();
+        if ($user && password_verify($password, $user["password"])) {
+            $session->set("user", $user);
+            $session->addFlashMessage("success", "Vous êtes connecté");
+            return true;
+        }
+
+        $session->addFlashMessage("error", "identifiants incorrects");
+        return false;
+
+    }
+
     public function getAllUsers(): array
     {
         $users = [];
@@ -196,10 +218,10 @@ class User extends Sql
         return $results;
     }
 
-    public function getRole(): string
+    public function getRole(int $id = null): string
     {
         $query = new QueryBuilder();
-        $user_id = $this->id;
+        $user_id = $this->id ?? $id;
         return $query->from('user')
             ->innerJoin('role', DBPREFIXE . 'user.role_id =' . DBPREFIXE . 'role.id')
             ->where(DBPREFIXE . 'user.id = :id')

@@ -71,6 +71,7 @@ class User extends BaseController
     }
 
 
+
     public function logout()
     {
 
@@ -90,30 +91,29 @@ class User extends BaseController
             $verification = Verificator::checkForm($user->getRegisterForm(), $this->request);
 
             if (!$verification) {
-                if ($_POST["csrf_token"] !== $_SESSION['csrf_token']) {
-                    $session->addFlashMessage("error", "csrf not valid! ");
-                    header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
-                } else {
-                    $isRegistred = $user->getBy("email", $_POST["email"]);
-                    if (!$isRegistred) {
+//                $user = $user->getBy("id", 33);
+//
+//                $user->setEmail("y.sssvhvhvhvsjjjjsss@gmail.com");
+//
+//                //$user->setPassword("Test1234");
+//                //$user->setLastname("SKrzypCZK   ");
+//                //$user->setFirstname("  YveS");
+//                //$user->generateToken();
+//
+//                $user->save();
 
-                        $user->setFirstname(htmlspecialchars($_POST["firstname"]));
-                        $user->setLastname(htmlspecialchars($_POST["lastname"]));
-                        $user->setEmail(htmlspecialchars($_POST["email"]));
-                        $user->setPassword(htmlspecialchars($_POST["password"]));
+                $user->setFirstname(htmlspecialchars($_POST["firstname"]));
+                $user->setLastname(htmlspecialchars($_POST["lastname"]));
+                $user->setEmail(htmlspecialchars($_POST["email"]));
+                $user->setPassword(htmlspecialchars($_POST["password"]));
 
-                        $user->generateToken((Helpers::createToken()));
+                $user->generateToken((Helpers::createToken()));
+                $this->sendRegisterMail($user);
 
-                        $user->save();
-                        $this->sendRegisterMail($user);
+                $user->save();
+                $session->addFlashMessage("success", "Your registration is OK!");
+                return;
 
-                        $session->addFlashMessage("success", "Your registration is OK!");
-                    } else {
-                        $session->addFlashMessage("error", "Vous etes déjà inscrit");
-                    }
-                }
-            } else {
-                $session->addFlashMessage("error", $verification[0]);
             }
         }
 
@@ -315,31 +315,44 @@ class User extends BaseController
                 $user->setLastname($this->request->get('lastname'));
             }
 
-            {
-                $user->setFirstname($this->request->get('firstname'));
-                $user->setLastname($this->request->get('lastname'));
-            }
-            if (!empty($this->request->get("avatar")) && $this->request->get("avatar") !== $user->getAvatar()) {
-                if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === 0) {
+                {
+                    $user->setFirstname($this->request->get('firstname'));
+                    $user->setLastname($this->request->get('lastname'));
+                }
+                if(!empty($this->request->get("avatar")) && $this->request->get("avatar") !== $user->getAvatar() && isset($_FILES['avatar']) && $_FILES['avatar']['error'] === 0) {
 
                     try {
                         $file = new File($_FILES["avatar"]);
-                        $file = $file->upload("avatar", 3);
+                        $file = $file->upload( "avatar", 3);
                     } catch (\Exception $e) {
                         $this->session->addFlashMessage("error", $e->getMessage());
+                        $this->route->redirect("/edit/profile");
                         return;
                     }
                     $user->setAvatar($file->getLastInsertId());
                 }
 
+                $user->save();
+                $this->session->addFlashMessage("success", "Votre profile a bien été modifié");
+                $this->route->redirect("/edit/profile");
+
+            }
+            else{
+                $this->session->addFlashMessage("error",$errors[0]);
+                $this->route->redirect("/edit/profile");
+
             }
 
-            $user->save();
-            $this->session->addFlashMessage("success", "Votre profile a bien été modifié");
-            $this->route->redirect("/edit/profile");
-
-        } else {
-            $this->session->addFlashMessage("error", $errors[0]);
         }
-    }
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -289,6 +289,11 @@ class User extends Sql
                     "class" => "formRegister",
                     "error" => " Votre nom doit faire entre 2 et 100 caractères",
                 ],
+                "custom" => [
+                    "type" => "custom",
+                 "html" => "<label>Mail:</label>
+                  <p> {$this->getEmail()}</p>"
+                ],
             ],
         ];
     }

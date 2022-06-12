@@ -1,4 +1,10 @@
 
+/*  Border  */
+.no-border
+{
+  border: none;
+}
+
 /*  Spacing  */
 $baseSpace: 0.8rem;
 $spaceRange: 5;
@@ -94,6 +100,10 @@ $spaceRange: 5;
   flex-direction: column-reverse;
 }
 
+.fg-1{
+  flex-grow: 1;
+}
+
 .jc-center{
   justify-content: center;
 }
@@ -138,6 +148,10 @@ $spaceRange: 5;
 
 /*  Colors */
 
+.bg-pink{
+  background-color: #ffc0cb;
+}
+
 .bg-violet{
   background-color: $violet-electric;
 }
@@ -165,6 +179,9 @@ $spaceRange: 5;
   color: $primary-color;
 }
 
+.bg-back-light-main-color{
+  background-color: $light-back-main-color;
+}
 .back-light-main-color{
   color: $light-back-main-color;
 }

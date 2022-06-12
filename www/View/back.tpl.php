@@ -7,6 +7,8 @@
     <link rel="stylesheet" type="text/css" href="../../framework/dist/main.css"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script src="../../framework/dist/main.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
 <script src="https://kit.fontawesome.com/abaaf4d322.js" crossorigin="anonymous"></script>
     <script src="https://cdn.tiny.cloud/1/iam35x4cabb1nisnr71bcn2cpamtw3nk67uokoq3b288i0ay/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
@@ -29,7 +31,13 @@
                             <li>Logo</li>
                         </ul>
                     </li>
-                    <li class="item link body2 ">Management</li>
+                    <li class="body2  flex column dropdown">
+                        <a class="item dropdown-menu">Management <i class=" ml-1 fa-solid fa-chevron-down"></i></a>
+                        <ul class="dropdown-items">
+                            <li>Users</li>
+                            <li><a href="/reportComments">Reports</a></li>
+                        </ul>
+                    </li>
                 </ul>
                 <div class="profil-card">
                     <div    class="card-label">
@@ -46,7 +54,10 @@
 
             <div class="container column pl-3 mt-1 bg-white col-md-8">
 
-    <?php include $this->view.".View.php";?>
+
+                    <?php include "./View/Partial/error-message.partial.php"; ?>
+
+                     <?php include $this->view.".View.php";?>
 
             </div>
         </div>

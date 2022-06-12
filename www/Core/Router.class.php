@@ -24,21 +24,22 @@ class Router
 
     }
 
-    public function findRoute(HttpRequest $httpRequest)
+    public function findRoute(HttpRequest $httpRequest): \App\Core\Route
     {
-
-
-        $routeFound = array_filter($this->listRoutes, function ($route) use ($httpRequest) {
+        $routeFound = array_filter($this->listRoutes,function($route) use ($httpRequest){
             $method = $route["method"] ?? "GET";
 
-            if (!Security::checkRoute($route)) {
-                die("Not Authorized");
-            }
-
-            Security::checkAuth($route);
-
-            return preg_match("#^" . $route["path"] . "$#", $httpRequest->getUrl()) && $method === $httpRequest->getMethod();
+             return preg_match("#^" . $route["path"] . "$#", $httpRequest->getUrl()) && $method === $httpRequest->getMethod();
         });
+    
+
+        if (!Security::checkRoute(array_values($routeFound)[0])) {
+
+            die("Not Authorized");
+        }
+
+        Security::checkAuth($routeFound);
+
         $numberRoute = count($routeFound);
         if ($numberRoute > 1) {
             throw new MultipleRouteFoundException();

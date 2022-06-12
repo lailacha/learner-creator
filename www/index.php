@@ -5,6 +5,7 @@ namespace App;
 require "conf.inc.php";
 use App\Core\HttpRequest;
 use App\Core\Router;
+use App\Core\SQL;
 use App\Core\QueryBuilder;
 use App\Core\Security;
 use App\Core\Session;

@@ -4,10 +4,12 @@
 namespace App\Controller;
 
 use App\Model\LessonCommentaire;
+use App\Model\LessonProgress;
 use App\Model\CourseChapter as CourseChapterModel;
 use App\Model\Lesson as LessonManager;
 use App\Model\Course as CourseManager;
 use App\Model\File as FileManager;
+use App\Model\ReportComment as ReportCommentModel;
 use App\Model\User;
 use App\Model\CourseChapter as ChapterManager;
 use App\Core\FormBuilder;
@@ -52,6 +54,7 @@ class Lesson extends BaseController
         $lessonId = $this->request->get('lesson_id');
         $lessonManager = new LessonManager();
         $fileManager = new FileManager();
+        $lessonProgressManager = new LessonProgress();
         $lesson = $lessonManager->setId($lessonId);
         if(!$lesson){
             $this->session->addFlashMessage("error", "Lesson not found");
@@ -66,8 +69,14 @@ class Lesson extends BaseController
         $commentaireManager = new LessonCommentaire();
         $commentaireForm = FormBuilder::render($commentaireManager->getCommentaireForm($lesson->getId()));
         $comments = $commentaireManager->getWithUserByLesson($lesson->getId());
+        $progressState = $lessonProgressManager->getUserProgress($lesson->getId(), User::getUserConnected()->getId());
 
         $chapters = $lesson->course()->getChapters();
+        $reportCommentModel = new ReportCommentModel();
+
+        $formReport = FormBuilder::render($reportCommentModel->getReportForm());
+        $view->assign('progressState', $progressState);
+        $view->assign('formReport', $formReport);
         $view->assign('comments', $comments);
         $view->assign('form', $commentaireForm);
         $view->assign('lesson', $lesson);
@@ -146,9 +155,6 @@ class Lesson extends BaseController
                     $file = new FileService($_FILES["video"]);
                     $file = $file->upload("lessons", 2, true);
                 } catch (\Exception $e) {
-                    echo '<pre>';
-                    die(var_dump($e->getMessage()));
-                    echo '</pre>';
                     $this->session->addFlashMessage("error", $e->getMessage());
                     return;
                 }
@@ -162,6 +168,14 @@ class Lesson extends BaseController
             $this->session->addFlashMessage("error", $errors[0]);
         }
     }
+
+    public function completeLesson()
+    {
+        
+        $this->session->addFlashMessage("success", "Your Lesson has been completed");
+        $this->route->redirect("/show/lesson?lesson_id=" . $lesson->getId());
+    }
+
 
     public function delete()
     {

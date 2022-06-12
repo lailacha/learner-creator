@@ -8,6 +8,30 @@
   controller: BaseController
   action: abort
 
+-
+  path: /courses
+  controller: course
+  action: index
+  method: GET
+  param: []
+  security: ["professor", "admin"]
+
+-
+  path: /show/courses
+  controller: course
+  action: showAll
+  method: GET
+  param: []
+  security: ["professor", "admin"]
+
+-
+  path: /search/course
+  controller: course
+  action: searchCourse
+  method: GET
+  param: ["course"]
+  security: ["professor", "admin"]
+
 
 -
   path: /createCourse
@@ -15,6 +39,7 @@
   action: index
   method: GET
   param: []
+  security: ["professor", "admin"]
 
 -
   path: /createCourse
@@ -29,6 +54,22 @@
   action: delete
   method: GET
   param: [ "id" ]
+
+-
+  path: /show/courseRequests
+  controller: course
+  action: showRequests
+  method: GET
+  param: []
+  security: ["admin"]
+
+-
+  path: /verify/course
+  controller: course
+  action: verifyCourse
+  method: GET
+  param: [ "course_id" ]
+  security: ["admin"]
 
 -
   path: /create/chapter
@@ -110,11 +151,26 @@
   method: GET
   param: [ "lesson_id" ]
 
+
+- 
+  path: /store/progress
+  controller: LessonProgress
+  action: store
+  method: POST
+  param : ["user_id", "lesson_id", "progress"]
+
+
 - path: /create/comment
   controller: LessonCommentaire
   action: store
   method: POST
   param: ["content", "lesson_id"]
+
+- path: /delete/comment
+  controller: LessonCommentaire
+  action: delete
+  method: POST
+  param: ["commentaire_id"]
 
 -
   controller: main
@@ -176,6 +232,22 @@
   method: GET
   param: ["email"]
 
+-
+  controller: reportComment
+  action: showAll
+  path: /reportComments
+  method: GET
+  param: []
+  security: [ "admin" ]
+
+-
+  controller: reportComment
+  action: reportComment
+  path: /reportComment
+  method: POST
+  param: ["comment_id", "reason"]
+  security: [ "admin" ]
+
 
 -
   controller: user
@@ -227,9 +299,23 @@
   param: ["firstname", "lastname", "avatar"]
 
 -
+  controller: AppearanceSettings
+  action: index
+  method: GET
+  path: /settings
+  param: []
+
+
+- controller: AppearanceSettings
+  action: save
+  method: POST
+  path: /save/settings
+  param: ["main_color", "sidebar_color"]
+
+-
   controller: admin
   action: home
-  security: "admin"
+  security: ["admin"]
   path: /dashboard
 
 -
@@ -244,13 +330,13 @@
   action: users
   method: GET
   path: /users
-  security: "admin"
+  security: ["admin"]
 
 
 -
   controller: admin
   action: editUser
-  security: admin
+  security: ["admin"]
   method: GET
   path: /edit/user
   param: ["id"]
@@ -258,7 +344,7 @@
 -
   controller: admin
   action: editUser
-  security: admin
+  security: ["admin"]
   method: POST
   path: /edit/user
   param: ["id"]

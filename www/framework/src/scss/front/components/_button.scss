@@ -29,7 +29,12 @@ button,  input[type="submit"], .button, .btn {
     background: $white;
     border: #3BCDB3 solid 1px;
 
+
+  &--small {
+    font-size: rem(8);
   }
+}
+
 }
 
 .btn-secondary{

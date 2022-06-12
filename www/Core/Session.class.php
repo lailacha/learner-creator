@@ -22,7 +22,7 @@ class Session
     {
             if(session_status() === PHP_SESSION_NONE){
                 session_start();
-//                $_SESSION['role'] = 'admin';
+              $_SESSION['role'] = 'admin';
             }
 
     }

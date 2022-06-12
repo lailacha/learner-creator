@@ -40,7 +40,7 @@ class Mail
     }
 
     /**
-     * @param array $content
+     * @param string $content
      */
     public function setContent($content): void
     {

@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="vitrine">
 
 <head>
     <meta charset="UTF-8">
@@ -14,12 +14,10 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" type="text/css" href="../../framework/dist/main.css"/>
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
- 
 </head>
-
-<body>
+<body >
     <header>
-        <div class="container clearfix">
+        <div class=" container clearfix">
             <a href="/" class="vertically-centered">
                 <img src="../../framework/assets/images/Schills__2_-removebg-preview 1.png" alt="Logo SCHILLS">
             </a>
@@ -33,12 +31,7 @@
             </nav>
         </div>
     </header>
-        <?php include $this->view.".View.php";?>
-
-        
-
-
-
+        <?php include $this->view.".View.php"; ?>
 <footer>
     <div class="container clearfix">
         <nav>

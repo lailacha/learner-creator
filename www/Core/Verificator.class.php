@@ -13,14 +13,11 @@ class Verificator
         $captcha = new Recaptcha();
         $errors = [];
 
+        $inputsToVerify =  array_diff_key($config["inputs"], array_flip(["custom", "disabled"]));
 
 
-
-        if( count($config["inputs"]) !== count($data)){
+        if(count($inputsToVerify) !== count($data)){
                 $errors[] = "Le nombre d'inputs ne correspond pas au nombre d'inputs envoyés";
-//             echo var_dump(array_keys($config["inputs"]));
-//             echo "<br>";
-//                echo var_dump(array_keys($data));
         }
 
         foreach ($config["inputs"] as $name=>$input)

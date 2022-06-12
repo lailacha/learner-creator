@@ -8,7 +8,7 @@
   min-height: 100vh;
   width: 250px;
   padding: 10px 14px;
-  background: $sidebar-color;
+  background: var(--sidebar-background-color);
   transition: $tran;
   z-index: 100;
   border-top-right-radius: 10px;

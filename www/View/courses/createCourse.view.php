@@ -14,7 +14,7 @@
               </div>
               <div class="col-lg-6">
                   <h2>My waiting courses requests</h2>
-                  <table id="example" class="display bg-white p-2" style="width:100%">
+                  <table class=" dataTable display bg-white p-2" style="width:100%">
                       <thead>
                       <tr>
                           <th>Name</th>

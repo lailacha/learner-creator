@@ -9,6 +9,7 @@ class FormBuilder
 
     public static function render(array $config): string
     {
+        
         $html = "<form 
 				method='" . ($config["config"]["method"] ?? "POST") . "' 
 				id='" . ($config["config"]["id"] ?? "") . "' 
@@ -18,16 +19,19 @@ class FormBuilder
 
         foreach ($config["inputs"] as $name=>$input){
                 $input["type"] === "checkbox" ?   $html .= self::renderCheckbox($name,$input) : "";
+                $input["type"] === "color" ?   $html .= self::renderColor($name,$input) : "";
                 $input["type"] === "radio" ?   $html .= self::renderRadio($name,$input) : "";
                 $input["type"] === "textarea" ?   $html .= self::renderTextarea($name,$input) : "";
                 $input["type"] === "select" ?   $html .= self::renderSelect($name,$input) : "";
                 $input["type"] === "file" || $input["type"] === "text" || $input["type"] === "password"|| $input["type"] === "email" ?   $html .= self::renderInput($name,$input) : "";
                 $input["type"] === "captcha" ?  $html .= (new Recaptcha())->renderRecaptcha() : "";
                 $input["type"] === "hidden" ?  $html .= self::renderHidden($name,$input) : "";
+                $input["type"] === "custom" ?  $html .= self::renderCustomHtml($input) : "";
         }
 
         $html .= " <input type='submit' value='".($config["config"]["submit"] ?? '')."'>";
         $html .= "</form>";
+
          return $html;
     }
 
@@ -158,6 +162,18 @@ class FormBuilder
         return $data;
     }
 
+
+    public static function renderCustomHtml(array $input): string
+    {
+        return $input["html"] ?? "";
+    }
+
+    private static function renderColor(int|string $name, mixed $input)
+    {
+        $data = "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
+        $data .= " <input value='".($input["value"] ?? '')."'  type='color'  class='".($input["class"] ?? '')."'  id='".($input["id"] ?? '')."' placeholder='".($input["placeholder"] ?? '')."' ".($input["disabled"] ?? "")." name='".($name ?? "")."'./>";
+        return $data;
+    }
 
 
 }

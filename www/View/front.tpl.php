@@ -14,6 +14,13 @@
     <link rel="stylesheet" type="text/css" href="../../framework/dist/main.css"/>
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 </head>
+<style>
+    :root{
+    --sidebar-background-color: <?php echo $settings->getBy('id', 'sidebar_color')->getValue() ?>;
+    --main-color: <?php echo $settings->getBy('id', 'main_color')->getValue() ?>;
+    --big-title-size: <?php echo $settings->getBy('id', 'big_title_size')->getValue() ?>;
+    }
+</style>
 <body class="flex grid" >
     <nav class="sidebar-left close">
         <header>

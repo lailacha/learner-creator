@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\Lesson as LessonManager;
 use App\Model\User;
 use App\Core\Verificator;
 use App\Model\Lesson;
@@ -37,7 +38,19 @@ class LessonCommentaire extends BaseController
 
     public function delete()
     {
-
+        $commentaireManager = new CommentaireManager();
+        if($this->request->get("commentaire_id"))
+        {
+            $comment = $commentaireManager->setId($this->request->get("commentaire_id"));
+            $comment->delete();
+            $this->session->addFlashMessage("success", "Comment has been deleted");
+            $this->route->goBack();
+        }
+        else
+        {
+            $this->session->addFlashMessage("error", "Comment not found");
+            $this->route->goBack();
+        }
     }
 
 }

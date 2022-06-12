@@ -1,4 +1,4 @@
-.button{
+.button, {
   display: inline-block;
   padding: 1em 2em;
   color: $white;
@@ -6,6 +6,7 @@
   border: none;
   transition: background-color 0.3s;
   cursor: pointer;
+
 
   &:hover{
     background-color: lighten($grey, 10%);

@@ -1,11 +1,11 @@
-﻿<main class="vitrine">
+<main class="vitrine">
         <section id="section1">
             <div class="container clearfix">
                 <div class="vertically-centered">
                     <h2>SCHILLS is here to improve your skills !</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                     <button onclick="window.location.href = '#section2';"> Explore </button>
-                    
+
                 </div>
                 
             </div>

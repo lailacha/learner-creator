@@ -15,6 +15,7 @@ class Course extends Sql
     protected $name;
     protected string $description;
     protected $created_at;
+    protected $deleted_at;
     protected int $category;
     protected int $cover;
     protected int $user;
@@ -127,8 +128,6 @@ class Course extends Sql
     {
         $fileManager = new FileModel();
         if ($this->getCover() !== null) {
-
-
             return $fileManager->getBy('id', $this->getCover())->getPath();
         }
 
@@ -152,6 +151,12 @@ class Course extends Sql
         $this->user = $user;
     }
 
+    public function user(): User
+    {
+        $userManager = new User();
+        return $userManager->setId($this->getUser());
+    }
+
     /**
      * @return int|null
      */
@@ -168,6 +173,20 @@ class Course extends Sql
         $this->status = $status;
     }
 
+    /**
+     * @return ?string
+     */
+    public function getDeletedAt()
+    {
+        return $this->deleted_at;
+    }
+
+
+    public function setDeletedAt($deleted_at): void
+    {
+        $this->deleted_at = $deleted_at;
+    }
+
     public function getUnapprovedCoursesByUser($user_id)
     {
         $query = new QueryBuilder();
@@ -181,6 +200,35 @@ class Course extends Sql
             ])
             ->fetchAllByClass(Course::class);
     }
+
+
+    public function getAllRequests(): array
+    {
+        $query = new QueryBuilder();
+        return  $query->select('c.id, c.name, c.description, c.category, u.lastname, u.firstname')
+            ->from('course c')
+            ->innerJoin('user u', 'c.user = u.id')
+            ->where('c.status = :status')
+            ->where('c.deleted_at IS NULL')
+            ->setParams([
+                'status' => 0
+            ])
+            ->fetchAllByClass(Course::class);
+    }
+
+    public function searchCourse($name): array
+    {
+        $query = new QueryBuilder();
+        return $query->select('c.id, c.name, c.description, c.category, f.path')
+            ->from('course c')
+            ->innerJoin('file f', 'c.cover = f.id')
+            ->where( "c.name LIKE :name", "c.deleted_at IS NULL")
+            ->setParams([
+                'name' => '%' . $name . '%'
+            ])
+            ->fetchAll();
+    }
+
 
     // à optimiser avec un innerjoin au lieu de plusieurs requêtes
     public function getCategoryName(): string

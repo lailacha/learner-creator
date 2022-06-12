@@ -4,6 +4,8 @@
 namespace App\Core;
 
 
+use InvalidArgumentException;
+
 class HttpRequest
 {
     private $url;
@@ -115,7 +117,7 @@ class HttpRequest
     public function get(string $param){
         if(!$this->data[$param]) {
             echo "Cannot access data. Il n'y a pas de paramètre existant pour " . $param . " dans les paramètre de la route. Veuillez verifier";
-            die();
+            throw new InvalidArgumentException("Cannot access data. Il n'y a pas de paramètre existant pour " . $param . " dans les paramètre de la route. Veuillez verifier");
         }
         return $this->data[$param];
     }

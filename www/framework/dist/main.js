@@ -4057,6 +4057,41 @@ $(document).ready(function () {
   }
 });
 $(document).ready(function () {
+  $(".search-bar input").on("keyup", function (e) {
+    $.ajax({
+      url: "/search/course?course=" + $(this).val(),
+      success: function success(data) {
+        data = JSON.parse(data);
+        console.log(data);
+        var html = "";
+        data.forEach(function (element) {
+          console.log(element);
+          html += "<div class='course-thumbnail col-md-3'>";
+          html += "<img className='cover' src=" + element.path + " />";
+          html += "<a href='/show/course?id=" + element.id + "'>" + element.name + "</a>";
+          html += "<p>" + element.description + "</p>";
+          html += "</div>";
+        });
+        $(".search-results").html(html);
+      }
+    });
+  });
+  $('.dataTable').DataTable();
+  var dialog = document.querySelector('.modal');
+
+  if (document.getElementById('show')) {
+    document.getElementById('show').addEventListener('click', function () {
+      dialog.showModal();
+      body.style.filter = "blur(5px)";
+    });
+  }
+
+  if (document.getElementById('hide')) {
+    document.getElementById('hide').addEventListener('click', function () {
+      dialog.close();
+    });
+  }
+
   tinymce.init({
     selector: 'textarea.editable',
     plugins: 'a11ychecker advcode casechange export formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker',

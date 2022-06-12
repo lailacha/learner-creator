@@ -1,15 +1,19 @@
-
-
 @import "variables";
 @import "globals";
 @import "components/form";
 @import "components/course-list";
 @import "components/button";
 @import "components/grid";
+@import "components/comment";
+@import "components/modal";
+@import "components/profile";
+@import "components/card";
+
 @import "components/flash-message";
 
 body{
   margin: 0;
+  background-color: var(--main-color) !important;
 }
 
 .back {
@@ -21,7 +25,8 @@ body{
   @import "front/main";
 
 }
-@import "vitrine";
+ @import "vitrine";
+
 
 
 

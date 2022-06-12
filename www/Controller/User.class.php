@@ -21,18 +21,21 @@ class User extends BaseController
     public function login()
     {
         $user = new UserModel();
-        $session = Session::getInstance();
         if (!empty($_POST) && $user->login($_POST['email'], $_POST['password'])) {
-            $role = $user->getRole($session->get('user')["id"]);
-            $session->set('role', $role);
+            $role = $user->getRole($this->session->set('user')["id"]);
+            $this->session->set('role', $role);
 
-            header('Location: /edit/profile');
+        if (!empty($_POST)) {
+            $user->setEmail(htmlspecialchars($_POST["email"]));
+            $user->setPassword(htmlspecialchars($_POST["password"]));
+            $user->login(["email" => $_POST['email']], ["password" => $_POST['password']]);
         }
         $view = new View("login", "home");
         
         $form = FormBuilder::render($user->getLoginForm());
         $view->assign("form", $form);
     }
+}
 
 
     public function logout()
@@ -66,18 +69,17 @@ class User extends BaseController
 //
 //                $user->save();
 
-                //$this->sendRegisterMail($user);
-                $session->set("error", $verification[0]);
                 $user->setFirstname(htmlspecialchars($_POST["firstname"]));
                 $user->setLastname(htmlspecialchars($_POST["lastname"]));
                 $user->setEmail(htmlspecialchars($_POST["email"]));
                 $user->setPassword(htmlspecialchars($_POST["password"]));
 
                 $user->generateToken((Helpers::createToken()));
+                $this->sendRegisterMail($user);
 
                 $user->save();
                 $session->addFlashMessage("success", "Your registration is OK!");
-
+                return;
 
             }
             $session->addFlashMessage("error", $verification[0]);
@@ -213,33 +215,35 @@ class User extends BaseController
                 $user->setLastname($this->request->get('lastname'));
             }
 
-            {
-                $user->setFirstname($this->request->get('firstname'));
-                $user->setLastname($this->request->get('lastname'));
-            }
-            if (!empty($this->request->get("avatar")) && $this->request->get("avatar") !== $user->getAvatar()) {
-                if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === 0) {
+                {
+                    $user->setFirstname($this->request->get('firstname'));
+                    $user->setLastname($this->request->get('lastname'));
+                }
+                if(!empty($this->request->get("avatar")) && $this->request->get("avatar") !== $user->getAvatar() && isset($_FILES['avatar']) && $_FILES['avatar']['error'] === 0) {
 
                     try {
                         $file = new File($_FILES["avatar"]);
-                        $file = $file->upload("avatar", 3);
+                        $file = $file->upload( "avatar", 3);
                     } catch (\Exception $e) {
                         $this->session->addFlashMessage("error", $e->getMessage());
+                        $this->route->redirect("/edit/profile");
                         return;
                     }
                     $user->setAvatar($file->getLastInsertId());
                 }
 
+                $user->save();
+                $this->session->addFlashMessage("success", "Votre profile a bien été modifié");
+                $this->route->redirect("/edit/profile");
+
+            }
+            else{
+                $this->session->addFlashMessage("error",$errors[0]);
+                $this->route->redirect("/edit/profile");
+
             }
 
-            $user->save();
-            $this->session->addFlashMessage("success", "Votre profile a bien été modifié");
-            $this->route->redirect("/edit/profile");
-
-        } else {
-            $this->session->addFlashMessage("error", $errors[0]);
         }
-    }
 }
 
 

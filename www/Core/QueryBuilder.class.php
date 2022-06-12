@@ -3,6 +3,7 @@
 namespace App\Core;
 
 use App\Core\Sql;
+use PDO;
 
 class QueryBuilder
 {
@@ -21,8 +22,8 @@ class QueryBuilder
     public function __construct()
     {
         try {
-            $this->pdo = new \PDO(DBDRIVER . ":host=" . DBHOST . ";port=" . DBPORT . ";dbname=" . DBNAME . ";charset=utf8mb4", DBUSER, DBPWD
-                , [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING]);
+            $this->pdo = new PDO(DBDRIVER . ":host=" . DBHOST . ";port=" . DBPORT . ";dbname=" . DBNAME.";charset=utf8mb4", DBUSER, DBPWD
+                , [PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING]);
         } catch (\Exception $e) {
             die("Erreur SQL : " . $e->getMessage());
         }
@@ -123,7 +124,7 @@ class QueryBuilder
     {
         $queryPrepared = $this->pdo->prepare($this->toSql());
         $queryPrepared->execute($this->params);
-        return $queryPrepared->fetchAll(\PDO::FETCH_CLASS, $className);
+        return $queryPrepared->fetchAll(PDO::FETCH_CLASS, $className);
     }
 
     public function fetchByClass(string $className)

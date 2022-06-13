@@ -34,9 +34,12 @@ abstract class Sql
     public function setId(?int $id)
     {
         $sql = "SELECT * FROM ".$this->table." WHERE id=:id";
+
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute( ["id"=>$id] );
+
         return $queryPrepared->fetchObject(get_called_class());
+
 
     }
 

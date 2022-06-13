@@ -253,6 +253,51 @@
 
 -
   controller: teacher
-  action: add
+  action: index
   method: GET
-  path: /add/teacher
+  path: /teacher/new
+
+
+
+-
+  controller: teacher
+  action: create
+  method: POST
+  path: /teacher/new
+  param: [ "cv", "motivation", "theme", "diplome" ]
+
+-
+  controller: admin
+  action: requestTeachers
+  method: GET
+  path: /teachers/allRequests
+  param: []
+
+-
+  controller: admin
+  action: download
+  method: GET
+  path: /download
+  param: ["id"]
+
+-
+  controller: admin
+  action: showRequestTeacher
+  method: GET
+  path: /show/requestTeacher
+  param: ["id"]
+
+-
+  controller: admin
+  action: validRequestTeacher
+  method: GET
+  path: /valid/requestTeacher
+  param: ["id"]
+
+
+-
+  controller: admin
+  action: refuseRequestTeacher
+  method: GET
+  path: /refuse/requestTeacher
+  param: ["id"]

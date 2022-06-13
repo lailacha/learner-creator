@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Core\FormBuilder;
 use App\Core\View;
+use App\Model\File;
+use App\Model\RequestTeacher;
 use App\Model\Role;
 use App\Model\User as UserModel;
 
@@ -56,6 +58,55 @@ class Admin extends BaseController
         } else {
             die("user non trouvable");
         }
+    }
+
+
+    public function requestTeachers(): void
+    {
+        $requestManager = new RequestTeacher();
+        $listRequestsTeacher = $requestManager->getAllRequest();
+        $view = new View("requestTeachers", "back");
+        $view->assign("listRequestsTeacher", $listRequestsTeacher);
+    }
+
+    public function download(): void
+    {
+        $file_id = $this->request->get("id");
+        $file = new File();
+        $file = $file->getBy("id", $file_id);
+        $path = __DIR__ . "/.." . $file->getPath();
+
+        $file->download();
+
+    }
+
+    public function showRequestTeacher(): void
+    {
+        $requestManager = new RequestTeacher();
+        $id_request = $this->request->get("id");
+        $request = $requestManager->getBy("id", $id_request);
+        $view = new View("showRequestTeacher", "back");
+        $view->assign("request", $request);
+    }
+
+
+    public function validRequestTeacher(): void
+    {
+        $requestManager = new RequestTeacher();
+        $id_request = $this->request->get("id");
+        $requestManager = $requestManager->setId($id_request);
+        $requestManager->setStatut(1);
+        $requestManager->save();
+        header('Location: /teachers/requestInProgress');
+    }
+    public function refuseRequestTeacher(): void
+    {
+        $requestManager = new RequestTeacher();
+        $id_request = $this->request->get("id");
+        $requestManager = $requestManager->setId($id_request);
+        $requestManager->setStatut(-1);
+        $requestManager->save();
+        header('Location: /teachers/requestInProgress');
     }
 
 }

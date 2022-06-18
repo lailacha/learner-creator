@@ -2,9 +2,11 @@
 
 namespace App\Model;
 
+use App\Core\QueryBuilder;
 use App\Core\Session;
 use App\Core\Sql;
 use App\Model\File as FileModel;
+use App\Model\User as userManager;
 use App\Model\User as UserModel;
 
 class User extends Sql
@@ -14,11 +16,11 @@ class User extends Sql
     protected $lastname = null;
     protected $email;
     protected $avatar;
+    protected $role_id = 1;
     protected $status = 0;
     protected $password;
     protected $token = null;
 
-   
     public function __construct()
     {
         //echo "constructeur du Model User";
@@ -31,6 +33,22 @@ class User extends Sql
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRoleId(): int
+    {
+        return $this->role_id;
+    }
+
+    /**
+     * @param int $role_id
+     */
+    public function setRoleId(int $role_id): void
+    {
+        $this->role_id = $role_id;
     }
 
 
@@ -166,16 +184,136 @@ class User extends Sql
     {
         //Pré traitement par exemple
         //echo "pre traitement";
-       
         parent::save();
     }
 
+    public function login($email, $password): bool
+    {
+        $query = new QueryBuilder();
+        $user = $query->from('user')
+            ->where('email = :email')
+            ->setParam('email', $email)
+            ->fetch();
 
-    public static function getUserConnected() {
+
         $session = new Session();
-        if($session->get("user") != null) {
+        if ($user && password_verify($password, $user["password"])) {
+            $session->set("user", $user);
+            $session->addFlashMessage("success", "Vous êtes connecté");
+            return true;
+        }
+
+        $session->addFlashMessage("error", "identifiants incorrects");
+        return false;
+
+    }
+
+    public function getAllUsers(): array
+    {
+        $users = [];
+        $query = new QueryBuilder();
+        $results = $query->from('user')
+            ->fetchAllByClass(__CLASS__);
+
+        return $results;
+    }
+
+    public function getRole(int $id = null): string
+    {
+        $query = new QueryBuilder();
+        $user_id = $this->id ?? $id;
+        return $query->from('user')
+            ->innerJoin('role', DBPREFIXE . 'user.role_id =' . DBPREFIXE . 'role.id')
+            ->where(DBPREFIXE . 'user.id = :id')
+            ->setParam('id', $user_id)
+            ->fetch("name");
+    }
+
+    function deleteUser(int $id)
+    {
+        $sql = "DELETE FROM " . DBPREFIXE . "user WHERE id = :id";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+
+    }
+
+    public function getEditUserForm(): array
+    {
+        $roleManager = new Role();
+
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "",
+                "id" => "formEditUser",
+                "enctype" => "multipart/form-data",
+                "class" => "form edit",
+                "submit" => "Modifier"
+            ],
+            "inputs" => [
+                "firstname" => [
+                    "placeholder" => $this->getFirstname(),
+                    "value" => $this->getFirstname(),
+                    "type" => "text",
+                    "id" => "firstnameRegister",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "min" => 2,
+                    "max" => 25,
+                    "error" => " Votre prénom doit faire entre 2 et 25 caractères",
+                ],
+                "lastname" => [
+                    "type" => "text",
+                    "placeholder" => $this->getLastname(),
+                    "value" => $this->getLastname(),
+                    "id" => "testRegister",
+                    "required" => true,
+                    "class" => "formRegister",
+                    "error" => " Votre nom doit faire entre 2 et 100 caractères",
+                ],
+                "email" => [
+                    "placeholder" => $this->getEmail(),
+                    "value" => $this->getEmail(),
+                    "type" => "email",
+                    "id" => "emailRegister",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "error" => "Email incorrect",
+                    "unicity" => true,
+                    "errorUnicity" => "Un compte existe déjà avec cet email"
+                ],
+                "role" => [
+                    "type" => "select",
+                    "id" => "jjj",
+                    "class" => "formRegister",
+                    "options" => [
+                        "data" =>
+                            $roleManager->getAll(),
+                        "property" => "name",
+                        "value" => "id",
+                        "selected" => 1
+
+                    ]],
+                "id" => [
+                    "value" => $this->getId(),
+                    "type" => "hidden",
+                    "id" => "idUser",
+                    "class" => "formRegister",
+                ],
+
+
+            ],
+        ];
+    }
+
+
+    public static function getUserConnected()
+    {
+        $session = new Session();
+        if ($session->get("user") != null) {
             $userManager = new UserModel();
-            $userConnected =  $userManager->setId($session->get("user")["id"]);
+            $userConnected = $userManager->setId($session->get("user")["id"]);
             return $userConnected;
         }
         return false;
@@ -227,7 +365,6 @@ class User extends Sql
 
     public function getRegisterForm(): array
     {
-        
         return [
             "config" => [
                 "method" => "POST",
@@ -238,26 +375,7 @@ class User extends Sql
                 "submit" => "Sign in"
             ],
             "inputs" => [
-            "firstname" => [
-                "placeholder" => "Enter your name",
-                "type" => "text",
-                "id" => "firstnameRegister",
-                "class" => "formRegister",
-                "required" => true,
-                "min" => 2,
-                "max" => 25,
-                "error" => " Votre prénom doit faire entre 2 et 25 caractères",
-            ],    
-            "lastname" => [
-                "type" => "text",
-                "placeholder" => "Votre nom de famille ...",
-                "id" => "testRegister",
-                "required" => true,
-                "value" => "testRegister",
-                "class" => "formRegister",
-                "error" => " Votre nom doit faire entre 2 et 100 caractères",
-            ],    
-            "email" => [
+                "email" => [
                     "placeholder" => "Votre email ...",
                     "type" => "email",
                     "id" => "emailRegister",
@@ -267,8 +385,8 @@ class User extends Sql
                     "unicity" => true,
                     "errorUnicity" => "Un compte existe déjà avec cet email"
                 ],
-              "password" => [
-                  "placeholder" => "Votre mot de passe ...",
+                "password" => [
+                    "placeholder" => "Votre mot de passe ...",
                     "type" => "password",
                     "id" => "pwdRegister",
                     "class" => "formRegister",
@@ -284,11 +402,29 @@ class User extends Sql
                     "error" => "Votre confirmation de mot de passe ne correspond pas",
                     "confirm" => "password"
                 ],
-               
+                "firstname" => [
+                    "placeholder" => "Votre prénom ...",
+                    "type" => "text",
+                    "id" => "firstnameRegister",
+                    "class" => "formRegister",
+                    "min" => 2,
+                    "max" => 25,
+                    "error" => " Votre prénom doit faire entre 2 et 25 caractères",
+                ],
+
+                "lastname" => [
+                    "type" => "text",
+                    "placeholder" => "Votre nom de famille ...",
+
+                    "id" => "testRegister",
+                    "value" => "testRegister",
+                    "class" => "formRegister",
+                    "error" => " Votre nom doit faire entre 2 et 100 caractères",
+                ],
                 "g-recaptcha-response" => [
                     "type" => "captcha",
                     "error" => "Veuillez valider le captcha si vous êtes un humain :)",
-              ],
+                ],
 ////To test types of inputs
 //                "ville" => [
 //                    "type" => "checkbox",
@@ -337,7 +473,7 @@ class User extends Sql
 //                "error" => " Votre photo doit être de la bonne extension",
 //
 //            ]
-        ],
+            ],
         ];
     }
 
@@ -370,6 +506,7 @@ class User extends Sql
             ]
         ];
     }
+
     public function getForgetPswdForm(): array
     {
         return [
@@ -388,11 +525,9 @@ class User extends Sql
                     "class" => "formRegister",
                     "required" => true,
                 ],
-                
+
             ]
         ];
     }
-
-
 
 }

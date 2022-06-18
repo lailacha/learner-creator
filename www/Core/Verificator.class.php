@@ -13,6 +13,9 @@ class Verificator
         $captcha = new Recaptcha();
         $errors = [];
 
+
+
+
         if( count($config["inputs"]) !== count($data)){
                 $errors[] = "Le nombre d'inputs ne correspond pas au nombre d'inputs envoyés";
 //             echo var_dump(array_keys($config["inputs"]));

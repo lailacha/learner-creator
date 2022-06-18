@@ -1,15 +1,14 @@
 <?php
 
+namespace App\Model;
 
-namespace App\Controller;
+use App\Core\QueryBuilder;
 
-
-class FileCategorie
+class Role
 {
+    protected int $id;
+    protected string $name;
 
-    private int $id;
-    private string $name;
-    private string $description;
 
 
     /**
@@ -44,19 +43,12 @@ class FileCategorie
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription(): string
+    public function getAll(): array
     {
-        return $this->description;
+        $query = new QueryBuilder();
+        return $query->from('role')
+            ->orderBy('id', 'ASC')
+            ->fetchAll();
     }
 
-    /**
-     * @param string $description
-     */
-    public function setDescription(string $description): void
-    {
-        $this->description = $description;
-    }
 }

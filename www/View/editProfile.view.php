@@ -10,4 +10,6 @@
         <?php echo $form ?>
 
     <?php endif; ?>
+
+    <a href="/add/teacher">Faire une demande pour devenir professeur chez nous</a>
 </div>

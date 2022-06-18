@@ -13,7 +13,8 @@ class Router
     private $fileRoutes = "routes.yml";
     private $listRoutes;
 
-    public function __construct(){
+    public function __construct()
+    {
 
         if (file_exists($this->fileRoutes)) {
             $this->listRoutes = yaml_parse_file($this->fileRoutes);
@@ -26,7 +27,8 @@ class Router
     public function findRoute(HttpRequest $httpRequest)
     {
 
-        $routeFound = array_filter($this->listRoutes,function($route) use ($httpRequest){
+
+        $routeFound = array_filter($this->listRoutes, function ($route) use ($httpRequest) {
             $method = $route["method"] ?? "GET";
 
             if (!Security::checkRoute($route)) {
@@ -35,19 +37,14 @@ class Router
 
             Security::checkAuth($route);
 
-             return preg_match("#^" . $route["path"] . "$#", $httpRequest->getUrl()) && $method === $httpRequest->getMethod();
+            return preg_match("#^" . $route["path"] . "$#", $httpRequest->getUrl()) && $method === $httpRequest->getMethod();
         });
         $numberRoute = count($routeFound);
-        if($numberRoute > 1)
-        {
+        if ($numberRoute > 1) {
             throw new MultipleRouteFoundException();
-        }
-        else if($numberRoute == 0)
-        {
+        } else if ($numberRoute == 0) {
             throw new NoRouteFoundException();
-        }
-        else
-        {
+        } else {
             return new Route(array_shift($routeFound));
         }
 

@@ -14,7 +14,7 @@ services:
      - database
 
   database:
-    image: mysql:5.7
+    image: mysql:8
     container_name: mysql
     ports :
       - "3305:3305"

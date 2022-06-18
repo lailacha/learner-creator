@@ -9,13 +9,13 @@ class Main extends BaseController{
 
     public function home()
     {
-        echo "Welcome";
+        $view = new View("home", "home");
     }
 
 
-    public function front()
+    public function contact()
     {
-        $view = new View("contact", "back");
+        $view = new View("contact", "home");
     }
 
 }

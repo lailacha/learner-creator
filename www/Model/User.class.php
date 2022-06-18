@@ -492,15 +492,15 @@ class User extends Sql
                 "email" => [
                     "placeholder" => "Votre email ...",
                     "type" => "email",
-                    "id" => "emailRegister",
-                    "class" => "formRegister",
+                    "id" => "login",
+                    "class" => "fadeIn second",
                     "required" => true,
                 ],
                 "password" => [
                     "placeholder" => "Votre mot de passe ...",
                     "type" => "password",
-                    "id" => "pwdRegister",
-                    "class" => "formRegister",
+                    "id" => "password",
+                    "class" => "fadeIn third",
                     "required" => true,
                 ]
             ]

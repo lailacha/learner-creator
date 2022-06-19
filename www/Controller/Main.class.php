@@ -9,44 +9,53 @@ class Main extends BaseController{
 
     public function home()
     {
-        
-        
-            // Get current directory
-    echo getcwd() . "<br>";
-
-    // Change directory
-    chdir("../");
-
-    // Get current directory
-    echo getcwd();
-
-    $dir = getcwd();
 
     // Permet de savoir si le fichier existe
-    $filename = $dir.'/conf.inc.php';
-        if (file_exists($filename)) {
-            echo "Le fichier $filename existe.";
-        } else {
-            echo "Le fichier $filename n'existe pas.";
-        }
+    $filename ='./conf.inc.php';
 
-    /* Permet d'afficher le contenu d'un dossier */
-    /* if (is_dir($dir)){
-        if ($dh = opendir($dir)) {
-          while (($file = readdir($dh)) !== false){
-            echo "filename:" . $file . "<br>";
-          }
-          closedir($dh);
-        }
-    } */
-
+    
+    if(!is_dir($filename)){
+        echo "Le fichier $filename existe.";
+        $view = new View("installeur", "back");
+        $view->assign("firstname", "Ricardo");
+        $view->assign("lastname", "Hernandez");
+        
         echo "Welcome";
+    }else {
+        echo "Le fichier $filename n'existe pas.";
+    }
     }
 
 
     public function front()
     {
         $view = new View("contact", "back");
+    }
+
+    public function install()
+    {
+        // double securité verifier si le fichier conf existe, si il existe il faut rediriger vers l'index.php
+        // Pour eviter de se faire hacker
+        $myfile = fopen("conf.php", "w");
+        if (!empty($_GET)) {
+
+            echo("Super");
+            var_dump($_GET);
+
+            foreach ($_GET as $value) {
+                echo($value);
+                $txt = 'define("MAIL_SENDER_NAME",'.$value.')';
+
+                fwrite($myfile,$txt);
+                fwrite($myfile, "\n");
+            }
+
+            #echo($myfile);
+            echo("********************************");
+            echo("\n");
+            echo("Bravo L'instalation est faite");
+
+        }
     }
 
 }

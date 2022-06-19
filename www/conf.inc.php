@@ -14,4 +14,3 @@ define("DBNAME", "mvcdocker2");
 define("DBPORT", "3306");
 define("DBPREFIXE", "esgi_");
 define('MB', 1048576);
-

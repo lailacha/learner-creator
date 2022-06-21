@@ -10,13 +10,12 @@
    
     
     
-    <form>
       <?php if (isset($form)) : ?>
                 <?php echo $form ?>
 
             <?php endif; ?>
             
-    </form>
+
 
    
     <div id="formFooter">

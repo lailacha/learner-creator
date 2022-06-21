@@ -1,0 +1,74 @@
+#part3 {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  padding: 10px 15px;
+  border-radius: 5px;
+
+  & h2 {
+    padding: 5px 0 10px 0;
+  }
+
+  & section div {
+    margin: 10px 0;
+    height: 34px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+
+    & .rappel-icon {
+      background-color: $body-color;
+      height: 34px;
+      width: 34px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+      margin: 0 5px 0 0;
+
+      & .icon, & span, & i, {
+        color: lighten($text-color, 25%);
+      }
+
+      & svg path {
+        fill: lighten($text-color, 25%);
+      }
+    }
+
+    & .rappel-details {
+      padding: 0 0 0 10px;
+      height: 34px;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      justify-content: space-around;
+
+      & h3 {
+        font-size: rem(10);
+        line-height: 12px;
+        font-weight: 600;
+        font-style: normal;
+      }
+
+      & h4 {
+        font-size: rem(10);
+        font-weight: 400;
+        color: $text-color;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+
+        & small {
+          color: $orange;
+          padding: 0;
+        }
+      }
+    }
+  }
+
+}

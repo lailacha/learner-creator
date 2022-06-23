@@ -4,43 +4,37 @@
     <meta charset="UTF-8">
     <title>Dashboard front</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js" defer></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"
+            defer></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
     <script src="../../framework/dist/main.js"></script>
     <script src="https://kit.fontawesome.com/abaaf4d322.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js" charset="utf-8"></script>
-    <script src="https://cdn.tiny.cloud/1/iam35x4cabb1nisnr71bcn2cpamtw3nk67uokoq3b288i0ay/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/iam35x4cabb1nisnr71bcn2cpamtw3nk67uokoq3b288i0ay/tinymce/5/tinymce.min.js"
+            referrerpolicy="origin"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" type="text/css" href="../../framework/dist/main.css"/>
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 </head>
-<body class="flex grid" >
+<body class="flex grid">
 
-<section>
-    <?php include "Partial/sidebar-left.partial.php";?>
+<section id="sidebar-left">
+    <?php include "Partial/sidebar-left.partial.php"; ?>
 </section>
-    <div class="container column w-100 pl-3 mt-1">
 
 
-        <?php include "./View/Partial/error-message.partial.php"; ?>
 
-    <?php include $this->view.".View.php";?>
-    </div>
-
-<section>
-    <?php include "Partial/sidebar-right.partial.php";?>
-</section>
 
 <script src="https://code.iconify.design/2/2.1.2/iconify.min.js"></script>
 <script>
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#example').DataTable();
-    } );
+    });
 
 
     //toggle nav-link
-    $('.nav-link').click(function() {
+    $('.nav-link').click(function () {
         $('.nav-link').removeClass('active');
         $(this).addClass('active');
     });

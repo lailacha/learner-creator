@@ -64,8 +64,10 @@ class User extends BaseController {
 //
 //                $user->save();
 
-                //$this->sendRegisterMail($user);
+               //$this->sendRegisterMail($user);
+                if($verification[0]){
                 $session->set("error",$verification[0] );
+                }
                 $user->setFirstname(htmlspecialchars($_POST["firstname"]));
                 $user->setLastname(htmlspecialchars($_POST["lastname"]));
                 $user->setEmail(htmlspecialchars($_POST["email"]));
@@ -78,7 +80,9 @@ class User extends BaseController {
 
 
             }
+            if($verification[0]){
             $session->addFlashMessage("error", $verification[0]);
+            }
         }
 
         # we set csrf_token in session

@@ -283,20 +283,16 @@ class User extends Sql
                     "error" => "Votre confirmation de mot de passe ne correspond pas",
                     "confirm" => "password"
                 ],
-                
             "csrf_token" => [
                     "placeholder" => $_SESSION['csrf_token'],
-                    "type" => "crsf_token",
+                    "value" => $_SESSION['csrf_token'],
+                    "type" => "hidden",
                     "id" => "pwdcsrf",
                     "class" => "formRegister",
                     "required" => true,
-                    "error" => "Le token csrf ne correspond pas",
-                    "confirm" => "password"
+                    "error" => "Le token csrf ne correspond pas"
                 ],
-            "g-recaptcha-response" => [
-                    "type" => "captcha",
-                    "error" => "Veuillez valider le captcha si vous êtes un humain :)",
-            ],
+        
 ////To test types of inputs
 //                "ville" => [
 //                    "type" => "checkbox",

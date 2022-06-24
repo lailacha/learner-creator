@@ -160,7 +160,7 @@
   action: register
   method: POST
   path: /register
-  param: ["firstname", "lastname","email", "password", "passwordConfirm", "g-recaptcha-response"]
+  param: ["firstname", "lastname","email", "password", "passwordConfirm","csrf_token", "g-recaptcha-response"]
 
 -
   controller: user

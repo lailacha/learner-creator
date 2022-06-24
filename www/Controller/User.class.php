@@ -68,6 +68,12 @@ class User extends BaseController {
                 if($verification[0]){
                 $session->set("error",$verification[0] );
                 }
+                
+                $isRegistred = $user->getBy("email",$_POST["email"]);
+
+                echo("Register");
+                if(!$isRegistred){
+
                 $user->setFirstname(htmlspecialchars($_POST["firstname"]));
                 $user->setLastname(htmlspecialchars($_POST["lastname"]));
                 $user->setEmail(htmlspecialchars($_POST["email"]));
@@ -77,7 +83,9 @@ class User extends BaseController {
 
                 $user->save();
                 $session->addFlashMessage("success", "Your registration is OK!");
-
+                }else{
+                    echo "Vous etes déjà inscrit";
+                }
 
             }
             if($verification[0]){
@@ -87,8 +95,8 @@ class User extends BaseController {
 
         # we set csrf_token in session
         $_SESSION["csrf_token"] = md5(uniqid(mt_rand(), true));
-        
-        var_dump($_SESSION);
+    
+        //var_dump($_SESSION);
         $view = new View("Register");
         $form = FormBuilder::render($user->getRegisterForm());
         $view->assign("form", $form);

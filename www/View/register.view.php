@@ -1,4 +1,3 @@
-
 <div class="wrapper fadeInDown">
   <div id="formContent">
    
@@ -9,13 +8,13 @@
     
     
     
-    <form>
+    
       <?php if (isset($form)) : ?>
                 <?php echo $form ?>
-
+               
             <?php endif; ?>
             
-    </form>
+    
 
    
     <div id="formFooter">

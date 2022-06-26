@@ -23,7 +23,7 @@ class RequestTeacher extends Sql
 
     public function __construct()
     {
-        parent::__construct();
+        $this->getPDO();
         parent::setTable(DBPREFIXE . "request_teachar");
     }
 

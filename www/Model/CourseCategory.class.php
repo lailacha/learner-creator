@@ -17,7 +17,7 @@ class CourseCategory extends Sql
 
     public function __construct()
     {
-        parent::__construct();
+        $this->getPDO();
         $this->table  = DBPREFIXE."course_category";
     }
     /**
@@ -63,7 +63,7 @@ class CourseCategory extends Sql
     public function getCategory(): array
     {
         $query = "SELECT id, name FROM ".$this->table." ORDER BY name ASC";
-        $req = $this->pdo->prepare($query);
+        $req = $this->getPDO()->prepare($query);
         $req->execute();
         $res = $req->fetchAll(PDO::FETCH_ASSOC);
         return $res;

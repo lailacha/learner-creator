@@ -24,7 +24,7 @@ class User extends Sql
     public function __construct()
     {
         //echo "constructeur du Model User";
-        parent::__construct();
+       $this->getPDO();
     }
 
     /**
@@ -232,7 +232,7 @@ class User extends Sql
     function deleteUser(int $id)
     {
         $sql = "DELETE FROM " . DBPREFIXE . "user WHERE id = :id";
-        $statement = $this->pdo->prepare($sql);
+        $statement = $this->getPDO()->prepare($sql);
         $statement->bindValue(':id', $id, \PDO::PARAM_INT);
         $statement->execute();
 

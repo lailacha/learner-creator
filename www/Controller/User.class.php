@@ -22,10 +22,11 @@ class User extends BaseController
     {
         $user = new UserModel();
         $session = Session::getInstance();
+        
         if (!empty($_POST) && $user->login($_POST['email'], $_POST['password'])) {
             $role = $user->getRole($session->get('user')["id"]);
             $session->set('role', $role);
-
+            
             header('Location: /edit/profile');
         }
         $view = new View("login", "home");
@@ -40,6 +41,7 @@ class User extends BaseController
         
         session_destroy();
         echo "Se déconnecter";
+        
     }
 
 
@@ -48,10 +50,10 @@ class User extends BaseController
         
         $user = new UserModel();
         $session = new Session();
-
+       
         if (!empty($_POST)) {
-
-
+            
+       
             $verification = Verificator::checkForm($user->getRegisterForm(), $this->request);
 
             if (!$verification) {
@@ -74,10 +76,10 @@ class User extends BaseController
                 $user->setPassword(htmlspecialchars($_POST["password"]));
 
                 $user->generateToken((Helpers::createToken()));
-
+                
                 $user->save();
                 $session->addFlashMessage("success", "Your registration is OK!");
-
+               
 
             }
             $session->addFlashMessage("error", $verification[0]);

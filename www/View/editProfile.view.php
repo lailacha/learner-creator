@@ -11,5 +11,5 @@
 
     <?php endif; ?>
 
-    <a href="/add/teacher">Faire une demande pour devenir professeur chez nous</a>
+    <a href="/add/teacher" class="btn-secondary">Faire une demande pour devenir professeur chez nous</a>
 </div>

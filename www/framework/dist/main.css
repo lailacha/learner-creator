@@ -457,28 +457,6 @@
   flex-direction: column;
 }
 
-.icon {
-  width: 25px;
-  height: 25px;
-  border: none;
-  border-radius: 5px;
-}
-
-button, input[type=submit] {
-  border: #3BCDB3 solid 1px;
-  background-color: #FFFFFF;
-  font-family: "Montserrat", sans-serif;
-  padding: 15px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button.error {
-  background-color: #860505;
-  color: #FFF;
-  border: #FFF solid 2px;
-}
-
 .grid {
   box-sizing: border-box;
 }
@@ -2828,7 +2806,13 @@ body {
     width: 100%;
   }
 }
-.front .button {
+.front .icon {
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius: 5px;
+}
+.front button, .front input[type=submit], .front .button, .front .btn {
   font-size: 1rem;
   text-decoration: none;
   display: inline-block;
@@ -2843,27 +2827,26 @@ body {
   border-radius: 5px;
   font-weight: 500;
 }
-.front .button:hover {
+.front button:hover, .front input[type=submit]:hover, .front .button:hover, .front .btn:hover {
   transition: color 0.3s;
   color: #464646;
   background: #FFF;
-  border: 1px solid;
-  border-color: #2F7DC0;
+  border: #3BCDB3 solid 1px;
 }
-.front .button--small {
-  font-size: 0.5rem;
-}
-.front .button--success {
-  background-color: #31aa66;
-}
-.front .button--success:hover {
-  background-color: #45c97f;
-}
-.front .button--alert {
-  background-color: #ce0a0a;
-}
-.front .button--alert:hover {
-  background-color: #f41717;
+.front .btn-secondary {
+  font-size: 1rem;
+  text-decoration: none;
+  display: inline-block;
+  padding: 1em 2em;
+  text-transform: uppercase;
+  border: #3BCDB3 solid 1px;
+  background-color: #FFFFFF;
+  color: #464646;
+  transition: background 0.3s;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: 500;
 }
 .front .breadcrumb {
   background-color: #2F7DC0;

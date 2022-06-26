@@ -20,7 +20,7 @@ class File extends Sql
 
     public function __construct()
     {
-        parent::__construct();
+        $this->getPDO();
     }
 
     /**
@@ -36,7 +36,7 @@ class File extends Sql
      */
     public function getName(): string
     {
-        return $this->title;
+        return $this->name;
     }
 
     /**
@@ -97,5 +97,23 @@ class File extends Sql
         $this->created_at = $date;
     }
 
+    public function download(): void
+    {
+        $path = __DIR__."/..".$this->path;
+        if (file_exists($path)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="'.basename($path).'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($path));
+            readfile($path);
+            exit;
+        }
+        else {
+            echo "file does not exist";
+        }
+    }
 
 }

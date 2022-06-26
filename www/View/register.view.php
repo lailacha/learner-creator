@@ -1,20 +1,25 @@
-<div class="containerRegister" >   
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+   
     
-    <div class="formContainer">
-        <div class="form">
-            <h1>Create account</h1>
+    <h2> <a class="inactive underlineHover" href="/login">Sign In</a></h2>
+    <h2 class="active"> Sign Up </h2>
 
-            <?php if (isset($form)) : ?>
+    
+    
+    
+    
+      <?php if (isset($form)) : ?>
                 <?php echo $form ?>
-
+               
             <?php endif; ?>
-        </div>
+            
+    
 
-
-
+   
+    <div id="formFooter">
+      <a class="underlineHover" href="#">Forgot Password?</a>
     </div>
 
+  </div>
 </div>
-
-
-

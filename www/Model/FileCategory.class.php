@@ -15,7 +15,7 @@ class FileCategory extends Sql
 
     public function __construct()
     {
-        parent::__construct();
+        $this->getPDO();
     }
 
     /**
@@ -47,7 +47,7 @@ class FileCategory extends Sql
     {
         $array = [];
         $query = "SELECT name FROM ".$this->table." ORDER BY name ASC";
-        $req = $this->pdo->prepare($query);
+        $req = $this->getPDO()->prepare($query);
         $req->execute();
         $res = $req->fetchAll(PDO::FETCH_ASSOC);
         foreach ($res as $re) {

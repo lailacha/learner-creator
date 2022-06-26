@@ -28,10 +28,7 @@ class File
     {
         $session = new Session();
 
-        //verify if the file is an image
-        if(!$isVideo && !getimagesize($this->tmp_name)){
-            throw new \RuntimeException("The file is not an image");
-        }
+
 
         //verify file size is less than 5MB
         if($this->size > (5*MB)){
@@ -45,24 +42,24 @@ class File
 
 
         if(!is_dir($directory)){
+            echo "mkdir";
             if (!mkdir($directory, 0777, true) && !is_dir($directory)) {
                 throw new \RuntimeException(sprintf('Directory "%s" was not created', $directory));
             }
         }
 
+        $extensionArray = ["jpg", "jpeg", "png", "gif", "mp4", "webm", "ogg", "pdf","docx"];
 
+        /*
         $imgExtensions = ["jpeg", "png", "svg", "jpg"];
         $videoExtensions = ["mp4", "mov", "ogg"];
+        $documentExtensions = ["pdf","docx"];*/
 
-        if(!$isVideo &&!in_array($this->extension, $imgExtensions, true))
+        if(!$isVideo &&!in_array($this->extension, $extensionArray, true))
         {
             throw new \RuntimeException('The file do not have a valid extension (jpeg, png, svg, jpg)');
         }
 
-        if($isVideo &&!in_array($this->extension, $videoExtensions, true))
-        {
-            throw new \RuntimeException('The file do not have a valid extension (mp4, mov, ogg)');
-        }
 
 
         if (move_uploaded_file($this->tmp_name,  $directory.$this->name.".".$this->extension)) {
@@ -89,6 +86,18 @@ class File
 
     }
 
+    public function download($path): void
+    {
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($file).'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+        exit;
+    }
 
 
 }

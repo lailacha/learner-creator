@@ -11,7 +11,7 @@ use App\Model\File as FileModel;
 
 class Course extends Sql
 {
-    protected  $id = null;
+    protected $id = null;
     protected $name;
     protected string $description;
     protected $created_at;
@@ -23,7 +23,7 @@ class Course extends Sql
 
     public function __construct()
     {
-        parent::__construct();
+        $this->getPDO();
     }
 
     /**
@@ -73,7 +73,6 @@ class Course extends Sql
     }
 
 
-
     /**
      * @return string
      */
@@ -95,7 +94,7 @@ class Course extends Sql
      */
     public function getCover()
     {
-            return $this->cover;
+        return $this->cover;
     }
 
 
@@ -114,6 +113,7 @@ class Course extends Sql
     {
         $this->created_at = $created_at;
     }
+
     /**
      * @param int $cover
      */
@@ -171,7 +171,7 @@ class Course extends Sql
     public function getUnapprovedCoursesByUser($user_id)
     {
         $query = new QueryBuilder();
-        return  $query->select('*')
+        return $query->select('*')
             ->from('course')
             ->where('user = :user')
             ->where('status = :status')
@@ -226,32 +226,35 @@ class Course extends Sql
                     "error" => "Votre nom doit faire entre 15 et 20 caractères"
                 ],
                 "cover" => [
-                "type" => "file",
-                "id" => "course-cover",
-                "class" => "file",
+                    "type" => "file",
+                    "id" => "course-cover",
+                    "class" => "file",
                     "required" => true,
                     "error" => " Votre image doit être de la bonne extension",
-            ],
+                ],
                 "category" => [
                     "type" => "select",
                     "id" => "jjj",
                     "class" => "formRegister",
                     "options" => [
-                     "data" =>
-                         $categoryManager->getCategory(),
+                        "data" =>
+                            $categoryManager->getCategory(),
                         "property" => "name",
-                         "value" => "id",
+                        "value" => "id",
                         "selected" => 1
 
-            ]]]];
+                    ]]
+
+            ]];
     }
 
-    public function getEditCourseForm(){
+    public function getEditCourseForm()
+    {
         $categoryManager = new CourseCategory();
         return [
             "config" => [
                 "method" => "POST",
-                "action" => "/edit/course?id=".$this->getId(),
+                "action" => "/edit/course?id=" . $this->getId(),
                 "id" => "formEditCourse",
                 "enctype" => "multipart/form-data",
                 "class" => "form course",
@@ -297,9 +300,8 @@ class Course extends Sql
                         "value" => "id",
                         "selected" => $this->getCategory()
 
-                ]]]];
+                    ]]]];
     }
-
 
 
 }

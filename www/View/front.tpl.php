@@ -18,103 +18,113 @@
 </head>
 <body class="flex grid">
 
-<section id="sidebar-left">
-    <?php include "Partial/sidebar-left.partial.php"; ?>
-</section>
+    <section id="sidebar-left">
+        <?php include "Partial/sidebar-left.partial.php"; ?>
+    </section>
+
+    <div class="container column w-100 pl-3 mt-1">
+
+        <?php include "./View/Partial/error-message.partial.php"; ?>
+
+        <?php include $this->view . ".View.php"; ?>
+
+    </div>
+    <?php if (\App\Core\Session::getInstance()->get('user')){
+        include "Partial/sidebar-right.partial.php";
+    } ?>
 
 
 
+    <script src="https://code.iconify.design/2/2.1.2/iconify.min.js"></script>
+    <script>
 
-<script src="https://code.iconify.design/2/2.1.2/iconify.min.js"></script>
-<script>
-
-    $(document).ready(function () {
-        $('#example').DataTable();
-    });
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
 
 
-    //toggle nav-link
-    $('.nav-link').click(function () {
-        $('.nav-link').removeClass('active');
-        $(this).addClass('active');
-    });
-    /*  var ctx = document.getElementById('myChart').getContext("2d");
+        //toggle nav-link
+        $('.nav-link').click(function () {
+            $('.nav-link').removeClass('active');
+            $(this).addClass('active');
+        });
+        /*  var ctx = document.getElementById('myChart').getContext("2d");
 
-      var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-      gradientStroke.addColorStop(0, '#2F7DC0');
+          var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+          gradientStroke.addColorStop(0, '#2F7DC0');
 
-      var gradientFill = ctx.createLinearGradient(300, 0, 300, 200);
-      gradientFill.addColorStop(0.6, "rgba(47, 118, 192, 0.8)");
-      gradientFill.addColorStop(1, "rgba(59, 205, 179, 0.4)");
+          var gradientFill = ctx.createLinearGradient(300, 0, 300, 200);
+          gradientFill.addColorStop(0.6, "rgba(47, 118, 192, 0.8)");
+          gradientFill.addColorStop(1, "rgba(59, 205, 179, 0.4)");
 
-      var myChart = new Chart(ctx, {
-          type: 'line',
-          data: {
-              labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-              datasets: [{
-                  label: "Data",
-                  borderColor: gradientStroke,
-                  pointBorderColor: gradientStroke,
-                  pointBackgroundColor: gradientStroke,
-                  pointHoverBackgroundColor: gradientStroke,
-                  pointHoverBorderColor: gradientStroke,
-                  pointBorderWidth: 10,
-                  pointHoverRadius: 10,
-                  pointHoverBorderWidth: 1,
-                  pointRadius: 3,
-                  fill: true,
-                  backgroundColor: gradientFill,
-                  borderWidth: 4,
-                  data: [3.3, 2.3, 1.9, 1.8, 1.9, 2.4, 2.7, 2.9, 3, 2.9, 2.7, 2.5],
-              }]
-          },
-          options: {
-              animation: {
-                  easing: "easeInOutBack"
-              },
-              legend: {
-                  display: false,
-              },
-              tooltips: {
-                  callbacks: {
-                      label: function (tooltipItem) {
-                          return tooltipItem.yLabel;
-                      }
-                  }
-
-              },
-              scales: {
-                  yAxes: [{
-                      ticks: {
-                          fontColor: "rgba(0,0,0,0.5)",
-                          fontStyle: "bold",
-                          beginAtZero: true,
-                          maxTicksLimit: 5,
-                          padding: 20
-                      },
-                      gridLines: {
-                          drawTicks: false,
-                          display: false
-                      }
-
-                  }],
-                  xAxes: [{
-                      gridLines: {
-                          zeroLineColor: "transparent"
-                      },
-                      ticks: {
-                          padding: 20,
-
-                          fontColor: "rgba(0,0,0,0.5)",
-                          fontStyle: "bold"
-                      }
+          var myChart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                  datasets: [{
+                      label: "Data",
+                      borderColor: gradientStroke,
+                      pointBorderColor: gradientStroke,
+                      pointBackgroundColor: gradientStroke,
+                      pointHoverBackgroundColor: gradientStroke,
+                      pointHoverBorderColor: gradientStroke,
+                      pointBorderWidth: 10,
+                      pointHoverRadius: 10,
+                      pointHoverBorderWidth: 1,
+                      pointRadius: 3,
+                      fill: true,
+                      backgroundColor: gradientFill,
+                      borderWidth: 4,
+                      data: [3.3, 2.3, 1.9, 1.8, 1.9, 2.4, 2.7, 2.9, 3, 2.9, 2.7, 2.5],
                   }]
-              }
-          }
-      });
+              },
+              options: {
+                  animation: {
+                      easing: "easeInOutBack"
+                  },
+                  legend: {
+                      display: false,
+                  },
+                  tooltips: {
+                      callbacks: {
+                          label: function (tooltipItem) {
+                              return tooltipItem.yLabel;
+                          }
+                      }
 
-  */
-</script>
+                  },
+                  scales: {
+                      yAxes: [{
+                          ticks: {
+                              fontColor: "rgba(0,0,0,0.5)",
+                              fontStyle: "bold",
+                              beginAtZero: true,
+                              maxTicksLimit: 5,
+                              padding: 20
+                          },
+                          gridLines: {
+                              drawTicks: false,
+                              display: false
+                          }
+
+                      }],
+                      xAxes: [{
+                          gridLines: {
+                              zeroLineColor: "transparent"
+                          },
+                          ticks: {
+                              padding: 20,
+
+                              fontColor: "rgba(0,0,0,0.5)",
+                              fontStyle: "bold"
+                          }
+                      }]
+                  }
+              }
+          });
+
+      */
+    </script>
 
 </body>
 </html>

@@ -66,7 +66,7 @@ class User extends BaseController
 //
 //                $user->save();
 
-                //$this->sendRegisterMail($user);
+                $this->sendRegisterMail($user);
                 $session->set("error", $verification[0]);
                 $user->setFirstname(htmlspecialchars($_POST["firstname"]));
                 $user->setLastname(htmlspecialchars($_POST["lastname"]));
@@ -127,7 +127,7 @@ class User extends BaseController
      */
     public function sendRegisterMail(UserModel $user)
     {
-        $html = '<a href="http://localhost:84/verifyAccount?token=' . $user->getToken() . '&mail=' . $user->getEmail() . '"><h2>Click here to validate your account!</h2></a>';
+        $html = '<a href="http://localhost/verifyAccount?token=' . $user->getToken() . '&mail=' . $user->getEmail() . '"><h2>Click here to validate your account!</h2></a>';
 
         $confirmMail = new Mail();
         $confirmMail->setSubject("Last step to validate your account...");

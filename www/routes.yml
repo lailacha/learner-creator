@@ -191,6 +191,7 @@
   controller: user
   action: verifyAccount
   path: /verifyAccount
+  method: GET
 
 -
   controller: user

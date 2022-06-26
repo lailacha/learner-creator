@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="vitrine">
 
 <head>
     <meta charset="UTF-8">

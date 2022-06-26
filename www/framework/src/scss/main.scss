@@ -1,14 +1,26 @@
 
 
 @import "variables";
+@import "globals";
+@import "components/form";
+@import "components/course-list";
+@import "components/button";
+@import "components/grid";
+@import "components/flash-message";
 
 body{
   margin: 0;
 }
 
-.front {
-  @import "front/main";
+.back {
+  @import "back/main";
+
 }
 
+.front {
+  @import "front/main";
 
-
+}
+.vitrine{
+  @import "vitrine";
+}

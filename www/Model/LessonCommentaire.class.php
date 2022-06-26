@@ -16,7 +16,7 @@ class LessonCommentaire extends Sql
 
     public function __construct()
     {
-        parent::__construct();
+        $this->getPDO();
         $this->table  = DBPREFIXE."commentaire_lesson";
     }
 

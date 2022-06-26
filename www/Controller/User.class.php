@@ -39,6 +39,7 @@ class User extends BaseController {
     {
         session_destroy();
         echo "Se déconnecter";
+        
     }
 
 
@@ -46,25 +47,14 @@ class User extends BaseController {
     {
         $user = new UserModel();
         $session = new Session();
-
+       
         if (!empty($_POST)) {
 
 
             $verification = Verificator::checkForm($user->getRegisterForm(),  $this->request);
 
             if (!$verification) {
-//                $user = $user->getBy("id", 33);
-//
-//                $user->setEmail("y.sssvhvhvhvsjjjjsss@gmail.com");
-//
-//                //$user->setPassword("Test1234");
-//                //$user->setLastname("SKrzypCZK   ");
-//                //$user->setFirstname("  YveS");
-//                //$user->generateToken();
-//
-//                $user->save();
 
-                //$this->sendRegisterMail($user);
                 $session->set("error",$verification[0] );
                 $user->setFirstname(htmlspecialchars($_POST["firstname"]));
                 $user->setLastname(htmlspecialchars($_POST["lastname"]));
@@ -72,10 +62,10 @@ class User extends BaseController {
                 $user->setPassword(htmlspecialchars($_POST["password"]));
 
                 $user->generateToken((Helpers::createToken()));
-
+                
                 $user->save();
                 $session->addFlashMessage("success", "Your registration is OK!");
-
+               
 
             }
             $session->addFlashMessage("error", $verification[0]);

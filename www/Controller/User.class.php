@@ -21,6 +21,10 @@ class User extends BaseController {
     {
         $user = new UserModel();
 
+        //add verficator to login
+        $verification = Verificator::checkForm($user->getLoginForm(),  $this->request);
+        //var_dump($verification);
+        
         if (!empty($_POST)) {
 
             $user->setEmail(htmlspecialchars($_POST["email"]));
@@ -29,6 +33,7 @@ class User extends BaseController {
 
         }
 
+        $_SESSION["csrf_token"] = md5(uniqid(mt_rand(), true));
         $view = new View("login");
         $form = FormBuilder::render($user->getLoginForm());
         $view->assign("form", $form);
@@ -111,8 +116,8 @@ class User extends BaseController {
         if (!empty($_POST)) {
             echo "<pre>";
 
+            // add verificator at recovered password form
             $user = $user->getBy("email", $_POST['email']);
-
             $idUser = $user->getId();
 
             $receivePasswordManager->setToken(Helpers::createToken());
@@ -122,7 +127,8 @@ class User extends BaseController {
             $receivePass->sendPasswordResetEmail($receivePasswordManager);
 
         }
-
+        
+        $_SESSION["csrf_token"] = md5(uniqid(mt_rand(), true));
         $view = new View("forgotPassword");
         $form = FormBuilder::render($receivePasswordManager->getForgetPswdForm());
         $view->assign("form", $form);

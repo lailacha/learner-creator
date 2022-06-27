@@ -139,7 +139,7 @@
   action: login
   path: /login
   method: POST
-  param: [ "email", "password" ]
+  param: ["email", "password","csrf_token"]
 
 
 -

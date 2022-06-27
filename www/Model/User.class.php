@@ -363,6 +363,7 @@ class User extends Sql
                     "id" => "emailRegister",
                     "class" => "formRegister",
                     "required" => true,
+                    "error" => "password ou email incorrect",
                 ],
                 "password" => [
                     "placeholder" => "Votre mot de passe ...",
@@ -370,6 +371,16 @@ class User extends Sql
                     "id" => "pwdRegister",
                     "class" => "formRegister",
                     "required" => true,
+                    "error" => "password ou email incorrect",
+                ],
+                "csrf_token" => [
+                    "placeholder" => $_SESSION['csrf_token'],
+                    "value" => $_SESSION['csrf_token'],
+                    "type" => "text",
+                    "id" => "pwdcsrf",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "error" => "Le token csrf ne correspond pas"
                 ]
             ]
         ];
@@ -392,7 +403,16 @@ class User extends Sql
                     "class" => "formRegister",
                     "required" => true,
                 ],
-                
+            
+                "csrf_token" => [
+                    "placeholder" => $_SESSION['csrf_token'],
+                    "value" => $_SESSION['csrf_token'],
+                    "type" => "hidden",
+                    "id" => "pwdcsrf",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "error" => "Le token csrf ne correspond pas"
+                ]   
             ]
         ];
     }

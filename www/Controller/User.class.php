@@ -72,16 +72,7 @@ class User extends BaseController {
             $verification = Verificator::checkForm($user->getRegisterForm(),  $this->request);
 
             if (!$verification) {
-//                $user = $user->getBy("id", 33);
-//
-//                $user->setEmail("y.sssvhvhvhvsjjjjsss@gmail.com");
-//
-//                //$user->setPassword("Test1234");
-//                //$user->setLastname("SKrzypCZK   ");
-//                //$user->setFirstname("  YveS");
-//                //$user->generateToken();
-//
-//                $user->save();
+
 
                //$this->sendRegisterMail($user);
                 if($verification){
@@ -89,6 +80,12 @@ class User extends BaseController {
                 }
                 
                 $isRegistred = $user->getBy("email",$_POST["email"]);
+
+                if ($_POST["csrf_token"] !== $_SESSION['csrf_token']) {
+                    $session->addFlashMessage("error", "csrf not valid! ");
+                    header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
+                } 
+                else{
 
                 if(!$isRegistred){
 
@@ -104,6 +101,7 @@ class User extends BaseController {
                 }else{
                     $session->addFlashMessage("error", "Vous etes déjà inscrit");
                 }
+            }
 
             }
             if($verification){
@@ -118,6 +116,7 @@ class User extends BaseController {
         $view = new View("Register");
         $form = FormBuilder::render($user->getRegisterForm());
         $view->assign("form", $form);
+    
     }
 
     public function recoverPassword()

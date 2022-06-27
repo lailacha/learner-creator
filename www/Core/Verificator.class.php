@@ -45,10 +45,6 @@ class Verificator
                 $errors[]=$input["error"];
             }
 
-            if($input["type"] === "csrf_token" &&  !self::checkCrsf($data[$name])) {
-                $errors[]=$input["error"];
-            }
-
             if($input["type"]=="file" && !empty($input[$name]) && !self::checkFile($data[$name])) {
                 $errors[]= "Votre fichier n'est pas au bon format (jpeg, jpg, svg, png) et doit être > 1000.";
             }
@@ -72,22 +68,7 @@ class Verificator
     }
 
     
-    public static function checkCrsf($csrf): bool
-    {
-        /* we check csrf token here */
-        
-        $token = filter_input($csrf, 'token');
-
-        if (!$token || $token !== $_SESSION['csrf_token’’']) {
-            // return 405 http status code
-            //header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
-            return false;
-            //exit;
-        } else {
-            return true;
-        }
-    }
-
+    
 
     public static function checkEmail($email): bool
     {

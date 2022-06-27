@@ -22,6 +22,7 @@ function myAutoloader( $class )
     // $class -> "Core/Security"
     if(file_exists($class.".class.php")){
         include $class.".class.php";
+        
     }
 }
 

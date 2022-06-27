@@ -11,8 +11,12 @@ use App\Core\View;
 use App\Core\Mail;
 use App\Core\FormBuilder;
 use App\Model\User as UserModel;
+use App\Model\Learner;
 use App\Model\ReceivePassword as ReceivePasswordModel;
 use App\Service\File;
+
+
+
 
 
 class User extends BaseController
@@ -22,6 +26,7 @@ class User extends BaseController
     {
         $user = new UserModel();
         $session = Session::getInstance();
+        
         if (!empty($_POST) && $user->login($_POST['email'], $_POST['password'])) {
             $role = $user->getRole($session->get('user')["id"]);
             $session->set('role', $role);
@@ -91,6 +96,7 @@ class User extends BaseController
     public function recoverPassword()
     {
         $user = new UserModel();
+        
         $receivePasswordManager = new ReceivePasswordModel();
         $receivePass = new ReceivePassword();
 
@@ -184,9 +190,17 @@ class User extends BaseController
         $view = new View("editProfile");
         $user = UserModel::getUserConnected();
 
+        $learner = new Learner();
+        var_dump( $learner->getAllBy('user', $user->getId()));
+
+        $view->assign("$learner", $learner);
+        
+        
         $form = FormBuilder::render($user->getEditProfileForm());
         $view->assign("form", $form);
         $view->assign("user", $user);
+
+        
     }
 
     public function delete(): void

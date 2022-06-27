@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Core\Helpers;
+use App\Core\QueryBuilder;
 use App\Core\ReceivePassword;
 use App\Core\Session;
 use App\Model\Course;
@@ -13,6 +14,7 @@ use App\Core\FormBuilder;
 use App\Model\User as UserModel;
 use App\Model\ReceivePassword as ReceivePasswordModel;
 use App\Service\File;
+use DateTime;
 
 
 class User extends BaseController
@@ -29,7 +31,7 @@ class User extends BaseController
             header('Location: /edit/profile');
         }
         $view = new View("login", "home");
-        
+
         $form = FormBuilder::render($user->getLoginForm());
         $view->assign("form", $form);
     }
@@ -37,7 +39,7 @@ class User extends BaseController
 
     public function logout()
     {
-        
+
         session_destroy();
         echo "Se déconnecter";
     }
@@ -45,7 +47,7 @@ class User extends BaseController
 
     public function register()
     {
-        
+
         $user = new UserModel();
         $session = new Session();
 
@@ -66,7 +68,6 @@ class User extends BaseController
 //
 //                $user->save();
 
-                $this->sendRegisterMail($user);
                 $session->set("error", $verification[0]);
                 $user->setFirstname(htmlspecialchars($_POST["firstname"]));
                 $user->setLastname(htmlspecialchars($_POST["lastname"]));
@@ -76,6 +77,8 @@ class User extends BaseController
                 $user->generateToken((Helpers::createToken()));
 
                 $user->save();
+                $this->sendRegisterMail($user);
+
                 $session->addFlashMessage("success", "Your registration is OK!");
 
 
@@ -83,7 +86,7 @@ class User extends BaseController
             $session->addFlashMessage("error", $verification[0]);
         }
 
-        $view = new View("Register","home");
+        $view = new View("Register", "home");
         $form = FormBuilder::render($user->getRegisterForm());
         $view->assign("form", $form);
     }
@@ -95,7 +98,6 @@ class User extends BaseController
         $receivePass = new ReceivePassword();
 
         if (!empty($_POST)) {
-            echo "<pre>";
 
             $user = $user->getBy("email", $_POST['email']);
 
@@ -109,15 +111,74 @@ class User extends BaseController
 
         }
 
-        $view = new View("forgotPassword");
-        $form = FormBuilder::render($receivePasswordManager->getForgetPswdForm());
+        $view = new View("forgotPassword","home");
+        $form = FormBuilder::render($user->getForgetPswdForm());
         $view->assign("form", $form);
 
     }
 
     public function changePassword()
     {
-        echo "aze";
+
+
+        // FAUT AJOUTER DES MESSAGES FLUSH SVP
+        $user = new UserModel();
+        $receivePasswordManager = new ReceivePasswordModel();
+
+        $token = $_GET['token'] ?? null;
+        $email = $_GET['email'] ?? null;
+        $idUser = $_GET['id'] ?? null;
+
+
+        $query = new QueryBuilder();
+
+        $query->from('receive_password')
+            ->where('iduser = :iduser', 'token = :token')
+            ->setParams([
+                "iduser" => $idUser,
+                "token" => $token
+            ]);
+
+        $result = $query->fetch();
+
+        $count = (clone $query)->count();
+
+        $dateFinal = new DateTime();
+        $dateDebut = new DateTime($result['createdAt']);
+        $dateDifference = $dateFinal->diff($dateDebut);
+        $heureDifference = $dateDifference->days * 24 + (int)$dateDifference->format('%H');
+        $heureDifference = (int)$heureDifference;
+
+
+
+        if ($count === 1 && $result['status'] == 0 && $heureDifference < 48) {
+
+            $view = new View("changePassword","home");
+
+            if (!empty($_POST)) {
+                // Plus tard faut utiliser Class verificator pour verifier le password
+                $receivePasswordManager = $receivePasswordManager->getBy('id', $result['id']);
+                $receivePasswordManager->setStatus(1);
+                $receivePasswordManager->save();
+                $user = $user->getBy('id', $idUser);
+                $user->setPassword($_POST['password']);
+                $user->save();
+
+            }
+            else{
+
+                $form = FormBuilder::render($user->getChangePswdForm());
+                $view->assign("form", $form);
+
+            }
+
+
+
+        } else {
+
+            die("Veuillez refaire votre demande");
+
+        }
     }
 
     /**
@@ -127,7 +188,7 @@ class User extends BaseController
      */
     public function sendRegisterMail(UserModel $user)
     {
-        $html = '<a href="http://localhost/verifyAccount?token=' . $user->getToken() . '&mail=' . $user->getEmail() . '"><h2>Click here to validate your account!</h2></a>';
+        $html = '<a href="http://localhost/verifyAccount?token=' . $user->getToken() . '&email=' . $user->getEmail() . '"><h2>Click here to validate your account!</h2></a>';
 
         $confirmMail = new Mail();
         $confirmMail->setSubject("Last step to validate your account...");
@@ -147,17 +208,23 @@ class User extends BaseController
     public function verifyAccount()
     {
         $userManager = new UserModel();
-        $user = $userManager->getOneByMany(["token" => $this->request->get("token"), "email" => ["mail"]]);
+        $user = $userManager->getOneByMany(["token" => $this->request->get("token"), "email" => $this->request->get("email")]);
+
 
         if (!$user) {
             // TODO ADD flash message when available
-            echo "Il n'y a pas d'utilisateur";
+            $this->session->addFlashMessage("error", "Il n'y a pas d'utilisateur");
+
             return;
         } else {
             $user->setStatus(1);
             $user->save();
+            $this->session->addFlashMessage("success", " Your account is validated !");
+            // FAUT ACTIVER LES MESSAGES FLUSH DANS TEMPLATE FRONT
+            header('Location: /login');
 
-            echo "Your account is validated !";
+
+
         }
 
 

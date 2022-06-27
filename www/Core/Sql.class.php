@@ -153,7 +153,6 @@ abstract class Sql
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($colums);
 
-
         //Si ID null alors insert sinon update
     }
 

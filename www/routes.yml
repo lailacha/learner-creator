@@ -181,6 +181,17 @@
   controller: user
   action: changePassword
   path: /changePassword
+  method: GET
+  param: []
+
+
+-
+  controller: user
+  action: changePassword
+  path: /changePassword
+  method: POST
+  param: []
+
 
 -
   controller: user
@@ -192,6 +203,7 @@
   action: verifyAccount
   path: /verifyAccount
   method: GET
+  param: ["token","email"]
 
 -
   controller: user

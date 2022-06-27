@@ -235,77 +235,8 @@ class User extends Sql
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(':id', $id, \PDO::PARAM_INT);
         $statement->execute();
-
     }
 
-    public function getEditUserForm(): array
-    {
-        $roleManager = new Role();
-
-        return [
-            "config" => [
-                "method" => "POST",
-                "action" => "",
-                "id" => "formEditUser",
-                "enctype" => "multipart/form-data",
-                "class" => "form edit",
-                "submit" => "Modifier"
-            ],
-            "inputs" => [
-                "firstname" => [
-                    "placeholder" => $this->getFirstname(),
-                    "value" => $this->getFirstname(),
-                    "type" => "text",
-                    "id" => "firstnameRegister",
-                    "class" => "formRegister",
-                    "required" => true,
-                    "min" => 2,
-                    "max" => 25,
-                    "error" => " Votre prénom doit faire entre 2 et 25 caractères",
-                ],
-                "lastname" => [
-                    "type" => "text",
-                    "placeholder" => $this->getLastname(),
-                    "value" => $this->getLastname(),
-                    "id" => "testRegister",
-                    "required" => true,
-                    "class" => "formRegister",
-                    "error" => " Votre nom doit faire entre 2 et 100 caractères",
-                ],
-                "email" => [
-                    "placeholder" => $this->getEmail(),
-                    "value" => $this->getEmail(),
-                    "type" => "email",
-                    "id" => "emailRegister",
-                    "class" => "formRegister",
-                    "required" => true,
-                    "error" => "Email incorrect",
-                    "unicity" => true,
-                    "errorUnicity" => "Un compte existe déjà avec cet email"
-                ],
-                "role" => [
-                    "type" => "select",
-                    "id" => "jjj",
-                    "class" => "formRegister",
-                    "options" => [
-                        "data" =>
-                            $roleManager->getAll(),
-                        "property" => "name",
-                        "value" => "id",
-                        "selected" => 1
-
-                    ]],
-                "id" => [
-                    "value" => $this->getId(),
-                    "type" => "hidden",
-                    "id" => "idUser",
-                    "class" => "formRegister",
-                ],
-
-
-            ],
-        ];
-    }
 
 
     public static function getUserConnected()
@@ -477,6 +408,130 @@ class User extends Sql
         ];
     }
 
+    public function getEditUserForm(): array
+    {
+        $roleManager = new Role();
+
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "",
+                "id" => "formEditUser",
+                "enctype" => "multipart/form-data",
+                "class" => "form edit",
+                "submit" => "Modifier"
+            ],
+            "inputs" => [
+                "firstname" => [
+                    "placeholder" => $this->getFirstname(),
+                    "value" => $this->getFirstname(),
+                    "type" => "text",
+                    "id" => "firstnameRegister",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "min" => 2,
+                    "max" => 25,
+                    "error" => " Votre prénom doit faire entre 2 et 25 caractères",
+                ],
+                "lastname" => [
+                    "type" => "text",
+                    "placeholder" => $this->getLastname(),
+                    "value" => $this->getLastname(),
+                    "id" => "testRegister",
+                    "required" => true,
+                    "class" => "formRegister",
+                    "error" => " Votre nom doit faire entre 2 et 100 caractères",
+                ],
+                "email" => [
+                    "placeholder" => $this->getEmail(),
+                    "value" => $this->getEmail(),
+                    "type" => "email",
+                    "id" => "emailRegister",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "error" => "Email incorrect",
+                    "unicity" => true,
+                    "errorUnicity" => "Un compte existe déjà avec cet email"
+                ],
+                "role" => [
+                    "type" => "select",
+                    "id" => "jjj",
+                    "class" => "formRegister",
+                    "options" => [
+                        "data" =>
+                            $roleManager->getAll(),
+                        "property" => "name",
+                        "value" => "id",
+                        "selected" => 1
+
+                    ]],
+                "id" => [
+                    "value" => $this->getId(),
+                    "type" => "hidden",
+                    "id" => "idUser",
+                    "class" => "formRegister",
+                ],
+
+
+            ],
+        ];
+    }
+
+
+    public function getChangePswdForm() : array
+    {
+        return [
+            "config"=>[
+                "method"=>"POST",
+                "action"=>"",
+                "id" => "",
+                "class" => "",
+                "submit" => "Valider"
+            ],
+            "inputs"=>[
+                "password" => [
+                    "placeholder" => "Votre mot de passe ...",
+                    "type" => "password",
+                    "id" => "newPassword",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
+                ],
+                "passwordConfirm" => [
+                    "placeholder" => "Confirmation ...",
+                    "type" => "password",
+                    "id" => "confirmPassword",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "error" => "Votre confirmation de mot de passe ne correspond pas",
+                    "confirm" => "password"
+                ]
+            ]
+        ];
+    }
+
+    public function getForgetPswdForm(): array
+    {
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "",
+                "id" => "",
+                "class" => "",
+                "submit" => "Valider"
+            ],
+            "inputs" => [
+                "email" => [
+                    "placeholder" => "Votre email ...",
+                    "type" => "email",
+                    "id" => "emailRegister",
+                    "class" => "formRegister",
+                    "required" => true,
+                ],
+
+            ]
+        ];
+    }
 
     public function getLoginForm(): array
     {
@@ -507,27 +562,5 @@ class User extends Sql
         ];
     }
 
-    public function getForgetPswdForm(): array
-    {
-        return [
-            "config" => [
-                "method" => "POST",
-                "action" => "",
-                "id" => "formLogin",
-                "class" => "formLogin",
-                "submit" => "Se connecter"
-            ],
-            "inputs" => [
-                "email" => [
-                    "placeholder" => "Votre email ...",
-                    "type" => "email",
-                    "id" => "emailRegister",
-                    "class" => "formRegister",
-                    "required" => true,
-                ],
-
-            ]
-        ];
-    }
 
 }

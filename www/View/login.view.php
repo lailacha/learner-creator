@@ -1,6 +1,5 @@
 
-<div class="wrapper fadeInDown vitrine">
-  <div id="formContent">
+
    
     <h2 class="active"> Sign In </h2>
     
@@ -19,8 +18,6 @@
 
    
     <div id="formFooter">
-      <a class="underlineHover" href="#">Forgot Password?</a>
+        <a class="underlineHover" href="/recoverPassword">Forgot Password?</a>
     </div>
 
-  </div>
-</div>

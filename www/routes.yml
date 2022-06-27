@@ -257,6 +257,7 @@
   action: login
   path: /login
   method: GET
+  
 
 -
   controller: user

@@ -26,6 +26,7 @@ function myAutoloader( $class )
     
     if(file_exists($class.".class.php")){
         include $class.".class.php";
+        
     }
 }
 

@@ -26,9 +26,28 @@ class User extends BaseController {
         $verification = Verificator::checkForm($user->getLoginForm(),  $this->request);
         if(!$verification){
             
-
             if (!empty($_POST)) {
 
+                if ($_POST["csrf_token"] !== $_SESSION['csrf_token']) {
+                    $session->addFlashMessage("error", "csrf not valid! ");
+                    header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
+                } 
+
+                else {
+
+                    if ($user) {
+                        
+                        $user->setEmail(htmlspecialchars($_POST["email"]));
+                        $user->setPassword(htmlspecialchars($_POST["password"]));
+                        $user->login(["email" => $_POST['email']]);
+                        
+                        $session->addFlashMessage("success", "Bienvenue");
+                        $session->addFlashMessage("success", "Vous êtes maintenant connecté");
+                        //header("Location: /");
+                    } else {
+                        $session->addFlashMessage("error", "Identifiants incorrects");
+                    }
+                }
                 $user->setEmail(htmlspecialchars($_POST["email"]));
                 $user->setPassword(htmlspecialchars($_POST["password"]));
                 $user->login(["email" => $_POST['email']]);
@@ -121,6 +140,7 @@ class User extends BaseController {
 
     public function recoverPassword()
     {
+        // we must set a verificator 
         $user = new UserModel();
         $receivePasswordManager = new ReceivePasswordModel();
         $receivePass = new ReceivePassword();
@@ -141,6 +161,7 @@ class User extends BaseController {
         }
         
         $_SESSION["csrf_token"] = md5(uniqid(mt_rand(), true));
+        
         $view = new View("forgotPassword");
         $form = FormBuilder::render($receivePasswordManager->getForgetPswdForm());
         $view->assign("form", $form);

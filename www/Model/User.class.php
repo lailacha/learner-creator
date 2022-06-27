@@ -363,7 +363,7 @@ class User extends Sql
                     "id" => "emailRegister",
                     "class" => "formRegister",
                     "required" => true,
-                    "error" => "password ou email incorrect",
+                    "error" => "email incorrect",
                 ],
                 "password" => [
                     "placeholder" => "Votre mot de passe ...",
@@ -371,7 +371,7 @@ class User extends Sql
                     "id" => "pwdRegister",
                     "class" => "formRegister",
                     "required" => true,
-                    "error" => "password ou email incorrect",
+                    "error" => "password incorrect",
                 ],
                 "csrf_token" => [
                     "placeholder" => $_SESSION['csrf_token'],

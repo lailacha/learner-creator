@@ -32,6 +32,8 @@ class User extends BaseController {
                 $user->setEmail(htmlspecialchars($_POST["email"]));
                 $user->setPassword(htmlspecialchars($_POST["password"]));
                 $user->login(["email" => $_POST['email']]);
+                
+                $session->addFlashMessage("success", "Bienvenue");
     
             }
     
@@ -82,13 +84,12 @@ class User extends BaseController {
 //                $user->save();
 
                //$this->sendRegisterMail($user);
-                if($verification[0]){
+                if($verification){
                 $session->set("error",$verification[0] );
                 }
                 
                 $isRegistred = $user->getBy("email",$_POST["email"]);
 
-                echo("Register");
                 if(!$isRegistred){
 
                 $user->setFirstname(htmlspecialchars($_POST["firstname"]));
@@ -101,11 +102,11 @@ class User extends BaseController {
                 $user->save();
                 $session->addFlashMessage("success", "Your registration is OK!");
                 }else{
-                    echo "Vous etes déjà inscrit";
+                    $session->addFlashMessage("error", "Vous etes déjà inscrit");
                 }
 
             }
-            if($verification[0]){
+            if($verification){
             $session->addFlashMessage("error", $verification[0]);
             }
         }

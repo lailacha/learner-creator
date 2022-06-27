@@ -20,23 +20,35 @@ class User extends BaseController {
     public function login()
     {
         $user = new UserModel();
+        $session = new Session();
 
         //add verficator to login
         $verification = Verificator::checkForm($user->getLoginForm(),  $this->request);
-        //var_dump($verification);
-        
-        if (!empty($_POST)) {
+        if(!$verification){
+            
 
-            $user->setEmail(htmlspecialchars($_POST["email"]));
-            $user->setPassword(htmlspecialchars($_POST["password"]));
-            $user->login(["email" => $_POST['email']]);
+            if (!empty($_POST)) {
 
+                $user->setEmail(htmlspecialchars($_POST["email"]));
+                $user->setPassword(htmlspecialchars($_POST["password"]));
+                $user->login(["email" => $_POST['email']]);
+    
+            }
+    
         }
+        
+        if($verification){
+            $session->addFlashMessage("error", $verification[0]);
+        }
+        
+        
 
         $_SESSION["csrf_token"] = md5(uniqid(mt_rand(), true));
-        $view = new View("login");
-        $form = FormBuilder::render($user->getLoginForm());
-        $view->assign("form", $form);
+            $view = new View("login");
+            $form = FormBuilder::render($user->getLoginForm());
+            $view->assign("form", $form);
+        
+
     }
 
 

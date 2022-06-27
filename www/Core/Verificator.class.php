@@ -15,7 +15,7 @@ class Verificator
 
         
         //var_dump($config["inputs"]);
-        var_dump($data);
+        //var_dump($data);
 
         // ajout du cas où il n'y a pas d'erreur 
         if(is_null($data)){

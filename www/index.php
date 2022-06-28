@@ -21,6 +21,7 @@ function myAutoloader( $class )
     // $class -> "Core/Security" "Model/User
     $class = str_replace("\\","/",$class);
     // $class -> "Core/Security"
+    
     if(file_exists($class.".class.php")){
         include $class.".class.php";
     }

@@ -32,19 +32,27 @@
   param: ["course"]
   security: ["professor", "admin"]
 
-
 -
-  path: /createCourse
+  path: /searchCourses
   controller: course
-  action: index
+  action: allCourses
   method: GET
   param: []
   security: ["professor", "admin"]
+
 
 -
   path: /createCourse
   controller: course
   action: create
+  method: GET
+  param: []
+  security: ["professor", "admin"]  
+
+-
+  path: /save/course
+  controller: course
+  action: save
   method: POST
   param: [ "name", "description", "cover", "category" ]
 
@@ -103,11 +111,59 @@
 
 
 -
-  path: /edit/course
-  controller: course
-  action: edit
+  path: /show/category
+  controller: CourseCategory
+  action: getOneCategory
+  method: GET
+  param: [ "category_id"]
+
+-
+  path: /save/category
+  controller: CourseCategory
+  action: save
   method: POST
-  param: [ "id","name", "description", "cover", "category" ]
+  security: ["admin"]
+  param: [ "name", "description" ]
+
+-
+  path: /edit/category
+  controller: CourseCategory
+  action: edit
+  method: GET
+  security: ["admin"]
+  param: ["category_id"]
+
+-
+  path: /update/category
+  controller: CourseCategory
+  action: update
+  method: POST
+  security: ["admin"]
+  param: [ "category_id", "name", "description" ]
+
+-
+  path: /delete/category
+  controller: CourseCategory
+  action: delete
+  method: GET
+  security: ["admin"]
+  param: ["id"]
+
+-
+  path: /category
+  controller: CourseCategory
+  action: create
+  method: GET
+  security: ["admin"]
+  param: []
+
+-
+  path: /categories
+  controller: CourseCategory
+  action: allCategories
+  method: GET
+  security: ["admin"]
+  param: []
 
 -
   path: /createLesson
@@ -121,7 +177,7 @@
   controller: lesson
   action: create
   method: POST
-  param: [ "title", "text", "video", "course", "chapter" ]
+  param: [ "title", "text", "video", "course", "chapter", "course_id"]
 
 -
   path: /show/lesson
@@ -298,6 +354,15 @@
   path: /save/profile
   param: ["firstname", "lastname", "avatar"]
 
+
+
+- controller: teacher
+  action: index
+  method: GET
+  path: /teacher/new
+
+
+
 -
   controller: AppearanceSettings
   action: index
@@ -310,7 +375,7 @@
   action: save
   method: POST
   path: /save/settings
-  param: ["main_color", "sidebar_color"]
+  param: ["main_color", "sidebar_color", "big_title_size", "logo"]
 
 -
   controller: admin
@@ -339,7 +404,7 @@
   security: ["admin"]
   method: GET
   path: /edit/user
-  param: ["id"]
+  param: ["user_id"]
 
 -
   controller: admin
@@ -347,7 +412,7 @@
   security: ["admin"]
   method: POST
   path: /edit/user
-  param: ["id"]
+  param: ["id", "lastname", "firstname", "email", "role", "user_id"]
 
 -
   controller: user
@@ -362,8 +427,6 @@
   action: index
   method: GET
   path: /teacher/new
-
-
 
 -
   controller: teacher
@@ -408,3 +471,8 @@
   path: /refuse/requestTeacher
   param: ["id"]
 
+-  
+  controller: teacher
+  action: index
+  method: GET
+  path: /add/teacher

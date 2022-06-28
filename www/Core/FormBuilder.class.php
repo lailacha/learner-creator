@@ -61,7 +61,6 @@ class FormBuilder
         return $data;
     }
 
-    //render input type hidden
     private static function renderHidden(string $name, array $input): string
     {
         $data = " <input type='hidden' id='".($input["id"] ?? '')."' name='".($name ?? '')."'  value='".($input["value"] ?? '')."'>";
@@ -71,71 +70,15 @@ class FormBuilder
 
     private static function renderSelect(string $name, array $select): string
     {
-        //array of options example
-    /*    "category" => [
-            "type" => "select",
-            "id" => "jjj",
-            "class" => "formRegister",
-            "options" => [
-                "test" => ["libelle" => "Math", "value" => "1"],
-                "test2" => [ "libelle" => "French ", "value" => "2",  "selected" => "selected"]],
+        $property = $select["options"]["property"];
+        $value = $select["options"]["value"];
 
-    options => [
- data:[[   "id" => "",
-    "name" => "",
-    "category,],
-
-     [   "id" => "",
-    "name" => "",
-    "category,]
-
-    ]]
-    , property: "name",
-    value: id,
-    class: "formRegister",
-    selected: 1,
-
-        ]*/
-
-        $value = $select["options"]["value"] ?? "";
-        $property = $select["options"]["property"] ?? "";
-        $selected = $select["options"]["selected"] ?? "";
-
-        $data = "<select name={$name}  class='".($select["class"] ?? '')."' id='".($select["id"] ?? '')."'>";
-        foreach($select["options"]["data"] as $option){
-            $data .= " <option  ". ($selected === $option[$value]  ? "selected" :  '')." value='".($option[$value] ?? '')."' >";
+        $data = "<select class='".($select["class"] ?? '')."' name='".($name ?? '')."' id='".($option["id"] ?? '')."' >";
+        foreach ($select["options"]["data"] as $option){
+            $data .= " <option class='".($option["class"] ?? '')."' ".($option["selected"] ?? '')." value='".($option[$value] ?? '')."' >";
             $data .= $option[$property];
-            $data .= " </option>";
-
-        }
-        return $data."</select>";
-
-
-
-//
-//        $selected = $select["selected"] ?? "";
-//        $data = "<select class='".($select["class"] ?? '')."' name='".($name ?? '')."' id='".($option["id"] ?? '')."' >";
-//        foreach ($select["options"] as $option){
-//            $data .= " <option  ". ($selected === $name  ? "selected" :  '')." value='".($option["value"] ?? '')."' >";
-//            $data .= $option["libelle"];
-//            $data .= "";
-//            $data .= " </option>";
-//
-//        }
-//        $data .= "</select>";
-//        return $data;
-    }
-
-    private static function renderSelectMultiple(string $name, array $select): string
-    {
-        $selected = $select["selected"] ?? "";
-        $data = "<select class='".($select["class"] ?? '')."' name='".($name ?? '')."' id='".($option["id"] ?? '')."' multiple>";
-        foreach ($select["options"] as $option){
-            $data .= " <option  ". ($selected === $name  ? "selected" :  '')." value='".($option["value"] ?? '')."' >";
-            $data .= $option["libelle"];
             $data .= "";
             $data .= " </option>";
-
         }
         $data .= "</select>";
         return $data;
@@ -148,9 +91,11 @@ class FormBuilder
             {
                 $data .= "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
             }
-            $data .= " <textarea class='".($textarea["class"] ?? '')."' id='".($textarea["id"] ?? '')."' cols='".($textarea["cols"] ?? '')."' placeholder='".($textarea["placeholder"] ?? '')."' rows='".($textarea["rows"] ?? '')."' name='".($name ?? "")."'>";
-            $data .= $textarea["value"] ?? "";
-            $data .= "</textarea>";
+  
+        $data = "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
+        $data .= " <textarea class='".($textarea["class"] ?? '')."' id='".($textarea["id"] ?? '')."' cols='".($textarea["cols"] ?? '')."' placeholder='".($textarea["content"] ?? '')."' rows='".($textarea["rows"] ?? '')."' name='".($name ?? "")."'>";
+        $data .= $textarea["value"] ?? "";
+        $data .= "</textarea>";
         return $data;
     }
 

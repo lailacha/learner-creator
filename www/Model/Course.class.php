@@ -250,7 +250,7 @@ class Course extends Sql
         return [
             "config" => [
                 "method" => "POST",
-                "action" => "createCourse",
+                "action" => "save/course",
                 "id" => "formCreateCourse",
                 "enctype" => "multipart/form-data",
                 "class" => "form course",
@@ -302,7 +302,7 @@ class Course extends Sql
         return [
             "config" => [
                 "method" => "POST",
-                "action" => "/edit/course?id=" . $this->getId(),
+                "action" => "/save/course?id=" . $this->getId(),
                 "id" => "formEditCourse",
                 "enctype" => "multipart/form-data",
                 "class" => "form course",

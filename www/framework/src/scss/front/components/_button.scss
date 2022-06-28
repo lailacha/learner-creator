@@ -1,5 +1,4 @@
 
-
 .icon {
   width: 25px;
   height: 25px;
@@ -7,52 +6,20 @@
   border-radius:  5px;
 }
 
-button,  input[type="submit"], .button, .btn {
-  font-size: rem(16);
-  text-decoration: none;
-  display: inline-block;
-  padding: 1em 2em;
-  color: $white;
-  text-transform: uppercase;
-  background: $linear;
-  border: 1px solid;
-  transition: background 0.3s;
-  cursor: pointer;
-  text-align: center;
-  border-radius: 5px;
-  font-weight: 500;
-
-  &:hover {
-    transition: color 0.3s;
-
-    color: $text-color;
-    background: $white;
-    border: #3BCDB3 solid 1px;
-
-
-  &--small {
-    font-size: rem(8);
-  }
-}
-
-}
-
-.btn-secondary{
-  font-size: rem(16);
-  text-decoration: none;
-  display: inline-block;
-  padding: 1em 2em;
-  text-transform: uppercase;
+button,  input[type="submit"]{
   border: #3BCDB3 solid 1px;
   background-color: #FFFFFF;
-  color: $text-color;
-  transition: background 0.3s;
-  cursor: pointer;
-  text-align: center;
+  font-family: $font1;
+  padding: 15px 20px;
   border-radius: 5px;
-  font-weight: 500;
-
+  cursor: pointer;
 }
 
+button {
 
-
+  &.error {
+    background-color: #860505;
+    color: $white;
+    border: $white solid 2px;
+  }
+}

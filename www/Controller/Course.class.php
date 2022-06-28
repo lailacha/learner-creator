@@ -25,6 +25,15 @@ class Course extends BaseController
 
     }
 
+
+    public function create()
+    {
+        $courseManager = new CourseModel();
+        $form = FormBuilder::render($courseManager->getCourseForm());
+        $view = new View('courses/createCourse');
+        $view->assign('form', $form);
+    }
+
     public function allCourses()
     {
         //get All the courses
@@ -116,8 +125,9 @@ class Course extends BaseController
                 }
 
                 $course->save();
+                //$this->route->redirect("/show/course?id=".$course->getId(), "index");
                 $this->session->addFlashMessage("success", "Votre cours a bien été modifié");
-                $this->route->redirect("/show/course?id=".$course->getId(), "index");
+
 
             }
             else{
@@ -147,7 +157,7 @@ class Course extends BaseController
     }
 
 
-    public function create()
+    public function save()
     {
 
         $courseManager = new CourseModel();

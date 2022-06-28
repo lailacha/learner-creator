@@ -207,6 +207,7 @@ class User extends Sql
 
     }
 
+    
     public function getAllUsers(): array
     {
         $users = [];

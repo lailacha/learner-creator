@@ -21,3 +21,4 @@
 
     <a href="/teacher/new" class="btn-secondary">Faire une demande pour devenir professeur chez nous</a>
 </div>
+</div>

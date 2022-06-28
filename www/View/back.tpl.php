@@ -32,6 +32,12 @@
                         </ul>
                     </li>
                     <li class="body2  flex column dropdown">
+                        <a class="item dropdown-menu">Courses <i class=" ml-1 fa-solid fa-chevron-down"></i></a>
+                        <ul class="dropdown-items">
+                            <li>Category</li>
+                        </ul>
+                    </li>
+                    <li class="body2  flex column dropdown">
                         <a class="item dropdown-menu">Management <i class=" ml-1 fa-solid fa-chevron-down"></i></a>
                         <ul class="dropdown-items">
                             <li>Users</li>

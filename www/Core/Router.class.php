@@ -5,6 +5,9 @@ namespace App\Core;
 
 use App\Core\HttpRequest;
 use App\Core\Route;
+use App\Exception\MultipleRouteFoundException;
+use App\Exception\NoRouteFoundException;
+
 
 
 class Router
@@ -31,14 +34,8 @@ class Router
 
              return preg_match("#^" . $route["path"] . "$#", $httpRequest->getUrl()) && $method === $httpRequest->getMethod();
         });
-    
 
-        if (!Security::checkRoute(array_values($routeFound)[0])) {
 
-            die("Not Authorized");
-        }
-
-        Security::checkAuth($routeFound);
 
         $numberRoute = count($routeFound);
         if ($numberRoute > 1) {
@@ -47,6 +44,13 @@ class Router
             throw new NoRouteFoundException();
         } else {
             return new Route(array_shift($routeFound));
+        }
+
+        Security::checkAuth($routeFound);
+
+        if (!Security::checkRoute(array_values($routeFound)[0])) {
+
+            die("Not Authorized");
         }
 
     }

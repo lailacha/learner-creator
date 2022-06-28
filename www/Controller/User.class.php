@@ -191,9 +191,11 @@ class User extends BaseController
         $user = UserModel::getUserConnected();
 
         $learner = new Learner();
-        var_dump( $learner->getAllBy('user', $user->getId()));
+        // var_dump( $learner->getAllBy('user', $user->getId()));
+        $preferences = $learner->getOneSpecif('category','user', $user->getId());
+        echo $preferences;
 
-        $view->assign("$learner", $learner);
+        $view->assign("learner", $learner);
         
         
         $form = FormBuilder::render($user->getEditProfileForm());

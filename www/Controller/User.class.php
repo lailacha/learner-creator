@@ -7,6 +7,7 @@ use App\Core\QueryBuilder;
 use App\Core\ReceivePassword;
 use App\Core\Session;
 use App\Model\Course;
+use App\Model\Learner;
 use App\Model\Settings;
 use App\Core\Verificator;
 use App\Core\View;
@@ -290,6 +291,13 @@ class User extends BaseController
         $user = UserModel::getUserConnected();
         $session = Session::getInstance();
 
+        $learner = new Learner();
+        $preferences = $learner->getOneSpecif('category','user', $user->getId());
+        echo $preferences;
+
+        $view->assign("learner", $learner);
+        
+        
         $form = FormBuilder::render($user->getEditProfileForm());
         $view->assign("form", $form);
         $view->assign("user", $user);

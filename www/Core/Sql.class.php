@@ -103,6 +103,15 @@ use App\Model\User as userManager;
         $queryPrepared->execute();
         
  */    }
+    
+    public function getOneSpecif(string $col,string $cond, string $result)
+    {
+
+        $sql = "SELECT "  . $col .  " FROM " . $this->table  ."  WHERE  " . $cond  . " = " . $result;
+         $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute();
+        return $queryPrepared->fetchObject(get_called_class());
+    }
 
     /**
      * @return array

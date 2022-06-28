@@ -37,7 +37,7 @@ class Learner extends User
     /**
      * @return void
      */
-    public function getCategory(): int
+    public function getCategory(): ?int
     {
         return $this->category;
         

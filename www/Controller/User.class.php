@@ -27,6 +27,7 @@ class User extends BaseController
         if (!empty($_POST) && $user->login($_POST['email'], $_POST['password'])) {
             $role = $user->getRole($session->get('user')["id"]);
             $session->set('role', $role);
+            $session->addFlashMessage("bienvenue", "Vous êtes connecté");
 
             header('Location: /edit/profile');
         }
@@ -243,6 +244,7 @@ class User extends BaseController
     {
         $view = new View("editProfile");
         $user = UserModel::getUserConnected();
+        $session = Session::getInstance();
 
         $form = FormBuilder::render($user->getEditProfileForm());
         $view->assign("form", $form);

@@ -22,7 +22,7 @@
         <?php include "Partial/sidebar-left.partial.php"; ?>
     </section>
 
-    <div class="container column w-100 pl-3 mt-1">
+    <div class="container column w-100 pl-3 pr-3 mt-1">
 
         <?php include "./View/Partial/error-message.partial.php"; ?>
 

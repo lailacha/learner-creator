@@ -199,7 +199,6 @@ class User extends Sql
         $session = new Session();
         if ($user && password_verify($password, $user["password"])) {
             $session->set("user", $user);
-            $session->addFlashMessage("success", "Vous êtes connecté");
             return true;
         }
 

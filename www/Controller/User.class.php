@@ -49,7 +49,7 @@ class User extends BaseController
     {
 
         $user = new UserModel();
-        $session = new Session();
+        $session = Session::getInstance();
 
         if (!empty($_POST)) {
 
@@ -57,18 +57,7 @@ class User extends BaseController
             $verification = Verificator::checkForm($user->getRegisterForm(), $this->request);
 
             if (!$verification) {
-//                $user = $user->getBy("id", 33);
-//
-//                $user->setEmail("y.sssvhvhvhvsjjjjsss@gmail.com");
-//
-//                //$user->setPassword("Test1234");
-//                //$user->setLastname("SKrzypCZK   ");
-//                //$user->setFirstname("  YveS");
-//                //$user->generateToken();
-//
-//                $user->save();
 
-                $session->set("error", $verification[0]);
                 $user->setFirstname(htmlspecialchars($_POST["firstname"]));
                 $user->setLastname(htmlspecialchars($_POST["lastname"]));
                 $user->setEmail(htmlspecialchars($_POST["email"]));
@@ -81,38 +70,46 @@ class User extends BaseController
 
                 $session->addFlashMessage("success", "Your registration is OK!");
 
-
+            } else {
+                $session->addFlashMessage("error", $verification[0]);
             }
-            $session->addFlashMessage("error", $verification[0]);
         }
 
         $view = new View("Register", "home");
         $form = FormBuilder::render($user->getRegisterForm());
         $view->assign("form", $form);
+
+
     }
 
     public function recoverPassword()
     {
         $user = new UserModel();
+        $form = $user->getForgetPswdForm();
         $receivePasswordManager = new ReceivePasswordModel();
         $receivePass = new ReceivePassword();
+        $session = Session::getInstance();
 
         if (!empty($_POST)) {
 
             $user = $user->getBy("email", $_POST['email']);
 
-            $idUser = $user->getId();
+            if ($user) {
+                $idUser = $user->getId();
 
-            $receivePasswordManager->setToken(Helpers::createToken());
-            $receivePasswordManager->setIdUser($idUser);
-            $receivePasswordManager->setEmail($user->getEmail());
-            $receivePasswordManager->save();
-            $receivePass->sendPasswordResetEmail($receivePasswordManager);
+                $receivePasswordManager->setToken(Helpers::createToken());
+                $receivePasswordManager->setIdUser($idUser);
+                $receivePasswordManager->setEmail($user->getEmail());
+                $receivePasswordManager->save();
+                $receivePass->sendPasswordResetEmail($receivePasswordManager);
+            }
+
+            $session->addFlashMessage("success", "Un mail de réinitialisation de mot de passe vous a été envoyé.");
 
         }
 
-        $view = new View("forgotPassword","home");
-        $form = FormBuilder::render($user->getForgetPswdForm());
+        $view = new View("forgotPassword", "home");
+        $form = FormBuilder::render($form);
         $view->assign("form", $form);
 
     }
@@ -150,10 +147,9 @@ class User extends BaseController
         $heureDifference = (int)$heureDifference;
 
 
-
         if ($count === 1 && $result['status'] == 0 && $heureDifference < 48) {
 
-            $view = new View("changePassword","home");
+            $view = new View("changePassword", "home");
 
             if (!empty($_POST)) {
                 // Plus tard faut utiliser Class verificator pour verifier le password
@@ -164,14 +160,12 @@ class User extends BaseController
                 $user->setPassword($_POST['password']);
                 $user->save();
 
-            }
-            else{
+            } else {
 
                 $form = FormBuilder::render($user->getChangePswdForm());
                 $view->assign("form", $form);
 
             }
-
 
 
         } else {
@@ -222,7 +216,6 @@ class User extends BaseController
             $this->session->addFlashMessage("success", " Your account is validated !");
             // FAUT ACTIVER LES MESSAGES FLUSH DANS TEMPLATE FRONT
             header('Location: /login');
-
 
 
         }

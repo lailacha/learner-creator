@@ -35,11 +35,9 @@
         </nav>
     </div>
 </header>
-    <div class="wrapper fadeInDown">
-        <div id="formContent">
+
             <?php include $this->view . ".View.php"; ?>
-        </div>
-    </div>
+
 
 
 

@@ -92,6 +92,7 @@ class Course extends Sql
     public function getDescription(): string
     {
         return $this->description;
+       
     }
 
     /**

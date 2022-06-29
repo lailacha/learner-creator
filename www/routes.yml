@@ -106,6 +106,12 @@
   method: GET
   param: [ "id" ]
 
+-
+  path: /showCourses
+  controller: course
+  action: showAll
+  method: GET
+  
 
 -
   path: /edit/course

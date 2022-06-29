@@ -6,6 +6,8 @@ namespace App\Controller;
 use App\Core\Mail;
 use App\Model\Course as CourseModel;
 use App\Model\User;
+use App\Model\Learner;
+use App\Model\File as FileManager;
 use App\Core\FormBuilder;
 use App\Core\Verificator;
 use App\Core\View;
@@ -42,7 +44,8 @@ class Course extends BaseController {
         $view = new View("courses/showAllCourses", "front");
         $allCourses = $courseManager->getUnapprovedCoursesByUser(User::getUserConnected()->getId());
         $view->assign("form", $form);
-        $view->assign("courses", $allCourses);
+        $view->assign("allCourses", $allCourses);
+        
 
     }
 
@@ -64,19 +67,31 @@ class Course extends BaseController {
     //TODO create view for this
     public function showAll()
     {
-        $courseManager = new CourseModel();
-        $courses = $courseManager->getAll();
+        // $courseManager = new CourseModel();
 
-        $view = new View("courses/showAllCourses", "front");
-        $view->assign("courses", $courses);
+        // $courses = $courseManager->getAll();
+
+        // $view = new View("courses/showAllCourses", "front");
+        // $view->assign("courses", $courses);
+
+
+        $view = new View("showAll", "front");
+        $user = User::getUserConnected()->getId();
+        $learner = new Learner();
+        $categoryPref =$learner->getAllCategories($user);
+        $courseManager = $learner->getAllCourses($categoryPref);
+
+        return $view->assign("courseManager", $courseManager);
+
+
     }
+
+
 
     public function showbyCategory()
     {
         $courseManager = new CourseModel();
         $courses = $courseManager->getBy('category', $this->request->get("category_id"));
-
-        //$categoryManagerApp\Model\CourseCategory();
 
         if(!$courses)
         {
@@ -87,6 +102,7 @@ class Course extends BaseController {
         $view = new View("course/showByCategorie");
         $view->assign("course", $courses);
         $view->assign("categorie", $categorie);
+
     }
 
     public function delete()

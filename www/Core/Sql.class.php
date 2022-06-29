@@ -128,7 +128,15 @@ use App\Model\User as userManager;
             return $queryPrepared->fetchAll();
         }
     }
+    public function getAllValue($attribute, $value)
+    {
+        $sql = "SELECT * FROM ".$this->table." WHERE ".$attribute."=:value";
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute( ["value"=>$value] );
+        $res = $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
+        return $res;
 
+    }
     public function getOneByOne($attribute, $value){
 
         $sql = "SELECT * FROM ".$this->table." WHERE ".$attribute."=:value";

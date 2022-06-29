@@ -292,11 +292,11 @@ class User extends BaseController
         $session = Session::getInstance();
 
         $learner = new Learner();
-        $preferences = $learner->getOneSpecif('category','user', $user->getId());
-        echo $preferences;
-
         $view->assign("learner", $learner);
+       
         
+        $learner->setUser($user->getId());
+        print_r($learner->getUser());
         
         $form = FormBuilder::render($user->getEditProfileForm());
         $view->assign("form", $form);

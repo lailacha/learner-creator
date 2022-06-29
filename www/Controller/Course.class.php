@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Model\Course as CourseModel;
 use App\Model\User;
+use App\Model\Learner;
 use App\Model\File as FileManager;
 use App\Model\CourseCategory as CourseCategory;
 use App\Core\FormBuilder;
@@ -29,6 +30,7 @@ class Course extends BaseController
         $allCourses = $courseManager->getUnapprovedCoursesByUser(User::getUserConnected()->getId());
         $view->assign("form", $form);
         $view->assign("allCourses", $allCourses);
+        
 
     }
 
@@ -44,11 +46,22 @@ class Course extends BaseController
     public function showAll()
     {
         $courseManager = new CourseModel();
-        $courses = $courseManager->getAll();
-
+        
+        
         $view = new View("showAll", "front");
-        $view->assign("index", $courses);
+        $user = User::getUserConnected()->getId();
+        $learner = new Learner();
+        $categoryPref =$learner->getAllCategories($user);
+        $courseManager = $learner->getAllCourses($categoryPref);
+        print_r($courseManager);
+
+        
+
+        
+        return $view->assign("courseManager", $courseManager);
+       
     }
+    
 
     public function delete()
     {

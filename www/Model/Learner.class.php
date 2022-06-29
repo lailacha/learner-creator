@@ -8,6 +8,7 @@ use App\Core\Sql;
 use App\Model\Learner as LearnerModel;
 use App\Model\CourseCategory;
 use App\Model\CourseChapter;
+use PDO;
 
 
 
@@ -24,7 +25,9 @@ class Learner extends User
     {
         //echo "constructeur du Model User";
         parent::__construct();
+        $this->table  = DBPREFIXE."learner";
     }
+    
 
     /**
      * @return null
@@ -37,9 +40,10 @@ class Learner extends User
     /**
      * @return void
      */
-    public function getCategory(): ?int
+    public function getCategory(): void
     {
-        return $this->category;
+       
+       echo "yes";
         
     }
 
@@ -65,18 +69,46 @@ class Learner extends User
     {
         $this->user = $user;
     }
+    
     /*
      * This function get all the categories preferences by User
      */
-    // public function getPreferences() : array
-    // {
-    //     $preferences = [];
-    //     $categories = $this->getCategories();
-    //     foreach ($categories as $category) {
-    //         $preferences[$category->getId()] = $this->getPreference($category->getId());
-    //     }
-    //     return $preferences;
-    // }
+    //  public function getPreferences() : array
+    //  {
+    //         $sql = "SELECT * FROM ".$this->table." WHERE user=:user";
+    //         $queryPrepared = $this->pdo->prepare($sql);
+    //         $queryPrepared->execute( ["user"=>$this->user] );
+    //         return $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
+    //  }
 
-
+    public function getAllCategories($user)
+    {
+        $query = new QueryBuilder();
+       return $query->select('category')
+            ->from('learner')
+            ->where('user = :user')
+            
+            ->setParams([
+                'user' => $user,
+                
+            ])
+            ->fetch("category");
+                
+           // return $this->getCourse($query);
+       
+        
+    }
+    public function getAllCourses($category)
+    {
+        $query = new QueryBuilder();
+        return  $query->select('*')
+            ->from('learner')
+            ->innerJoin('course',DBPREFIXE.'course.category',DBPREFIXE.'learner.category')
+            ->where('learner.category = :category')
+            ->setParams([
+                'category' => $category,
+            ])
+            ->fetchAllByClass(__CLASS__);
+    }
+   
 }

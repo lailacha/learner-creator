@@ -85,7 +85,15 @@ abstract class Sql
         return $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
 
     }
+    public function getAllValue($attribute, $value)
+    {
+        $sql = "SELECT * FROM ".$this->table." WHERE ".$attribute."=:value";
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute( ["value"=>$value] );
+        $res = $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
+        return $res;
 
+    }
     public function getOneByOne($attribute, $value){
 
         $sql = "SELECT * FROM ".$this->table." WHERE ".$attribute."=:value";

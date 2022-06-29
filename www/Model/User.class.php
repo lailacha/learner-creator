@@ -359,6 +359,10 @@ class User extends Sql
                     "class" => "formRegister",
                     "error" => " Votre nom doit faire entre 2 et 100 caractères",
                 ],
+                
+                
+                
+                
             ],
         ];
     }

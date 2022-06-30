@@ -9,6 +9,7 @@ use App\Core\Session;
 use App\Model\Course;
 use App\Model\Learner;
 use App\Model\Settings;
+use App\Model\CourseCategory;
 use App\Core\Verificator;
 use App\Core\View;
 use App\Core\Mail;
@@ -277,6 +278,7 @@ class User extends BaseController
 
         $courseManger = new Course();
         $courses = $courseManger->getAllBy('user', $user->getId());
+       
 
         $view = new View("showProfile", "back");
         $view->assign('user', $user);
@@ -289,17 +291,24 @@ class User extends BaseController
     {
         $view = new View("editProfile");
         $user = UserModel::getUserConnected();
-        $session = Session::getInstance();
 
         $learner = new Learner();
         $view->assign("learner", $learner);
-       
-        
         $learner->setUser($user->getId());
-        print_r($learner->getUser());
+        $category_id = $learner->getAllCategories($user->getId());
+
+        $selectCat = new CourseCategory();
+        $category = $selectCat->getAllBy('id', $category_id);
+        $view->assign("category", $category);
+        
+
+        $formCat = FormBuilder::render($learner->getCategoryPrefForm());
+        $view->assign("formCat", $formCat);
         
         $form = FormBuilder::render($user->getEditProfileForm());
         $view->assign("form", $form);
+
+
         $view->assign("user", $user);
     }
 

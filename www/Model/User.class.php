@@ -9,6 +9,7 @@ use App\Core\Sql;
 use App\Model\File as FileModel;
 use App\Model\User as userManager;
 use App\Model\User as UserModel;
+use App\Model\CourseCategory as CourseCategoryModel;
 
 class User extends Sql 
 {
@@ -270,6 +271,7 @@ class User extends Sql
 
     public function getEditProfileForm()
     {
+       
         return [
             "config" => [
                 "method" => "POST",

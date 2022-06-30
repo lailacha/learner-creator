@@ -3,9 +3,7 @@
         <div class="col-md-5 avatar">
             <img class="" style="height: 200px; " src="<?php echo $user->avatar(); ?>"/>
             <p> mail: &nbsp; <?php echo $user->getEmail() ?></p>
-            <p> mail: &nbsp; <?php 
-            
-            echo $learner->getCategory() ?></p>
+           
         </div>
     <?php endif; ?>
 <div class="flex">
@@ -24,4 +22,19 @@
 
     <a href="/teacher/new" class="btn-secondary">Faire une demande pour devenir professeur chez nous</a>
 </div>
+    <a href="/add/teacher" class="btn-secondary">Faire une demande pour devenir professeur chez nous</a>
+
+    <?php if (isset($formCat)) : ?>
+        <?php echo $formCat ?>
+
+    <?php endif; ?>
+
+    
+
+    <?php foreach ($category as $course) : ?>
+        <tr>
+            <td><h3><?php  $course->getId();?> </h3></td>
+            
+        </tr>
+    <?php endforeach; ?>
 </div>

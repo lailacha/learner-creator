@@ -46,19 +46,12 @@ class Course extends BaseController
     public function showAll()
     {
         $courseManager = new CourseModel();
-        
-        
         $view = new View("showAll", "front");
         $user = User::getUserConnected()->getId();
         $learner = new Learner();
         $categoryPref =$learner->getAllCategories($user);
-        $courseManager = $learner->getAllCourses($categoryPref);
-        print_r($courseManager);
-
-        
-
-        
-        return $view->assign("courseManager", $courseManager);
+        $courseManager = $courseManager->getAllBy("category", $categoryPref);
+        $view->assign("courseManager", $courseManager);
        
     }
     

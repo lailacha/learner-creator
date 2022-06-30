@@ -79,7 +79,7 @@ class Course extends Sql
     public function getDescription(): string
     {
         return $this->description;
-       
+        
     }
 
     /**
@@ -239,7 +239,7 @@ class Course extends Sql
                     "class" => "formRegister",
                     "options" => [
                         "data" =>
-                            $categoryManager->getCategory(),
+                            $categoryManager->getCategories(),
                         "property" => "name",
                         "value" => "id",
                         "selected" => 1
@@ -296,7 +296,7 @@ class Course extends Sql
                     "class" => "formRegister",
                     "options" => [
                         "data" =>
-                            $categoryManager->getCategory(),
+                            $categoryManager->getCategories(),
                         "property" => "name",
                         "value" => "id",
                         "selected" => $this->getCategory()

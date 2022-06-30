@@ -40,10 +40,10 @@ class Learner extends User
     /**
      * @return void
      */
-    public function getCategory(): void
+    public function getCategory(): ?int
     {
        
-       echo "yes";
+        return $this->category;
         
     }
 
@@ -73,15 +73,8 @@ class Learner extends User
     /*
      * This function get all the categories preferences by User
      */
-    //  public function getPreferences() : array
-    //  {
-    //         $sql = "SELECT * FROM ".$this->table." WHERE user=:user";
-    //         $queryPrepared = $this->pdo->prepare($sql);
-    //         $queryPrepared->execute( ["user"=>$this->user] );
-    //         return $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
-    //  }
-
-    public function getAllCategories($user)
+  
+public function getAllCategories($user)
     {
         $query = new QueryBuilder();
        return $query->select('category')
@@ -93,22 +86,28 @@ class Learner extends User
                 
             ])
             ->fetch("category");
-                
-           // return $this->getCourse($query);
-       
-        
+     
     }
-    public function getAllCourses($category)
+
+    public function getCategoryPrefForm(): array
     {
-        $query = new QueryBuilder();
-        return  $query->select('*')
-            ->from('learner')
-            ->innerJoin('course',DBPREFIXE.'course.category',DBPREFIXE.'learner.category')
-            ->where('learner.category = :category')
-            ->setParams([
-                'category' => $category,
-            ])
-            ->fetchAllByClass(__CLASS__);
+        $categories = new CourseCategory();
+        
+    return ["config" => ["method" => "POST", "action" => "", "submit" => "Ajouter une préfére"],
+            "inputs" => [ 
+                "role" => [
+                    "type" => "select",
+                    "id" => "jjj",
+                    "class" => "formRegister",
+                    "options" => [
+                        "data" =>
+                            $categories->getCategories(),
+                        "property" => "name",
+                        "value" => "id",
+                        "selected" => 1
+
+                    ]]
+    ]]
+    ;
     }
-   
 }

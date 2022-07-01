@@ -24,17 +24,50 @@ class User extends BaseController
     {
         $user = new UserModel();
         $session = Session::getInstance();
-        if (!empty($_POST) && $user->login($_POST['email'], $_POST['password'])) {
-            $role = $user->getRole($session->get('user')["id"]);
-            $session->set('role', $role);
-            $session->addFlashMessage("bienvenue", "Vous êtes connecté");
+        $verification = Verificator::checkForm($user->getLoginForm(), $this->request);
 
-            header('Location: /edit/profile');
+        if (!$verification) {
+            if (!empty($_POST) && $user->login($_POST['email'], $_POST['password'])) {
+                $role = $user->getRole($session->get('user')["id"]);
+                $session->set('role', $role);
+
+                if ($_POST["csrf_token"] !== $_SESSION['csrf_token']) {
+                    $session->addFlashMessage("error", "csrf not valid! ");
+                    header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
+                } else {
+
+                    if ($user) {
+
+                        $user->setEmail(htmlspecialchars($_POST["email"]));
+                        $user->setPassword(htmlspecialchars($_POST["password"]));
+                        $user->login($_POST['email'], $_POST['password']);
+
+                        $session->addFlashMessage("success", "Bienvenue");
+                        $session->addFlashMessage("success", "Vous êtes maintenant connecté");
+                        header('Location: /edit/profile');
+
+                    }
+
+                    $session->addFlashMessage("error", "Identifiants incorrects");
+
+                }
+                $user->setEmail(htmlspecialchars($_POST["email"]));
+                $user->setPassword(htmlspecialchars($_POST["password"]));
+
+                $session->addFlashMessage("success", "Bienvenue");
+
+            }
+
+        } else {
+            $session->addFlashMessage("error", $verification[0]);
         }
-        $view = new View("login", "home");
 
+        $_SESSION["csrf_token"] = md5(uniqid(mt_rand(), true));
+        $view = new View("login", "home");
         $form = FormBuilder::render($user->getLoginForm());
         $view->assign("form", $form);
+
+
     }
 
 
@@ -54,31 +87,35 @@ class User extends BaseController
 
         if (!empty($_POST)) {
 
-
             $verification = Verificator::checkForm($user->getRegisterForm(), $this->request);
 
             if (!$verification) {
+                if ($_POST["csrf_token"] !== $_SESSION['csrf_token']) {
+                    $session->addFlashMessage("error", "csrf not valid! ");
+                    header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
+                } else {
+                    $isRegistred = $user->getBy("email", $_POST["email"]);
+                    if (!$isRegistred) {
 
-                $user->setFirstname(htmlspecialchars($_POST["firstname"]));
-                $user->setLastname(htmlspecialchars($_POST["lastname"]));
-                $user->setEmail(htmlspecialchars($_POST["email"]));
-                $user->setPassword(htmlspecialchars($_POST["password"]));
+                        $user->setFirstname(htmlspecialchars($_POST["firstname"]));
+                        $user->setLastname(htmlspecialchars($_POST["lastname"]));
+                        $user->setEmail(htmlspecialchars($_POST["email"]));
+                        $user->setPassword(htmlspecialchars($_POST["password"]));
 
-                $user->generateToken((Helpers::createToken()));
+                        $user->generateToken((Helpers::createToken()));
 
-                $user->save();
-                $this->sendRegisterMail($user);
+                        $user->save();
+                        $this->sendRegisterMail($user);
 
-                $session->addFlashMessage("success", "Your registration is OK!");
-
+                        $session->addFlashMessage("success", "Your registration is OK!");
+                    } else {
+                        $session->addFlashMessage("error", "Vous etes déjà inscrit");
+                    }
+                }
             } else {
                 $session->addFlashMessage("error", $verification[0]);
             }
         }
-
-        $view = new View("Register", "home");
-        $form = FormBuilder::render($user->getRegisterForm());
-        $view->assign("form", $form);
 
 
     }
@@ -114,6 +151,7 @@ class User extends BaseController
         $view->assign("form", $form);
 
     }
+
 
     public function changePassword()
     {
@@ -175,6 +213,8 @@ class User extends BaseController
 
         }
     }
+
+    // test
 
     /**
      * @param UserModel $user
@@ -303,14 +343,3 @@ class User extends BaseController
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-

@@ -28,6 +28,7 @@ abstract class Sql
     }
 
 
+
     /**
      * @param null $id
      */
@@ -42,6 +43,8 @@ abstract class Sql
 
 
     }
+
+    
 
     /**
      * @param string $type email | id
@@ -65,6 +68,46 @@ abstract class Sql
                return $queryPrepared->fetchObject(get_called_class());*/
 
     }
+
+    public function initdb()
+    {
+        $sql = "CREATE DATABASE".DBNAME;
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute();
+
+        /* $esgi_commentaire_lesson=
+        "
+        CREATE TABLE `esgi_commentaire_lesson` (
+          `id` int NOT NULL,
+          `content` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+          `user` int NOT NULL,
+          `lesson` int NOT NULL,
+          `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `reports` int DEFAULT NULL
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+        ";
+        $queryPrepared = $this->pdo->prepare($esgi_commentaire_lesson);
+        $queryPrepared->execute();
+
+        
+        $insert ="INSERT INTO `esgi_commentaire_lesson` (`id`, `content`, `user`, `lesson`, `created_at`, `reports`) VALUES
+        (1, '<p>test</p>', 59, 41, '2022-05-14 10:52:30', NULL),
+        (2, '<p>zfzefz</p>', 59, 41, '2022-05-14 10:52:57', NULL),
+        (3, '<p>zfzefz</p>', 59, 41, '2022-05-14 10:53:16', NULL),
+        (4, '<p>Je suis un commentaire</p>', 59, 41, '2022-05-14 11:51:46', NULL),
+        (5, '<p>Test</p>', 59, 34, '2022-05-14 11:52:35', NULL),
+        (6, '<p>Je suis un commentaire</p>', 59, 34, '2022-05-14 12:05:34', NULL),
+        (7, '<p>Pas terrible ce cours</p>', 59, 31, '2022-05-14 12:08:45', NULL),
+        (8, '<p>Bzzzz</p>', 59, 49, '2022-05-14 12:10:01', NULL),
+        (9, '<p>commentaire</p>', 59, 32, '2022-05-14 12:24:03', NULL),
+        (10, '<p>test</p>\r\n<p>&nbsp;</p>', 59, 16, '2022-05-14 15:05:20', NULL),
+        (11, '<p>Test</p>', 59, 49, '2022-05-17 21:14:28', NULL),
+        (12, '<p>Test</p>', 59, 50, '2022-05-18 17:43:13', NULL),
+        (13, '<p>TEST TEST&nbsp;</p>', 65, 50, '2022-06-23 08:23:39', NULL);";
+        $queryPrepared = $this->pdo->prepare($insert);
+        $queryPrepared->execute();
+        
+ */    }
 
     /**
      * @return array
@@ -163,6 +206,7 @@ abstract class Sql
             , [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING]);
 
         $value = $data[key($data)];
+        var_dump($data);
         $email = htmlspecialchars($value);
         $sql = "SELECT * FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";
         $sql1 = "SELECT password FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";

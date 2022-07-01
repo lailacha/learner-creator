@@ -14,7 +14,7 @@ class User extends Sql
     protected $id = null;
     protected $firstname = null;
     protected $lastname = null;
-    protected $email;
+    protected $email = null;
     protected $avatar;
     protected $role_id = 1;
     protected $status = 0;
@@ -385,15 +385,15 @@ class User extends Sql
                     "unicity" => true,
                     "errorUnicity" => "Un compte existe déjà avec cet email"
                 ],
-                "password" => [
-                    "placeholder" => "Votre mot de passe ...",
+            "password" => [
+                "placeholder" => "Votre mot de passe ...",
                     "type" => "password",
                     "id" => "pwdRegister",
                     "class" => "formRegister",
                     "required" => true,
                     "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
                 ],
-                "passwordConfirm" => [
+            "passwordConfirm" => [
                     "placeholder" => "Confirmation ...",
                     "type" => "password",
                     "id" => "pwdConfirmRegister",
@@ -401,6 +401,15 @@ class User extends Sql
                     "required" => true,
                     "error" => "Votre confirmation de mot de passe ne correspond pas",
                     "confirm" => "password"
+                ],
+            "csrf_token" => [
+                    "placeholder" => $_SESSION['csrf_token'],
+                    "value" => $_SESSION['csrf_token'],
+                    "type" => "hidden",
+                    "id" => "pwdcsrf",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "error" => "Le token csrf ne correspond pas"
                 ],
                 "firstname" => [
                     "placeholder" => "Votre prénom ...",
@@ -425,6 +434,7 @@ class User extends Sql
                     "type" => "captcha",
                     "error" => "Veuillez valider le captcha si vous êtes un humain :)",
                 ],
+        
 ////To test types of inputs
 //                "ville" => [
 //                    "type" => "checkbox",
@@ -495,6 +505,7 @@ class User extends Sql
                     "id" => "login",
                     "class" => "fadeIn second",
                     "required" => true,
+                    "error" => "email incorrect",
                 ],
                 "password" => [
                     "placeholder" => "Votre mot de passe ...",
@@ -502,6 +513,16 @@ class User extends Sql
                     "id" => "password",
                     "class" => "fadeIn third",
                     "required" => true,
+                    "error" => "password incorrect",
+                ],
+                "csrf_token" => [
+                    "placeholder" => $_SESSION['csrf_token'],
+                    "value" => $_SESSION['csrf_token'],
+                    "type" => "text",
+                    "id" => "pwdcsrf",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "error" => "Le token csrf ne correspond pas"
                 ]
             ]
         ];
@@ -525,7 +546,16 @@ class User extends Sql
                     "class" => "formRegister",
                     "required" => true,
                 ],
-
+            
+                "csrf_token" => [
+                    "placeholder" => $_SESSION['csrf_token'],
+                    "value" => $_SESSION['csrf_token'],
+                    "type" => "hidden",
+                    "id" => "pwdcsrf",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "error" => "Le token csrf ne correspond pas"
+                ]   
             ]
         ];
     }

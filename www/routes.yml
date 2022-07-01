@@ -139,7 +139,7 @@
   action: login
   path: /login
   method: POST
-  param: [ "email", "password" ]
+  param: ["email", "password","csrf_token"]
 
 
 -
@@ -160,7 +160,7 @@
   action: register
   method: POST
   path: /register
-  param: ["firstname", "lastname","email", "password", "passwordConfirm", "g-recaptcha-response"]
+  param: ["firstname", "lastname","email", "password", "passwordConfirm","csrf_token", "g-recaptcha-response"]
 
 -
   controller: user
@@ -218,6 +218,13 @@
   action: home
   security: "admin"
   path: /dashboard
+
+-
+  controller: main
+  action: install
+  method: GET
+  path: /installeur
+  param: []
 
 -
   controller: admin
@@ -301,3 +308,4 @@
   method: GET
   path: /refuse/requestTeacher
   param: ["id"]
+

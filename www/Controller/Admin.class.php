@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Core\FormBuilder;
+use App\Core\Session;
 use App\Core\View;
 use App\Model\File;
 use App\Model\RequestTeacher;
@@ -95,10 +96,18 @@ class Admin extends BaseController
         $requestManager = new RequestTeacher();
         $id_request = $this->request->get("id");
         $requestManager = $requestManager->setId($id_request);
+        $id_user = $requestManager->getUserId();
+        $user = new UserModel();
+        $user = $user->setId($id_user);
+        $user->setRoleId(2);
+        $user->save();
         $requestManager->setStatut(1);
         $requestManager->save();
-        header('Location: /teachers/requestInProgress');
+        header('Location: /teachers/allRequests');
+        $session = Session::getInstance();
+        $session->addFlashMessage("success", "The request has been validated");
     }
+
     public function refuseRequestTeacher(): void
     {
         $requestManager = new RequestTeacher();
@@ -107,6 +116,8 @@ class Admin extends BaseController
         $requestManager->setStatut(-1);
         $requestManager->save();
         header('Location: /teachers/requestInProgress');
+        $session = Session::getInstance();
+        $session->addFlashMessage("success", "The request has been refused");
     }
 
 }

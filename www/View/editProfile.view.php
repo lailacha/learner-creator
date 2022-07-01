@@ -1,8 +1,12 @@
-
 <div class="col-md-8">
-    <?php if($user->getAvatar() !== 0): ?>
-        <div class="col-md-5 avatar" >
-            <img class="" style="height: 200px; " src="<?php echo $user->avatar(); ?>"  />
+    
+
+
+
+
+    <?php if ($user->getAvatar() !== 0):?>
+        <div class="col-md-5 avatar">
+            <img class="" style="height: 200px; " src="<?php echo $user->avatar(); ?>"/>
             <p> mail: &nbsp; <?php echo $user->getEmail() ?></p>
         </div>
     <?php endif; ?>
@@ -11,5 +15,5 @@
 
     <?php endif; ?>
 
-    <a href="/add/teacher">Faire une demande pour devenir professeur chez nous</a>
+    <a href="/teacher/new" class="btn-secondary">Faire une demande pour devenir professeur chez nous</a>
 </div>

@@ -6,3 +6,6 @@ www/.env*
 .idea/workspace.xml
 .idea/php.xml
 .DS_Store
+www/images/avatar/*
+www/images/pdf/*
+www/images/thumbnails/*

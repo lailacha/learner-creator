@@ -62,8 +62,7 @@ class User extends BaseController {
             $session->addFlashMessage("error", $verification[0]);
         }
         
-        
-
+    
         $_SESSION["csrf_token"] = md5(uniqid(mt_rand(), true));
             $view = new View("login");
             $form = FormBuilder::render($user->getLoginForm());

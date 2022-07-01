@@ -120,6 +120,8 @@ class User extends BaseController
         echo "aze";
     }
 
+    // test
+
     /**
      * @param UserModel $user
      *
@@ -241,14 +243,3 @@ class User extends BaseController
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-

@@ -219,13 +219,14 @@
   security: "admin"
   path: /dashboard
 
+-
   controller: main
   action: install
   method: GET
   path: /installeur
   param: []
 
-  -
+-
   controller: admin
   action: users
   method: GET

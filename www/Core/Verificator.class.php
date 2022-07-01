@@ -13,7 +13,6 @@ class Verificator
         $captcha = new Recaptcha();
         $errors = [];
 
-        
         //var_dump($config["inputs"]);
         //var_dump($data);
 

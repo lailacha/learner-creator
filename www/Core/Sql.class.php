@@ -35,9 +35,12 @@ abstract class Sql
     public function setId(?int $id)
     {
         $sql = "SELECT * FROM ".$this->table." WHERE id=:id";
+
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute( ["id"=>$id] );
+
         return $queryPrepared->fetchObject(get_called_class());
+
 
     }
 
@@ -197,7 +200,7 @@ abstract class Sql
         //Si ID null alors insert sinon update
     }
 
-    public function login($data)
+/*    public function login($data)
     {
 
         $bdd = new \PDO(DBDRIVER . ":host=" . DBHOST . ";port=" . DBPORT . ";dbname=" . DBNAME, DBUSER, DBPWD
@@ -216,6 +219,7 @@ abstract class Sql
         $donnees1 = $reponse1->fetch();
 
 
+
         if (password_verify($_POST["password"], $donnees1[0])) {
             $session = new Session();
             $userManager = new UserManager();
@@ -230,7 +234,7 @@ abstract class Sql
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute();
 
-    }
+    }*/
 
     /**
      * @return string

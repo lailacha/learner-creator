@@ -18,6 +18,7 @@ class Route
         $this->action = $route["action"];
         $this->method = $route["method"] ?? "GET";
         $this->param = $route["param"] ?? [];
+
     }
 
 
@@ -61,33 +62,27 @@ class Route
         return $this->param;
     }
 
-    public function run($httpRequest,$config)
+    public function run($httpRequest, $config)
     {
-        $controllerFile = "Controller/".$this->controller.".class.php";
-        if(!file_exists($controllerFile)){
+        $controllerFile = "Controller/" . $this->controller . ".class.php";
+        if (!file_exists($controllerFile)) {
             die("Le fichier Controller n'existe pas");
         }
 
         include $controllerFile;
-        $controller = "App\\Controller\\".$this->controller;
+        $controller = "App\\Controller\\" . $this->controller;
 
-        if(class_exists($controller))
-        {
+        if (class_exists($controller)) {
+            $controller = new $controller($httpRequest, $this, new Session());
+            if (method_exists($controller, $this->action)) {
 
-            $controller = new $controller($httpRequest, $this, new Session() );
-            if(method_exists($controller, $this->action))
-            {
                 $httpRequest->bindParam();
                 $controller->getSession()->ensureStarted();
                 $controller->{$this->action}();
-            }
-            else
-            {
+            } else {
                 throw new ActionNotFoundException();
             }
-        }
-        else
-        {
+        } else {
             die("La classe Controller n'existe pas");
         }
 
@@ -95,12 +90,12 @@ class Route
 
     public function redirect($url)
     {
-        header("Location: ".$url);
+        header("Location: " . $url);
     }
 
     public function goBack()
     {
-        header("Location: ".$_SERVER['HTTP_REFERER']);
+        header("Location: " . $_SERVER['HTTP_REFERER']);
     }
 
 }

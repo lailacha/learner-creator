@@ -20,7 +20,9 @@ class Main extends BaseController{
     
     if(file_exists($filename)){
         echo "Le fichier $filename existe.";
-        echo "Welcome";
+
+        $view = new View("home", "home");
+        $session->addFlashMessage("success", "Le fichier s'est bien installé.");
     }else {
         echo "Le fichier $filename n'existe pas.";
         $view = new View("installeur", "back");
@@ -30,7 +32,7 @@ class Main extends BaseController{
     }
 
 
-    public function front()
+    public function contact()
     {
         $view = new View("contact", "front");
     }

@@ -62,7 +62,8 @@ class CourseCategory extends Sql
 
     public function getCategories(): array
     {
-        $query = "SELECT id, name FROM ".$this->table." ORDER BY name ASC";
+        $query = "
+        SELECT id, name FROM ".$this->table." ORDER BY name ASC";
         $req = $this->pdo->prepare($query);
         $req->execute();
         $res = $req->fetchAll(PDO::FETCH_ASSOC);

@@ -21,10 +21,5 @@
 
     
 
-    <?php foreach ($category as $course) : ?>
-        <tr>
-            <td><h3><?php  $course->getId();?> </h3></td>
-            
-        </tr>
-    <?php endforeach; ?>
+    
 </div>

@@ -222,6 +222,13 @@
   param: ["firstname", "lastname", "avatar"]
 
 -
+  controller: user
+  action: saveCategoryPref
+  method: POST
+  path: /save/categoriepref
+  param: ["id_category", "category", "user"]
+
+-
   controller: admin
   action: home
   security: "admin"

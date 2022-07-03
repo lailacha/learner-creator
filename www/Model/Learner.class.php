@@ -93,7 +93,7 @@ public function getAllCategories($user)
     {
         $categories = new CourseCategory();
         
-    return ["config" => ["method" => "POST", "action" => "", "submit" => "Ajouter une préfére"],
+    return ["config" => ["method" => "POST", "action" => "/save/categoriepref", "submit" => "Ajouter une préfére"],
             "inputs" => [ 
                 "role" => [
                     "type" => "select",

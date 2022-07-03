@@ -400,6 +400,11 @@
   method: POST
   path: /save/settings
   param: ["main_color", "sidebar_color", "big_title_size", "logo", "primary_color"]
+  controller: user
+  action: saveCategoryPref
+  method: POST
+  path: /save/categoriepref
+  param: ["id_category", "category", "user"]
 
 -
   controller: admin

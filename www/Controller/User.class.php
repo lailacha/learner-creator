@@ -295,13 +295,8 @@ class User extends BaseController
         $learner = new Learner();
         $view->assign("learner", $learner);
         $learner->setUser($user->getId());
-        $category_id = $learner->getAllCategories($user->getId());
-
-        $selectCat = new CourseCategory();
-        $category = $selectCat->getAllBy('id', $category_id);
-        $view->assign("category", $category);
         
-
+        
         $formCat = FormBuilder::render($learner->getCategoryPrefForm());
         $view->assign("formCat", $formCat);
         
@@ -322,12 +317,33 @@ class User extends BaseController
         }
     }
 
+    public function saveCategoryPref()
+    {
+        $learner = new Learner();
+        $user = UserModel::getUserConnected();
+        echo $learner;
+        $errors = Verificator::checkForm($learner->getEditProfileForm(), $this->request);
+        if (!$errors) {
+            
+            if (!empty($this->request->get('category')) && $this->request->get('category') !== $learner->getCategory()) {
+                $learner->setCategory($this->request->get('category'));
+            }
+
+            $user->save();
+            $this->session->addFlashMessage("success", "Votre profile a bien été modifié");
+            $this->route->redirect("/edit/profile");
+
+        } else {
+            $this->session->addFlashMessage("error", $errors[0]);
+        }
+    }
+
     public function saveProfile()
     {
         $user = UserModel::getUserConnected();
         $errors = Verificator::checkForm($user->getEditProfileForm(), $this->request);
         if (!$errors) {
-
+            
             if (!empty($this->request->get('firstname')) && $this->request->get('firstname') !== $user->getFirstname()) {
                 $user->setFirstname($this->request->get('firstname'));
             }

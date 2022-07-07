@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Model\Course as CourseModel;
+use App\Model\LikeCourse as LikeModel;
 use App\Model\User;
 use App\Model\Learner;
 use App\Model\File as FileManager;
@@ -42,17 +43,31 @@ class Course extends BaseController
         $view->assign("courses", $courses);
     }
 
-    //TODO create view for this
+    // Affiche tous les cours selon les préférences du users, ses favoris
     public function showAll()
     {
         $courseManager = new CourseModel();
         $view = new View("showAll", "front");
         $user = User::getUserConnected()->getId();
         $learner = new Learner();
-        $categoryPref =$learner->getAllCategories($user);
+        $categoryPref = $learner->getAllCategories($user);
         $courseManager = $courseManager->getAllBy("category", $categoryPref);
+
+        $like = new LikeModel();
+        $likeForm = FormBuilder::render($like->getCategoryLikeForm());
+        
+        $view->assign("likeForm", $likeForm);
         $view->assign("courseManager", $courseManager);
-       
+
+        $likeCourse = $like->getAllLike($user);
+        print_r ($likeCourse);
+        
+   
+        //$displayCourse = $like->getCourseFav($likeCourse);
+        
+        
+        //$view->assign("displayCourse",$displayCourse);
+        
     }
     
 

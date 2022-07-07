@@ -404,7 +404,7 @@
   action: saveCategoryPref
   method: POST
   path: /save/categoriepref
-  param: ["id_category", "category", "user"]
+  param: ["id", "category", "user"]
 
 -
   controller: admin

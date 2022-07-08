@@ -11,6 +11,7 @@ use App\Model\File as FileModel;
 
 class Course extends Sql
 {
+
     protected $id = null;
     protected $name;
     protected string $description;
@@ -20,7 +21,6 @@ class Course extends Sql
     protected int $cover;
     protected int $user;
     protected ?int $status;
-
 
     public function __construct()
     {
@@ -47,6 +47,18 @@ class Course extends Sql
     public function save(): void
     {
         parent::save();
+        if (is_null($this->getId())) {
+            $this->notify();
+        }
+    }
+
+    public function notify(): void
+    {
+        $userManager = new User();
+        $users = $userManager->getAllUsers();
+        foreach($users as $user) {
+            $user->update($this);
+        }
     }
 
     /**

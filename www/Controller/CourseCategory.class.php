@@ -8,11 +8,42 @@ use App\Core\FormBuilder;
 use App\Core\View;
 use App\Core\Verificator;
 use App\Model\CourseCategory as CourseCategoryModel;
+use App\Model\Course;
+
 
 
 class CourseCategory extends BaseController
 {
 
+
+
+    public function getOneCategory(): void
+    {
+        $categorie = new CourseCategoryModel();
+      
+      
+        $categorie = $categorie->getBy('id', $this->request->get('category_id'));
+    
+        if(!$categorie){
+            $this->route->goBack();
+            $this->session->addFlashMessage("error", "Cette catégorie n'existe pas");
+        }
+
+        $courseManager = new Course();
+        $courses = $courseManager->getAllBy("category", $this->request->get('category_id'));
+
+        $view = new View("courses/showByCategorie",);
+        $view->assign("categorie", $categorie);
+        $view->assign("courses", $courses);
+    }
+
+    public function allCategories(): void
+    {
+        $courseCategoryManger = new CourseCategoryModel();
+        $categories = $courseCategoryManger->getAll();
+        $view = new View("courses/allCategories");
+        $view->assign("categories", $categories);
+    }
 
     public function create(): void
     {   
@@ -70,7 +101,7 @@ class CourseCategory extends BaseController
             }
             
             $category->save();
-            $this->route->redirect('/category');
+            $this->route->redirect('c');
             $this->session->addFlashMessage("success", "Category updated");
         }
     }

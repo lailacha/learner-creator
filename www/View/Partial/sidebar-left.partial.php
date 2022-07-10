@@ -1,11 +1,11 @@
 <nav class="sidebar-left close">
     <header>
-        <div class="image-text">
+             <div class="image-text">
                 <span class="image">
-                    <img src="../../framework/assets/images/logo-learner.png"
+                    <img src="<?php echo $settings->getLogoFile(); ?> "
                          alt="">
                 </span>
-        </div>
+            </div>
 
         <i class='bx bx-chevron-right toggle'></i>
     </header>

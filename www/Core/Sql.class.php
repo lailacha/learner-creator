@@ -154,9 +154,10 @@ abstract class Sql
         $colums = get_object_vars($this);
         $varToExclude = get_class_vars(get_class());
         $colums = array_diff_key($colums, $varToExclude);
-
+        
         if (is_null($this->getId())) {
             $sql = "INSERT INTO " . $this->table . " (" . implode(",", array_keys($colums)) . ") VALUES (:" . implode(",:", array_keys($colums)) . ")";
+            
 
         } else {
             $update = [];

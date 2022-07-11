@@ -51,22 +51,22 @@ class Course extends BaseController
         $user = User::getUserConnected()->getId();
         $learner = new Learner();
         $categoryPref = $learner->getAllCategories($user);
+        
         $courseManager = $courseManager->getAllBy("category", $categoryPref);
 
-        $like = new LikeModel();
-        $likeForm = FormBuilder::render($like->getCategoryLikeForm());
-        
-        $view->assign("likeForm", $likeForm);
+       
         $view->assign("courseManager", $courseManager);
-
+        $like = new LikeModel();
         $likeCourse = $like->getAllLike($user);
-        print_r ($likeCourse);
-        
-   
-        //$displayCourse = $like->getCourseFav($likeCourse);
         
         
-        //$view->assign("displayCourse",$displayCourse);
+        $course = new CourseModel();
+        $displayCourse = $course->getAllBy("id", $likeCourse);
+        
+        
+       
+        
+        $view->assign("displayCourse",$displayCourse);
         
     }
     
@@ -148,8 +148,12 @@ class Course extends BaseController
             $this->session->addFlashMessage("error", "Ce cours n'existe pas");
             $this->route->redirect("/createCourse");
         }
-
-            $view = new View("oneCourse", "front");
+        $view = new View("oneCourse", "front");
+        $like = new LikeModel();
+        $likeForm = FormBuilder::render($like->getCategoryLikeForm());
+        
+        $view->assign("likeForm", $likeForm);
+            
            return $view->assign("course", $course);
 
     }
@@ -188,6 +192,30 @@ class Course extends BaseController
         $this->session->addFlashMessage("success", "Votre cours ". $courseName." a bien été créé");
         $this->route->redirect("/createCourse");
 
+    }
+
+    public function saveLike()
+    {
+        
+            $LikeModel = new LikeModel();
+            $LikeModel->setCourse($this->request->get("course"));
+           $LikeModel->setUser(User::getUserConnected()->getId());
+           $course = $LikeModel->getCourse();
+           $user = $LikeModel->getUser();
+
+            $like = $LikeModel->getSaveLike($course,$user);
+            if ($like === 0){
+            $LikeModel->save();
+            echo 'existe pas';
+            header('Location: /show/course?id=63');
+            }else {
+                echo 'existe ';
+                $LikeModel->deleteLike($course,$user);
+                header('Location: /show/course?id='.$course);
+            } 
+           
+       
+      
     }
 
 }

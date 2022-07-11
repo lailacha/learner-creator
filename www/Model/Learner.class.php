@@ -14,7 +14,7 @@ use PDO;
 
 
 
-class Learner extends User 
+class Learner extends sql 
 {
 
     protected $id = null;

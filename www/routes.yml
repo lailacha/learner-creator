@@ -57,6 +57,14 @@
   controller: course
   action: showAll
   method: GET
+
+-
+  path: /saveLike
+  controller: course
+  action: saveLike
+  method: GET
+  param: ["course" ]
+  
   
 
 -

@@ -8,13 +8,14 @@ use App\Core\Sql;
 use App\Model\Learner as LearnerModel;
 use App\Model\CourseCategory;
 use App\Model\CourseChapter;
+use App\Model\Course;
 use PDO;
 
 
 
 
 
-class LikeCourse extends User 
+class LikeCourse extends sql 
 {
 
     protected $id = null;
@@ -25,7 +26,11 @@ class LikeCourse extends User
     {
         //echo "constructeur du Model User";
         parent::__construct();
-        $this->table  = DBPREFIXE."learner";
+        $this->table  = DBPREFIXE."likeCourse";
+    }
+    public function save(): void
+    {
+        parent::save();
     }
     
 
@@ -54,6 +59,7 @@ class LikeCourse extends User
     public function setCourse(int $course): void
     {
         $this->course = $course;
+        
     }
     /**
      * @return int
@@ -69,6 +75,7 @@ class LikeCourse extends User
     public function setUser(int $user): void
     {
         $this->user = $user;
+        
     }
     
     /*
@@ -76,7 +83,9 @@ class LikeCourse extends User
      */
     public function getCategoryLikeForm(): array
     {
-        return ["config" => ["method" => "POST", "action" => "", "submit" => "like"],
+        $course = new Course();
+      
+        return ["config" => ["method" => "GET", "action" => "http://localhost/saveLike", "submit" => "like"],
         "inputs" => [ 
             
 ]]
@@ -85,15 +94,49 @@ class LikeCourse extends User
 
     public function getAllLike($user)
     {
-        $query = new QueryBuilder();
-        $course=  $query->from('likeCourse')
-            ->where('user = :user')
-            ->setParam('user', $user)
-            ->fetch("course");
-            return $course;
+        
+            $query = new QueryBuilder();
+            return $query->select('course')
+                 ->from('likeCourse')
+                 ->where('user = :user')
+                 
+                 ->setParams([
+                     'user' => $user,
+                     
+                 ])
+                 ->fetch("course");    
      
     }
-  
+    public function getSaveLike($course_id, $user_id)
+    {
+        $query = "SELECT EXISTS ( SELECT * FROM ". $this->table ." WHERE course = " . $course_id." && user=".$user_id.") AS like_exists";
+        $req = $this->pdo->prepare($query);
+        $req->execute();
+        $res = $req->fetch();
+        if ($res['like_exists'] == false) { 
+        return 0;
+    } else{
+        return 1;
+    }
+     
+    }
+    function deleteLike($course_id, $user_id)
+    {
+        $query = "DELETE FROM ".$this->table ." WHERE course = ".$course_id." AND user=".$user_id;
+        $req = $this->pdo->prepare($query);
+        $req->execute();
+    }
+   /*  public function getCourseFav($course)
+    {
+        $query = new QueryBuilder();
+        $course = $query->from('course')
+            ->where('id = :course')
+            ->setParam('course', $course)
+            ->fetch("");
+            return $course;
+     
+    } */
+    
 
 
     

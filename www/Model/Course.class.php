@@ -303,6 +303,25 @@ class Course extends Sql
 
                     ]]]];
     }
+    
+    public function getCourseReduce($course)
+    {
+        
+        if (strlen($course)>50) 
+        {
+        $course=substr($course, 0, 50);
+        $dernier_mot=strrpos($course," ");
+        $course=substr($course,0,$dernier_mot);
+        $course.="<a href= \"/show/course?id=".$this->id." \" > See more...</a>";
+        return $course;
+        
+        }else{
+            return $course;
+        }
+        
+    }
+
+
 
 
 }

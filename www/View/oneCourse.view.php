@@ -11,6 +11,9 @@
         <p><?php echo $course->getDescription(); ?></p>
         <label class="mt-5" for="">Category of the course:</label>
         <p><?php echo $course->getCategoryName(); ?></p>
+        <a href="/saveLike?course=<?php echo $course->getId() ?>" class="mt-2 ml-2">
+                <button>Like</button>
+            </a>
         <img class="cover"  src="<?php echo $course->cover() ?>" alt="">
         <div class="flex">
             <a href="/courses" class="mt-2">

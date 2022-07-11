@@ -8,10 +8,7 @@
      <?php foreach ($courseManager as $course) : ?>
         <tr>
             <td><h3><?= $course->getName()?>  </h3></td>
-            <td><?= $course->getDescription() ?> <?php if (isset($likeForm)) : ?>
-        <?php echo $likeForm ?>
-
-    <?php endif; ?>  </td>
+            <td><?= $course->getCourseReduce($course->getDescription()) ?>   </td>
         </tr>
        
     <?php endforeach; ?> 
@@ -26,13 +23,10 @@
     <tbody>
     <h1>Mes favoris</h1>
     
-     <?php foreach ($displayCourse as $course) : ?>
+     <?php foreach ($displayCourse as $courseFav) : ?>
         <tr>
-            <td><h3><?= $course->getName()?>  </h3></td>
-            <td><?= $course->getDescription() ?> <?php if (isset($likeForm)) : ?>
-        <?php echo $likeForm ?>
-
-    <?php endif; ?>  </td>
+            <td><h3><?= $courseFav->getName()  ?>  </h3></td>
+            <td><?= $courseFav->getCourseReduce($courseFav->getDescription()) ?>   </td>
         </tr>
        
     <?php endforeach; ?> 

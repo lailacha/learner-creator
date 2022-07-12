@@ -231,10 +231,11 @@
 
 -
   controller: user
-  action: saveCategoryPref
+  action: saveCatPref
   method: POST
-  path: /save/categoriepref
-  param: ["id", "category", "user"]
+  path: /save/catpref
+  param: ["category"]
+  
 
 -
   controller: admin

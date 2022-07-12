@@ -51,22 +51,18 @@ class Course extends BaseController
         $user = User::getUserConnected()->getId();
         $learner = new Learner();
         $categoryPref = $learner->getAllCategories($user);
-        
         $courseManager = $courseManager->getAllBy("category", $categoryPref);
-
-       
         $view->assign("courseManager", $courseManager);
+
+        
         $like = new LikeModel();
         $likeCourse = $like->getAllLike($user);
-        
-        
         $course = new CourseModel();
         $displayCourse = $course->getAllBy("id", $likeCourse);
         
         
        
-        
-        $view->assign("displayCourse",$displayCourse);
+ $view->assign("displayCourse",$displayCourse);
         
     }
     
@@ -149,12 +145,10 @@ class Course extends BaseController
             $this->route->redirect("/createCourse");
         }
         $view = new View("oneCourse", "front");
-        $like = new LikeModel();
-        $likeForm = FormBuilder::render($like->getCategoryLikeForm());
-        
-        $view->assign("likeForm", $likeForm);
+       
             
            return $view->assign("course", $course);
+           
 
     }
 
@@ -204,14 +198,15 @@ class Course extends BaseController
            $user = $LikeModel->getUser();
 
             $like = $LikeModel->getSaveLike($course,$user);
+ 
             if ($like === 0){
             $LikeModel->save();
-            echo 'existe pas';
-            header('Location: /show/course?id=63');
+                header('Location: /show/course?id='.$course);
+                $this->session->addFlashMessage("success", "Vous avez liké ce cours");
             }else {
-                echo 'existe ';
                 $LikeModel->deleteLike($course,$user);
                 header('Location: /show/course?id='.$course);
+                $this->session->addFlashMessage("success", "Vous avez disliké ce cours");
             } 
            
        

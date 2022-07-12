@@ -2827,6 +2827,8 @@ body {
   border-radius: 5px;
   font-weight: 500;
 }
+
+
 .front button:hover, .front input[type=submit]:hover, .front .button:hover, .front .btn:hover {
   transition: color 0.3s;
   color: #464646;

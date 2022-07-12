@@ -317,25 +317,20 @@ class User extends BaseController
         }
     }
 
-    public function saveCategoryPref()
-    {
-        $learner = new Learner();
-        $user = UserModel::getUserConnected();
-        echo $learner;
-        $errors = Verificator::checkForm($learner->getEditProfileForm(), $this->request);
-        if (!$errors) {
-            
-            if (!empty($this->request->get('category')) && $this->request->get('category') !== $learner->getCategory()) {
-                $learner->setCategory($this->request->get('category'));
-            }
+    public function saveCatPref()  {
+         
+        
+        $learner = new Learner(); 
+        $user =  UserModel::getUserConnected()->getId();
+        $course = $learner->setCategory($this->request->get("category")); 
+        $learner->setUser($user);
+        $learner->save();
+        header('Location: /edit/profile');
+       
 
-            $user->save();
-            $this->session->addFlashMessage("success", "Votre profile a bien été modifié");
-            $this->route->redirect("/edit/profile");
+     
 
-        } else {
-            $this->session->addFlashMessage("error", $errors[0]);
-        }
+       
     }
 
     public function saveProfile()

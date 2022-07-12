@@ -3018,6 +3018,10 @@ body {
   color: #000;
   text-decoration: none;
 }
+.front .lesson-container .likeButton {
+  color: red;
+  text-decoration: none;
+}
 .front .dataTables_wrapper {
   border-radius: 8px;
 }

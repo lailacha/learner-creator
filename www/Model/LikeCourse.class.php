@@ -81,17 +81,7 @@ class LikeCourse extends sql
     /*
      * This function get all the like by user
      */
-    public function getCategoryLikeForm(): array
-    {
-        $course = new Course();
-      
-        return ["config" => ["method" => "GET", "action" => "http://localhost/saveLike", "submit" => "like"],
-        "inputs" => [ 
-            
-]]
-;
-    }
-
+    
     public function getAllLike($user)
     {
         

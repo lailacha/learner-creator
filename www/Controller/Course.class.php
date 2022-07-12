@@ -104,38 +104,14 @@ class Course extends BaseController {
 
         $view->assign("likeForm", $likeForm);
         $view->assign("courseManager", $courseManager);
+
+        
         $like = new LikeModel();
         $likeCourse = $like->getAllLike($user);
-        
-        //$displayCourse = $like->getCourseFav($likeCourse);
-        
         $course = new CourseModel();
         $displayCourse = $course->getAllBy("id", $likeCourse);
-        
-        
-       
-        
-        //$view->assign("displayCourse",$displayCourse);
-
     }
-
-
-
-    public function showbyCategory()
-    {
-        $courseManager = new CourseModel();
-        $courses = $courseManager->getBy('category', $this->request->get("category_id"));
-
-        if(!$courses)
-        {
-            $this->route->goBack();
-            $this->session->addFlashMessage("error", "Il n'y a pas de cours dans cette catégorie");
-        }
-
-        $view = new View("course/showByCategorie");
-        $view->assign("course", $courses);
-        $view->assign("categorie", $categorie);
-    }
+        
 
     public function delete()
     {
@@ -217,12 +193,10 @@ class Course extends BaseController {
             $this->route->redirect("/createCourse");
         }
         $view = new View("oneCourse", "front");
-        $like = new LikeModel();
-        $likeForm = FormBuilder::render($like->getCategoryLikeForm());
-        
-        $view->assign("likeForm", $likeForm);
+       
             
            return $view->assign("course", $course);
+           
 
     }
 
@@ -316,14 +290,15 @@ class Course extends BaseController {
            $user = $LikeModel->getUser();
 
             $like = $LikeModel->getSaveLike($course,$user);
+ 
             if ($like === 0){
             $LikeModel->save();
-            echo 'existe pas';
-            header('Location: /show/course?id=63');
+                header('Location: /show/course?id='.$course);
+                $this->session->addFlashMessage("success", "Vous avez liké ce cours");
             }else {
-                echo 'existe ';
                 $LikeModel->deleteLike($course,$user);
                 header('Location: /show/course?id='.$course);
+                $this->session->addFlashMessage("success", "Vous avez disliké ce cours");
             } 
            
        

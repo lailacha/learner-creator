@@ -36,7 +36,10 @@ class Learner extends sql
     {
         return $this->id;
     }
-    
+    public function save(): void
+    {
+        parent::save();
+    }
     
 
     /**
@@ -95,9 +98,9 @@ public function getAllCategories($user)
     {
         $categories = new CourseCategory();
         
-    return ["config" => ["method" => "POST", "action" => "/save/categoriepref", "submit" => "Ajouter une préfére"],
+    return ["config" => ["method" => "POST", "action" => "/save/catpref", "submit" => "Ajouter une préfére"],
             "inputs" => [ 
-                "role" => [
+                "category" => [
                     "type" => "select",
                     "id" => "jjj",
                     "class" => "formRegister",

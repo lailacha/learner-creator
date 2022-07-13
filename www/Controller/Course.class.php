@@ -4,7 +4,9 @@
 namespace App\Controller;
 
 use App\Model\Course as CourseModel;
+use App\Model\LikeCourse as LikeModel;
 use App\Model\User;
+use App\Model\Learner;
 use App\Model\File as FileManager;
 use App\Model\CourseCategory as CourseCategory;
 use App\Core\FormBuilder;
@@ -29,6 +31,7 @@ class Course extends BaseController
         $allCourses = $courseManager->getUnapprovedCoursesByUser(User::getUserConnected()->getId());
         $view->assign("form", $form);
         $view->assign("allCourses", $allCourses);
+        
 
     }
 
@@ -40,15 +43,34 @@ class Course extends BaseController
         $view->assign("courses", $courses);
     }
 
-    //TODO create view for this
+    // Affiche tous les cours selon les préférences du users, ses favoris
     public function showAll()
     {
+        /* Show All Preferences */   
         $courseManager = new CourseModel();
-        $courses = $courseManager->getAll();
-
         $view = new View("showAll", "front");
-        $view->assign("index", $courses);
+        $user = User::getUserConnected()->getId();
+        $learner = new Learner();
+        $checkPref = $learner->checkPrefUser($user);
+            if($checkPref == 1){
+            $categoryPref = $learner->getAllCategories($user);
+            $courses = $courseManager->getAll();
+            $courseManager = $courseManager->getAll("category", $categoryPref);
+            $view->assign("courseManager", $courseManager);
+            }
+         /* Show All Likes*/     
+        $like = new LikeModel();
+        if ($like->getSaveLikes($user) == 0){
+         }else{
+        $likeCourse = $like->getAllLike($user);
+        $course = new CourseModel();
+        $displayCourse = $course->getAllBy("id", $likeCourse); 
+        
+        
+        $view->assign("displayCourse",$displayCourse);}
+        
     }
+    
 
     public function delete()
     {
@@ -127,9 +149,11 @@ class Course extends BaseController
             $this->session->addFlashMessage("error", "Ce cours n'existe pas");
             $this->route->redirect("/createCourse");
         }
-
-            $view = new View("oneCourse", "front");
+        $view = new View("oneCourse", "front");
+       
+            
            return $view->assign("course", $course);
+           
 
     }
 
@@ -167,6 +191,31 @@ class Course extends BaseController
         $this->session->addFlashMessage("success", "Votre cours ". $courseName." a bien été créé");
         $this->route->redirect("/createCourse");
 
+    }
+
+    public function saveLike()
+    {
+        
+            $LikeModel = new LikeModel();
+            $LikeModel->setCourse($this->request->get("course"));
+           $LikeModel->setUser(User::getUserConnected()->getId());
+           $course = $LikeModel->getCourse();
+           $user = $LikeModel->getUser();
+
+            $like = $LikeModel->getSaveLike($course,$user);
+ 
+            if ($like === 0){
+            $LikeModel->save();
+                header('Location: /show/course?id='.$course);
+                $this->session->addFlashMessage("success", "Vous avez liké ce cours");
+            }else {
+                $LikeModel->deleteLike($course,$user);
+                header('Location: /show/course?id='.$course);
+                $this->session->addFlashMessage("success", "Vous avez disliké ce cours");
+            } 
+           
+       
+      
     }
 
 }

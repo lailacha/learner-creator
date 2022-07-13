@@ -34,9 +34,12 @@ abstract class Sql
     public function setId(?int $id)
     {
         $sql = "SELECT * FROM ".$this->table." WHERE id=:id";
+
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute( ["id"=>$id] );
+
         return $queryPrepared->fetchObject(get_called_class());
+
 
     }
 
@@ -62,6 +65,14 @@ abstract class Sql
                return $queryPrepared->fetchObject(get_called_class());*/
 
     }
+    public function getOneSpecif(string $col,string $cond, string $result)
+    {
+
+        $sql = "SELECT "  . $col .  " FROM " . $this->table  ."  WHERE  " . $cond  . " = " . $result;
+         $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute();
+        return $queryPrepared->fetchObject(get_called_class());
+    }
 
     /**
      * @return array
@@ -74,7 +85,15 @@ abstract class Sql
         return $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
 
     }
+    public function getAllValue($attribute, $value)
+    {
+        $sql = "SELECT * FROM ".$this->table." WHERE ".$attribute."=:value";
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute( ["value"=>$value] );
+        $res = $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
+        return $res;
 
+    }
     public function getOneByOne($attribute, $value){
 
         $sql = "SELECT * FROM ".$this->table." WHERE ".$attribute."=:value";
@@ -135,9 +154,10 @@ abstract class Sql
         $colums = get_object_vars($this);
         $varToExclude = get_class_vars(get_class());
         $colums = array_diff_key($colums, $varToExclude);
-
+        
         if (is_null($this->getId())) {
             $sql = "INSERT INTO " . $this->table . " (" . implode(",", array_keys($colums)) . ") VALUES (:" . implode(",:", array_keys($colums)) . ")";
+            
 
         } else {
             $update = [];
@@ -154,7 +174,7 @@ abstract class Sql
         //Si ID null alors insert sinon update
     }
 
-    public function login($data)
+/*    public function login($data)
     {
 
         $bdd = new \PDO(DBDRIVER . ":host=" . DBHOST . ";port=" . DBPORT . ";dbname=" . DBNAME, DBUSER, DBPWD
@@ -172,6 +192,7 @@ abstract class Sql
         $donnees1 = $reponse1->fetch();
 
 
+
         if (password_verify($_POST["password"], $donnees1[0])) {
             $session = new Session();
             $userManager = new UserManager();
@@ -186,7 +207,7 @@ abstract class Sql
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute();
 
-    }
+    }*/
 
     /**
      * @return string

@@ -7,10 +7,11 @@ use App\Core\HttpRequest;
 use App\Core\Router;
 use App\Core\QueryBuilder;
 use App\Core\Security;
+use App\Core\Session;
 
 //E
-session_start();
-$_SESSION['role'] = 'admin';
+
+
 
 function myAutoloader( $class )
 {
@@ -21,6 +22,7 @@ function myAutoloader( $class )
     // $class -> "Core/Security"
     if(file_exists($class.".class.php")){
         include $class.".class.php";
+        
     }
 }
 
@@ -31,6 +33,8 @@ spl_autoload_register("App\myAutoloader");
 
 try
 {
+    $session = Session::getInstance();
+    $session->ensureStarted();
     $config = yaml_parse_file("routes.yml");
     $httpRequest = new HttpRequest();
     $router = new Router();

@@ -52,6 +52,20 @@
   method: GET
   param: [ "id" ]
 
+-
+  path: /showCourses
+  controller: course
+  action: showAll
+  method: GET
+
+-
+  path: /saveLike
+  controller: course
+  action: saveLike
+  method: GET
+  param: ["course" ]
+  
+  
 
 -
   path: /edit/course
@@ -133,6 +147,7 @@
   action: login
   path: /login
   method: GET
+  
 
 -
   controller: user
@@ -191,6 +206,7 @@
   controller: user
   action: verifyAccount
   path: /verifyAccount
+  method: GET
 
 -
   controller: user
@@ -213,6 +229,20 @@
   path: /save/profile
   param: ["firstname", "lastname", "avatar"]
 
+-
+  controller: user
+  action: saveCatPref
+  method: POST
+  path: /save/catpref
+  param: ["category"]
+
+-
+  controller: user
+  action: deleteCatPref
+  method: GET
+  path: /delete/catpref
+  param: ["category"]
+  
 
 -
   controller: admin
@@ -220,3 +250,85 @@
   security: "admin"
   path: /dashboard
 
+-
+  controller: admin
+  action: users
+  method: GET
+  path: /users
+  security: "admin"
+
+
+-
+  controller: admin
+  action: editUser
+  security: admin
+  method: GET
+  path: /edit/user
+  param: ["id"]
+
+-
+  controller: admin
+  action: editUser
+  security: admin
+  method: POST
+  path: /edit/user
+  param: ["id"]
+
+-
+  controller: user
+  action: delete
+  security: admin
+  method: GET
+  path: /delete/user
+  param: ["id"]
+
+-
+  controller: teacher
+  action: index
+  method: GET
+  path: /teacher/new
+
+
+
+-
+  controller: teacher
+  action: create
+  method: POST
+  path: /teacher/new
+  param: [ "cv", "motivation", "theme", "diplome" ]
+
+-
+  controller: admin
+  action: requestTeachers
+  method: GET
+  path: /teachers/allRequests
+  param: []
+
+-
+  controller: admin
+  action: download
+  method: GET
+  path: /download
+  param: ["id"]
+
+-
+  controller: admin
+  action: showRequestTeacher
+  method: GET
+  path: /show/requestTeacher
+  param: ["id"]
+
+-
+  controller: admin
+  action: validRequestTeacher
+  method: GET
+  path: /valid/requestTeacher
+  param: ["id"]
+
+
+-
+  controller: admin
+  action: refuseRequestTeacher
+  method: GET
+  path: /refuse/requestTeacher
+  param: ["id"]

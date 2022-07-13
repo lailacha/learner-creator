@@ -60,9 +60,19 @@ class CourseCategory extends Sql
         $this->description = $description;
     }
 
-    public function getCategory(): array
+    public function getCategories(): array
     {
-        $query = "SELECT id, name FROM ".$this->table." ORDER BY name ASC";
+        $query = "
+        SELECT id, name FROM ".$this->table." ORDER BY name ASC";
+        $req = $this->pdo->prepare($query);
+        $req->execute();
+        $res = $req->fetchAll(PDO::FETCH_ASSOC);
+        return $res;
+    }
+    public function getCatNamePref($category): array
+    {
+        $query = "
+        SELECT name FROM ".$this->table." WHERE id = :category";
         $req = $this->pdo->prepare($query);
         $req->execute();
         $res = $req->fetchAll(PDO::FETCH_ASSOC);
@@ -78,4 +88,7 @@ class CourseCategory extends Sql
               ]
       ];
     }
+
+    
+
 }

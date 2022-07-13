@@ -15,6 +15,8 @@ use App\Model\User as UserModel;
 use App\Model\Learner;
 use App\Model\ReceivePassword as ReceivePasswordModel;
 use App\Service\File;
+use PDO;
+use App\Core\Sql;
 
 
 
@@ -193,18 +195,21 @@ class User extends BaseController
         $user = UserModel::getUserConnected();
         
         $learner = new Learner();
-        $view->assign("learner", $learner);
-        $learner->setUser($user->getId());
+        
         
         
         $formCat = FormBuilder::render($learner->getCategoryPrefForm());
         $view->assign("formCat", $formCat);
-        
         $form = FormBuilder::render($user->getEditProfileForm());
         $view->assign("form", $form);
-
-
         $view->assign("user", $user);
+    
+        $categoriesNumb = $learner->getAllCategories($user->getId());
+        $view->assign("categoriesNumb", $categoriesNumb);
+
+        $categories = new CourseCategory();
+        $view->assign("categories", $categories);
+       
 
         
     }
@@ -225,15 +230,37 @@ class User extends BaseController
         $learner = new Learner(); 
         $user =  UserModel::getUserConnected()->getId();
         $course = $learner->setCategory($this->request->get("category")); 
+        $course =  $learner->getCategory();
+        
         $learner->setUser($user);
-        $learner->save();
-        header('Location: /edit/profile');
-       
-
-     
-
+        
+        $catVerif = $learner->catVerif($user,$course);
+        
+        if($catVerif === 0) {
+           
+           $learner->save();
+            header('Location: /edit/profile');
+        } else {
+            echo $this->session->addFlashMessage("success", "Vous avez déjà préféré cette catégorie");
+            header('Location: /edit/profile');
+                 
+        } 
        
     }
+    public function deleteCatPref() {
+        $learner = new Learner();
+        $user =  UserModel::getUserConnected()->getId();
+        $course = $learner->setCategory($this->request->get("category")); 
+        $course = $learner->getCategory();
+        $learner->setUser($user);
+        echo $learner->deleteCatPref($user,$course);
+        header('Location: /edit/profile');
+        echo $this->session->addFlashMessage("success", "Vous avez supprimé votre préférence pour la catégorie");
+    }
+        
+       
+    
+    
 
     public function saveProfile()
     {

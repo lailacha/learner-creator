@@ -69,6 +69,15 @@ class CourseCategory extends Sql
         $res = $req->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
+    public function getCatNamePref($category): array
+    {
+        $query = "
+        SELECT name FROM ".$this->table." WHERE id = :category";
+        $req = $this->pdo->prepare($query);
+        $req->execute();
+        $res = $req->fetchAll(PDO::FETCH_ASSOC);
+        return $res;
+    }
 
     public function getCategoryForm(): array
     {

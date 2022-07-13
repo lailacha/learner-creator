@@ -104,13 +104,26 @@ class LikeCourse extends sql
         $req->execute();
         $res = $req->fetch();
         if ($res['like_exists'] == false) { 
-        return 0;
-    } else{
-        return 1;
+            return 0;
+        } else{
+            return 1;
+        }
     }
+
+    public function getSaveLikes($user_id)
+    {
+        $query = "SELECT EXISTS ( SELECT * FROM ". $this->table ." WHERE user=".$user_id.") AS like_exists";
+        $req = $this->pdo->prepare($query);
+        $req->execute();
+        $res = $req->fetch();
+        if ($res['like_exists'] == false) { 
+        return 0;
+            } else{
+                return 1;
+            }
      
     }
-    function deleteLike($course_id, $user_id)
+     public function deleteLike($course_id, $user_id)
     {
         $query = "DELETE FROM ".$this->table ." WHERE course = ".$course_id." AND user=".$user_id;
         $req = $this->pdo->prepare($query);

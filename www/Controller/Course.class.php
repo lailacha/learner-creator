@@ -46,23 +46,28 @@ class Course extends BaseController
     // Affiche tous les cours selon les préférences du users, ses favoris
     public function showAll()
     {
+        /* Show All Preferences */   
         $courseManager = new CourseModel();
         $view = new View("showAll", "front");
         $user = User::getUserConnected()->getId();
         $learner = new Learner();
-        $categoryPref = $learner->getAllCategories($user);
-        $courseManager = $courseManager->getAllBy("category", $categoryPref);
-        $view->assign("courseManager", $courseManager);
-
-        
+        $checkPref = $learner->checkPrefUser($user);
+            if($checkPref == 1){
+            $categoryPref = $learner->getAllCategories($user);
+            $courses = $courseManager->getAll();
+            $courseManager = $courseManager->getAll("category", $categoryPref);
+            $view->assign("courseManager", $courseManager);
+            }
+         /* Show All Likes*/     
         $like = new LikeModel();
+        if ($like->getSaveLikes($user) == 0){
+         }else{
         $likeCourse = $like->getAllLike($user);
         $course = new CourseModel();
-        $displayCourse = $course->getAllBy("id", $likeCourse);
+        $displayCourse = $course->getAllBy("id", $likeCourse); 
         
         
-       
- $view->assign("displayCourse",$displayCourse);
+        $view->assign("displayCourse",$displayCourse);}
         
     }
     

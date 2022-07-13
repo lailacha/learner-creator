@@ -399,6 +399,7 @@
   border: 1px solid #CCC;
   height: 34px;
 }
+
 .form input {
   margin-bottom: 1rem;
 }
@@ -4481,3 +4482,4 @@ body {
 .vitrine .underlineHover:hover:after {
   width: 100%;
 }
+

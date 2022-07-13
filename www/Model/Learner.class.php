@@ -82,7 +82,7 @@ class Learner extends sql
 public function getAllCategories($user)
     {
         $query = new QueryBuilder();
-       return $query->select('category')
+        $res = $query->select('category')
             ->from('learner')
             ->where('user = :user')
             
@@ -90,19 +90,72 @@ public function getAllCategories($user)
                 'user' => $user,
                 
             ])
-            ->fetch("category");
-     
-    }
+            ->fetchAll("category");
+            
+    
+        return $res;
+    
+}
+/* //SELECT * FROM `esgi_learner` INNER JOIN `esgi_course_category` ON `esgi_learner`.category = `esgi_course_category`.id WHERE `category` = 3;
+public function getAllCategoriesP()
+    {
+        $category = 3;
+        $query = new QueryBuilder();
+        return  $query->select('*')
+            ->from('learner')
+            ->innerJoin('course_category', DBPREFIXE.'learner.category ='.DBPREFIXE.'course_category.id')
+            ->where('category = :category')
+            ->setParams([
+                'category' => $category,
+            ])
+            ->fetch("name");
+    
+} */
+
+public function checkPrefUser($user_id)
+{
+    $query = "SELECT EXISTS ( SELECT * FROM ". $this->table ." WHERE user=".$user_id.") AS pref_exists";
+        $req = $this->pdo->prepare($query);
+        $req->execute();
+        $res = $req->fetch();
+        if ($res['pref_exists'] == false) { 
+        return 0;
+            } else{
+                return 1;
+            }
+    
+}
+public function catVerif($user,$course){
+
+    $query = "SELECT EXISTS ( SELECT * FROM `esgi_learner` WHERE user=".$user." AND category=".$course.") AS pref_exists";
+    $req = $this->pdo->prepare($query);
+    $req->execute();
+    $res = $req->fetch();
+    return $res['pref_exists'];
+    
+    
+}
+public function deleteCatPref($user,$course){
+
+    $query = "DELETE FROM ".$this->table." WHERE user=".$user." AND category=".$course;
+    $req = $this->pdo->prepare($query);
+    $req->execute();
+    $res = $req->fetch();
+    return $res;
+    
+    
+}
+
 
     public function getCategoryPrefForm(): array
     {
         $categories = new CourseCategory();
         
-    return ["config" => ["method" => "POST", "action" => "/save/catpref", "submit" => "Ajouter une préfére"],
+    return ["config" => ["method" => "POST", "action" => "/save/catpref", "submit" => "Ajouter une catégorie préférée"],
             "inputs" => [ 
                 "category" => [
                     "type" => "select",
-                    "id" => "jjj",
+                    "id" => "categorySelect",
                     "class" => "formRegister",
                     "options" => [
                         "data" =>
@@ -115,4 +168,6 @@ public function getAllCategories($user)
     ]]
     ;
     }
+    
+
 }

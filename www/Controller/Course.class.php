@@ -107,9 +107,12 @@ class Course extends BaseController {
 
         
         $like = new LikeModel();
+        if ($like->getSaveLikes($user) == 0){
+         }else{
         $likeCourse = $like->getAllLike($user);
         $course = new CourseModel();
         $displayCourse = $course->getAllBy("id", $likeCourse);
+    }
     }
         
 

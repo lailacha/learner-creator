@@ -458,6 +458,7 @@ input[type=checkbox] {
   border: 1px solid #CCC;
   height: 34px;
 }
+
 .form input {
   margin-bottom: 1rem;
 }
@@ -4625,6 +4626,7 @@ body {
 .vitrine .underlineHover:hover:after {
   width: 100%;
 }
+<<<<<<< HEAD
 .vitrine label[for=email], .vitrine [for=password], .vitrine [for=firstname], .vitrine [for=lastname], .vitrine [for=passwordConfirm] {
   display: none;
 }
@@ -4815,3 +4817,6 @@ body {
 .vitrine .underlineHover:hover:after {
   width: 100%;
 }
+=======
+
+>>>>>>>  Ajout de la fonctionnalité qui récupère tous les cours dans les préférences de l'utilisateur

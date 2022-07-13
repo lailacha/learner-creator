@@ -378,6 +378,7 @@ class Course extends Sql
         return $course;
         
         }else{
+            $course.="<a href= \"/show/course?id=".$this->id." \" > See more...</a>";
             return $course;
         }
         

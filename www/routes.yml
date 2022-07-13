@@ -413,6 +413,13 @@
   method: POST
   path: /save/catpref
   param: ["category"]
+
+-
+  controller: user
+  action: deleteCatPref
+  method: GET
+  path: /delete/catpref
+  param: ["category"]
   
 
 -

@@ -46,8 +46,6 @@ class ReportComment extends BaseController
         $verification = Verificator::checkForm($reportCommentModel->getReportForm($this->request->get('comment_id')), $this->request);
 
         try {
-            $verification ?: throw new InvalidArgumentException("Missing parameters");
-
         $reportCommentModel->setUser(\App\Model\User::getUserConnected()->getId());
         $reportCommentModel->setComment($this->request->get('comment_id'));
         $reportCommentModel->setReason($this->request->get('reason'));
@@ -56,7 +54,7 @@ class ReportComment extends BaseController
         }
         catch(\InvalidArgumentException $e)
         {
-            $this->abort(422, $verification[0] ?? $e->getMessage());
+            $this->session->addFlashMessage('error', $e->getMessage());
         }
 
         $this->route->goBack();

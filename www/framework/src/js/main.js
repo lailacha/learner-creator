@@ -18,20 +18,25 @@ sliderInit($(this));
 $(document).ready(function () {
 
     $(".search-bar input").on("keyup", function(e) {
+        if($(this).val() == ""){
+            $(".search-results").html("");
+            return;                  
+        }
         $.ajax({
             url: "/search/course?course=" + $(this).val(),
             success: function(data) {
-                data = JSON.parse(data);
-                console.log(data);
+
                 let html = "";
+                if(data.length > 0){
+                    data = JSON.parse(data);
                 data.forEach(function(element) {
-                    console.log(element);
                     html += "<div class='course-thumbnail col-md-3'>";
                     html += "<img className='cover' src="+ element.path +" />";
                     html += "<a href='/show/course?id="+element.id+ "'>" + element.name + "</a>";
                     html += "<p>" + element.description + "</p>";
                     html += "</div>";
                 });
+            }
 
                 $(".search-results").html(html);
             }

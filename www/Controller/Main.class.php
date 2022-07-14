@@ -4,10 +4,16 @@ namespace App\Controller;
 
 use App\Core\View;
 use App\Controller\BaseController;
+use App\Controller\User as ControllerUser;
 use App\Core\Session;
 use App\Model\User as UserModel;
 use App\Model\LessonProgress;
 use App\Model\Lesson;
+use App\Model\Learner;
+use App\Model\Course;
+use App\Model\User;
+
+
 
 
 
@@ -17,17 +23,27 @@ class Main extends BaseController
 
 
     public function dashboard(){
-        $user = UserModel::getUserConnected();
-
-        if($user->getRoleId() === 3)
-        {
             $lessonProgressManager = new LessonProgress();
-            $lessonManager = new Lesson();
             $lastLessonProgress = $lessonProgressManager->getLastLessons();
-    
             $view = new View("dashboardLearner");
-            $view->assign("courses", $lastLessonProgress);
-        }
+
+            if(count($lastLessonProgress) > 0){
+                $view->assign("courses", $lastLessonProgress);
+
+            }
+    
+            $courseManager = new Course();
+            $learner = new Learner();
+            $user = User::getUserConnected()->getId();
+
+
+            $checkPref = $learner->checkPrefUser($user);
+                if($checkPref == 1){
+                $categoryPref = $learner->getAllCategories($user);
+                $suggestions = $courseManager->getAll("category", $categoryPref);
+                $view->assign("suggestions", $suggestions);
+                }
+            
     }
 
     public function home()

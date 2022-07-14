@@ -12,7 +12,7 @@ $dark-grey: #444;
 $red: #ce0a0a;
 $green: #31aa66;
 $black: #000000;
-$font1: 'Montserrat', sans-serif;
+$font1: var(--main-font);
 $font2: 'Lato', sans-serif;
 $font3: 'Sintony', sans-serif;
 $error-color: #ae4848;

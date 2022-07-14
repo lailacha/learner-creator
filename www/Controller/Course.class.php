@@ -57,10 +57,10 @@ class Course extends BaseController {
         echo json_encode($courses);
     }
 
-    public function myCourse()
+    public function myCourses()
     {
         $courseManager = new CourseModel();
-        $view = new View("myCourse", "front");
+        $view = new View("courses/myCourse", "front");
         $courses = $courseManager->getAllBy("user", User::getUserConnected()->getId());
         $view->assign("courses", $courses);
     }

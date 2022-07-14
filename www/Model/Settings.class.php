@@ -157,6 +157,28 @@ class Settings  extends Sql
                     "required" => true,
                     "error" => "Please enter a valide value",
                 ],
+                "main_font" => [
+                    "type" => "select",
+                    "label" => "Main police",
+                    "options" => [
+                        "data" =>
+                          [ [
+                               "name" => "Montserrat",
+                           ],
+                           [
+                               "name" => "cursive",
+                           ],
+                           [
+                            "name" => "Rubyk",
+                             ],
+                             ["name" => "Lato"]
+
+                        ],
+                        "property" => "name",
+                        "value" => "name",
+                        "selected" => $this->getBy('id', 'main_font')->getValue()
+                    ]]
+                ,
           ]];
 
     }

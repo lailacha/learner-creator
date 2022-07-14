@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use App\Model\Settings;
+
 class View{
 
     private $view;
@@ -12,6 +14,7 @@ class View{
     {
         $this->setView($view);
         $this->setTemplate($template);
+       // $this->settings = new Settings();
     }
 
     public function setView($view):void
@@ -43,8 +46,7 @@ class View{
 
     public function __destruct()
     {
-        //$this->data = ["firstname"=>"yves"] -----> $firstname = "yves"
-        extract($this->data);
+            extract($this->data);
         include "View/".$this->template.".tpl.php";
         
     }

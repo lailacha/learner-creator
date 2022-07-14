@@ -1,8 +1,9 @@
+<?php     $settings = \App\Model\Settings::getInstance(); ?>
 <!DOCTYPE html>
 <html lang="en" class="front">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard front</title>
+    <title><?php echo $settings->getBy('id', 'site_name')->getValue() ?? "Learner" ?></title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"
             defer></script>
@@ -16,6 +17,14 @@
     <link rel="stylesheet" type="text/css" href="../../framework/dist/main.css"/>
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 </head>
+<style>
+    :root{
+    --sidebar-background-color: <?php echo $settings->getBy('id', 'sidebar_color')->getValue() ?>;
+    --main-color: <?php echo $settings->getBy('id', 'main_color')->getValue() ?>;
+    --big-title-size: <?php echo $settings->getBy('id', 'big_title_size')->getValue() ?>;
+    --primary-color: <?php echo $settings->getBy('id', 'primary_color')->getValue() ?>;
+    }
+</style>
 <body class="flex grid">
 
     <section id="sidebar-left">

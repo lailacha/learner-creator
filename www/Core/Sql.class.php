@@ -6,18 +6,19 @@ use PDO;
 use App\Core\Session;
 use App\Model\User as userManager;
 
-abstract class Sql
+ class Sql
 {
 
     protected $pdo;
     protected $table;
+    protected  static $instance;
 
     public function __construct()
     {
-        //Plus tard il faudra penser au singleton
+
         try{
             $this->pdo = new \PDO( DBDRIVER.":host=".DBHOST.";port=".DBPORT.";dbname=".DBNAME.";charset=utf8mb4" , DBUSER , DBPWD
-                , [\PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+                , [\PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"]);
 
         }catch(\Exception $e){
             die("Erreur SQL : ".$e->getMessage());
@@ -47,7 +48,7 @@ abstract class Sql
     
 
     /**
-     * @param string $type email | id
+     * @param string $type
      * @param string $param
      * @return false|mixed|object
      */
@@ -60,12 +61,6 @@ abstract class Sql
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute([$type => $param]);
         return $queryPrepared->fetchObject(get_called_class());
-
-
-        /*      $sql = "SELECT * FROM ".$this->table." WHERE id=:id";
-               $queryPrepared = $this->pdo->prepare($sql);
-               $queryPrepared->execute( ["id"=>$id] );
-               return $queryPrepared->fetchObject(get_called_class());*/
 
     }
 
@@ -112,13 +107,17 @@ abstract class Sql
     /**
      * @return array
      */
-    public function getAll()
+    public function getAll($strict = false, $class = true)
     {
         $sql = "SELECT * FROM ".$this->table;
+        $strict ? $sql .= " WHERE deleted_at IS NULL" : null;
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute();
-        return $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
-
+        if($class) {
+            return $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
+        }else{
+            return $queryPrepared->fetchAll();
+        }
     }
 
     public function getOneByOne($attribute, $value){
@@ -158,16 +157,29 @@ abstract class Sql
      * @param string $value
      * @return array
      */
-    public function getAllBy(string $field, string $value): array
+    public function getAllBy(string $field, string $value, $strict = false): array
     {
         $sql = "SELECT *" . " FROM " . $this->table . " WHERE " . $field . "=:$field";
+        $strict ? $sql .= " AND deleted_at IS NULL" : "";
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute([$field => $value]);
         return $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
     }
 
 
-    public function delete() :void
+    public function search(string $field, string $value): array
+    {
+
+        $sql = "SELECT * FROM {$this->table} WHERE {$field} LIKE :$field";
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->bindValue(":$field", "%$value%");
+        $queryPrepared->execute();
+        //fetch an array to json
+        return $queryPrepared->fetchAll();
+    }
+
+
+     public function delete() :void
     {
         $sql = "DELETE FROM ".$this->table." WHERE id=:id";
         $queryPrepared = $this->pdo->prepare($sql);
@@ -176,8 +188,6 @@ abstract class Sql
 
     public function save(): void
     {
-
-
         $colums = get_object_vars($this);
         $varToExclude = get_class_vars(get_class());
         $colums = array_diff_key($colums, $varToExclude);

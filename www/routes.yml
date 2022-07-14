@@ -4,22 +4,60 @@
   path: /
 
 -
+  controller: main
+  action: dashboard
+  path: /homePage
+
+-
   path: /404
   controller: BaseController
   action: abort
 
-
 -
-  path: /createCourse
+  path: /courses
   controller: course
   action: index
   method: GET
   param: []
+  security: ["professor", "admin"]
+
+-
+  path: /show/courses
+  controller: course
+  action: showAll
+  method: GET
+  param: []
+  security: ["professor", "admin"]
+
+-
+  path: /search/course
+  controller: course
+  action: searchCourse
+  method: GET
+  param: ["course"]
+  security: ["professor", "admin"]
+
+-
+  path: /searchCourses
+  controller: course
+  action: allCourses
+  method: GET
+  param: []
+  security: ["professor", "admin"]
+
 
 -
   path: /createCourse
   controller: course
   action: create
+  method: GET
+  param: []
+  security: ["professor", "admin"]  
+
+-
+  path: /save/course
+  controller: course
+  action: save
   method: POST
   param: [ "name", "description", "cover", "category" ]
 
@@ -29,6 +67,22 @@
   action: delete
   method: GET
   param: [ "id" ]
+
+-
+  path: /show/courseRequests
+  controller: course
+  action: showRequests
+  method: GET
+  param: []
+  security: ["admin"]
+
+-
+  path: /verify/course
+  controller: course
+  action: verifyCourse
+  method: GET
+  param: [ "course_id" ]
+  security: ["admin"]
 
 -
   path: /create/chapter
@@ -60,13 +114,68 @@
   method: GET
   param: ["id" ]
 
-
 -
-  path: /edit/course
+  path: /update/course
   controller: course
   action: edit
   method: POST
-  param: [ "id","name", "description", "cover", "category" ]
+  param: ["id" , "name", "description", "category", "cover"]
+
+
+-
+  path: /show/category
+  controller: CourseCategory
+  action: getOneCategory
+  method: GET
+  param: [ "category_id"]
+
+-
+  path: /save/category
+  controller: CourseCategory
+  action: save
+  method: POST
+  security: ["admin"]
+  param: [ "name", "description" ]
+
+-
+  path: /edit/category
+  controller: CourseCategory
+  action: edit
+  method: GET
+  security: ["admin"]
+  param: ["category_id"]
+
+-
+  path: /update/category
+  controller: CourseCategory
+  action: update
+  method: POST
+  security: ["admin"]
+  param: [ "category_id", "name", "description" ]
+
+-
+  path: /delete/category
+  controller: CourseCategory
+  action: delete
+  method: GET
+  security: ["admin"]
+  param: ["id"]
+
+-
+  path: /category
+  controller: CourseCategory
+  action: create
+  method: GET
+  security: ["admin"]
+  param: []
+
+-
+  path: /categories
+  controller: CourseCategory
+  action: allCategories
+  method: GET
+  security: ["admin"]
+  param: []
 
 -
   path: /createLesson
@@ -80,7 +189,7 @@
   controller: lesson
   action: create
   method: POST
-  param: [ "title", "text", "video", "course", "chapter" ]
+  param: [ "title", "text", "video", "course", "chapter", "course_id"]
 
 -
   path: /show/lesson
@@ -110,11 +219,26 @@
   method: GET
   param: [ "lesson_id" ]
 
+
+- 
+  path: /store/progress
+  controller: LessonProgress
+  action: store
+  method: POST
+  param : ["user_id", "lesson_id", "progress"]
+
+
 - path: /create/comment
   controller: LessonCommentaire
   action: store
   method: POST
   param: ["content", "lesson_id"]
+
+- path: /delete/comment
+  controller: LessonCommentaire
+  action: delete
+  method: POST
+  param: ["commentaire_id"]
 
 -
   controller: main
@@ -176,6 +300,22 @@
   method: GET
   param: ["email"]
 
+-
+  controller: reportComment
+  action: showAll
+  path: /reportComments
+  method: GET
+  param: []
+  security: [ "admin" ]
+
+-
+  controller: reportComment
+  action: reportComment
+  path: /reportComment
+  method: POST
+  param: ["comment_id", "reason"]
+  security: [ "admin" ]
+
 
 -
   controller: user
@@ -227,9 +367,37 @@
   param: ["firstname", "lastname", "avatar"]
 
 -
+  controller: GeneralSettings
+  action: index
+  method: GET
+  path: /generalSettings
+  param: []
+
+
+- controller: GeneralSettings
+  action: save
+  method: POST
+  path: /save/generalSettings
+  param: ["site_name", "default_role", "allow_comment", "site_description"]
+
+-
+  controller: AppearanceSettings
+  action: index
+  method: GET
+  path: /AppearanceSettings
+  param: []
+
+
+- controller: AppearanceSettings
+  action: save
+  method: POST
+  path: /save/settings
+  param: ["main_color", "sidebar_color", "big_title_size", "logo", "primary_color"]
+
+-
   controller: admin
   action: home
-  security: "admin"
+  security: ["admin"]
   path: /dashboard
 
 -
@@ -244,24 +412,24 @@
   action: users
   method: GET
   path: /users
-  security: "admin"
+  security: ["admin"]
 
 
 -
   controller: admin
   action: editUser
-  security: admin
+  security: ["admin"]
   method: GET
   path: /edit/user
-  param: ["id"]
+  param: ["user_id"]
 
 -
   controller: admin
   action: editUser
-  security: admin
+  security: ["admin"]
   method: POST
   path: /edit/user
-  param: ["id"]
+  param: ["id", "lastname", "firstname", "email", "role", "user_id"]
 
 -
   controller: user
@@ -269,15 +437,13 @@
   security: admin
   method: GET
   path: /delete/user
-  param: ["id"]
+  param: ["user_id"]
 
 -
   controller: teacher
   action: index
   method: GET
   path: /teacher/new
-
-
 
 -
   controller: teacher
@@ -322,3 +488,8 @@
   path: /refuse/requestTeacher
   param: ["id"]
 
+-  
+  controller: teacher
+  action: index
+  method: GET
+  path: /add/teacher

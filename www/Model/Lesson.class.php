@@ -268,7 +268,11 @@ class Lesson extends Sql
                         "value" => "id",
                         "selected" => 1
 
-                    ]]
+                    ]],
+                    "course_id" => [
+                        "value" => $course->getId(),
+                        "type" => "hidden",
+                    ]  
             ]
         ];
     }

@@ -7,6 +7,7 @@ use App\Core\QueryBuilder;
 use App\Core\ReceivePassword;
 use App\Core\Session;
 use App\Model\Course;
+use App\Model\Settings;
 use App\Core\Verificator;
 use App\Core\View;
 use App\Core\Mail;
@@ -71,6 +72,7 @@ class User extends BaseController
     }
 
 
+
     public function logout()
     {
 
@@ -119,8 +121,7 @@ class User extends BaseController
         $view = new View("Register","home");
         $form = FormBuilder::render($user->getRegisterForm());
         $view->assign("form", $form);
-
-    }
+        }
 
     public function recoverPassword()
     {
@@ -317,31 +318,44 @@ class User extends BaseController
                 $user->setLastname($this->request->get('lastname'));
             }
 
-            {
-                $user->setFirstname($this->request->get('firstname'));
-                $user->setLastname($this->request->get('lastname'));
-            }
-            if (!empty($this->request->get("avatar")) && $this->request->get("avatar") !== $user->getAvatar()) {
-                if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === 0) {
+                {
+                    $user->setFirstname($this->request->get('firstname'));
+                    $user->setLastname($this->request->get('lastname'));
+                }
+                if(!empty($this->request->get("avatar")) && $this->request->get("avatar") !== $user->getAvatar() && isset($_FILES['avatar']) && $_FILES['avatar']['error'] === 0) {
 
                     try {
                         $file = new File($_FILES["avatar"]);
-                        $file = $file->upload("avatar", 3);
+                        $file = $file->upload( "avatar", 3);
                     } catch (\Exception $e) {
                         $this->session->addFlashMessage("error", $e->getMessage());
+                        $this->route->redirect("/edit/profile");
                         return;
                     }
                     $user->setAvatar($file->getLastInsertId());
                 }
 
+                $user->save();
+                $this->session->addFlashMessage("success", "Votre profile a bien été modifié");
+                $this->route->redirect("/edit/profile");
+
+            }
+            else{
+                $this->session->addFlashMessage("error",$errors[0]);
+                $this->route->redirect("/edit/profile");
+
             }
 
-            $user->save();
-            $this->session->addFlashMessage("success", "Votre profile a bien été modifié");
-            $this->route->redirect("/edit/profile");
-
-        } else {
-            $this->session->addFlashMessage("error", $errors[0]);
         }
-    }
 }
+
+
+
+
+
+
+
+
+
+
+

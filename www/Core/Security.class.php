@@ -9,22 +9,25 @@ class Security
     {
         $securityRole = $route['security'] ?? null;
 
+
+        if ($securityRole === null) {
+            return true;
+        }
+
         $roleUser = Session::getInstance()->get("role");
 
-      /*  if(!isset($route['security']) || $roleUser === $securityRole)
-        {
-            return true;
+        if (!in_array($roleUser, $securityRole, true)) {
+            http_response_code(403);
+            return false;
         }
         else
         {
-            return false;
-        }*/
-        return true;
+            return true;
+        }
 
     }
 
-    public
-    static function checkAuth($route): void
+    public static function checkAuth($route): void
     {
         $auth = $route['auth'] ?? null;
         $idUser = Session::getInstance()->get("id");
@@ -35,6 +38,5 @@ class Security
         }
 
     }
-
 
 }

@@ -11,15 +11,16 @@ use App\Model\File as FileModel;
 
 class Course extends Sql
 {
+
     protected $id = null;
     protected $name;
     protected string $description;
     protected $created_at;
+    protected $deleted_at;
     protected int $category;
     protected int $cover;
     protected int $user;
     protected ?int $status;
-
 
     public function __construct()
     {
@@ -46,6 +47,18 @@ class Course extends Sql
     public function save(): void
     {
         parent::save();
+        if (is_null($this->getId())) {
+            $this->notify();
+        }
+    }
+
+    public function notify(): void
+    {
+        $userManager = new User();
+        $users = $userManager->getAllUsers();
+        foreach($users as $user) {
+            $user->update($this);
+        }
     }
 
     /**
@@ -127,8 +140,6 @@ class Course extends Sql
     {
         $fileManager = new FileModel();
         if ($this->getCover() !== null) {
-
-
             return $fileManager->getBy('id', $this->getCover())->getPath();
         }
 
@@ -152,6 +163,12 @@ class Course extends Sql
         $this->user = $user;
     }
 
+    public function user(): User
+    {
+        $userManager = new User();
+        return $userManager->setId($this->getUser());
+    }
+
     /**
      * @return int|null
      */
@@ -168,6 +185,20 @@ class Course extends Sql
         $this->status = $status;
     }
 
+    /**
+     * @return ?string
+     */
+    public function getDeletedAt()
+    {
+        return $this->deleted_at;
+    }
+
+
+    public function setDeletedAt($deleted_at): void
+    {
+        $this->deleted_at = $deleted_at;
+    }
+
     public function getUnapprovedCoursesByUser($user_id)
     {
         $query = new QueryBuilder();
@@ -181,6 +212,35 @@ class Course extends Sql
             ])
             ->fetchAllByClass(Course::class);
     }
+
+
+    public function getAllRequests(): array
+    {
+        $query = new QueryBuilder();
+        return  $query->select('c.id, c.name, c.description, c.category, u.lastname, u.firstname')
+            ->from('course c')
+            ->innerJoin('user u', 'c.user = u.id')
+            ->where('c.status = :status')
+            ->where('c.deleted_at IS NULL')
+            ->setParams([
+                'status' => 0
+            ])
+            ->fetchAllByClass(Course::class);
+    }
+
+    public function searchCourse($name): array
+    {
+        $query = new QueryBuilder();
+        return $query->select('c.id, c.name, c.description, c.category, f.path')
+            ->from('course c')
+            ->innerJoin('file f', 'c.cover = f.id')
+            ->where( "c.name LIKE :name", "c.deleted_at IS NULL")
+            ->setParams([
+                'name' => '%' . $name . '%'
+            ])
+            ->fetchAll();
+    }
+
 
     // à optimiser avec un innerjoin au lieu de plusieurs requêtes
     public function getCategoryName(): string
@@ -202,7 +262,7 @@ class Course extends Sql
         return [
             "config" => [
                 "method" => "POST",
-                "action" => "createCourse",
+                "action" => "save/course",
                 "id" => "formCreateCourse",
                 "enctype" => "multipart/form-data",
                 "class" => "form course",
@@ -254,7 +314,7 @@ class Course extends Sql
         return [
             "config" => [
                 "method" => "POST",
-                "action" => "/edit/course?id=" . $this->getId(),
+                "action" => "/update/course?id=" . $this->getId(),
                 "id" => "formEditCourse",
                 "enctype" => "multipart/form-data",
                 "class" => "form course",
@@ -267,6 +327,7 @@ class Course extends Sql
                     "id" => "courseName",
                     "class" => "formCreateCourse",
                     "value" => $this->getName(),
+                    "max" => "255",
                     "required" => true,
                     "error" => "Votre nom doit faire entre 15 et 20 caractères"
                 ],
@@ -275,6 +336,7 @@ class Course extends Sql
                     "type" => "textarea",
                     "id" => "courseName",
                     "class" => "editable",
+                    "max" => "500",
                     "required" => true,
                     "value" => $this->getDescription(),
                     "error" => "Votre nom doit faire entre 15 et 20 caractères"

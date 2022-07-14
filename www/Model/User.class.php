@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Core\Mail;
 use App\Core\QueryBuilder;
 use App\Core\Session;
 use App\Core\Sql;
@@ -9,7 +10,7 @@ use App\Model\File as FileModel;
 use App\Model\User as userManager;
 use App\Model\User as UserModel;
 
-class User extends Sql
+class User extends Sql 
 {
     protected $id = null;
     protected $firstname = null;
@@ -151,7 +152,12 @@ class User extends Sql
         }
 
         return null;
+    }
 
+
+    public function isAdmin()
+    {
+        $this->getRoleId() === 3 ;
     }
 
     /**
@@ -179,11 +185,21 @@ class User extends Sql
         $this->token = substr(str_shuffle(bin2hex($bytes)), 0, 255);
     }
 
+    public function update(Course $course): void
+    {
+        $confirmMail = new Mail();
+        $confirmMail->setSubject("A new course of your preference has been added".$course->getName());
+        $confirmMail->setContent("<h1> A new course of your preference has been added</h1>");
+        $confirmMail->setApiKey(MAILJET_API_KEY);
+        $confirmMail->setReceiver($this->getEmail());
+        $confirmMail->setReceiverName($this->getFirstname() . " " . $this->getLastname());
+        $confirmMail->sendMail();
+    
+    }
+
 
     public function save(): void
-    {
-        //Pré traitement par exemple
-        //echo "pre traitement";
+    {   
         parent::save();
     }
 
@@ -199,6 +215,7 @@ class User extends Sql
         $session = new Session();
         if ($user && password_verify($password, $user["password"])) {
             $session->set("user", $user);
+            $session->addFlashMessage("success", "Vous êtes connecté");
             return true;
         }
 
@@ -207,6 +224,7 @@ class User extends Sql
 
     }
 
+    
     public function getAllUsers(): array
     {
         $users = [];
@@ -288,6 +306,11 @@ class User extends Sql
                     "value" => $this->getLastname(),
                     "class" => "formRegister",
                     "error" => " Votre nom doit faire entre 2 et 100 caractères",
+                ],
+                "custom" => [
+                    "type" => "custom",
+                 "html" => "<label>Mail:</label>
+                  <p> {$this->getEmail()}</p>"
                 ],
             ],
         ];

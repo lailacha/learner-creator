@@ -2,7 +2,7 @@
 <div class="col-md-12 flex course">
     <div class="course-container col-md-8">
         <h1><?php echo $course->getName(); ?>
-        <?php if($course->getUser() === \App\Model\User::getUserConnected()->getId()): ?>
+        <?php if($course->getUser() === (\App\Model\User::getUserConnected()->getId())  || \App\Model\User::getUserConnected()->isAdmin()): ?>
             <a href="/edit/course?id=<?php echo $course->getId(); ?>"><i class="fas fa-edit"></i></a>
         <?php endif; ?>
         </h1>
@@ -13,8 +13,8 @@
         <p><?php echo $course->getCategoryName(); ?></p>
         <img class="cover"  src="<?php echo $course->cover() ?>" alt="">
         <div class="flex">
-            <a href="/createCourse" class="mt-2">
-                <button>Go back to the course creator</button>
+            <a href="/courses" class="mt-2">
+                <button>Go back to the courses</button>
             </a>
             <a href="/createLesson?course_id=<?php echo $course->getId() ?>" class="mt-2 ml-2">
                 <button>Create a lesson</button>

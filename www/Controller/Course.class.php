@@ -3,33 +3,54 @@
 
 namespace App\Controller;
 
+use App\Core\Mail;
 use App\Model\Course as CourseModel;
 use App\Model\User;
-use App\Model\File as FileManager;
-use App\Model\CourseCategory as CourseCategory;
 use App\Core\FormBuilder;
-use App\Core\HttpRequest;
 use App\Core\Verificator;
-use App\Controller\BaseController;
 use App\Core\View;
+use App\Model\CourseCategory;
 use App\Service\File;
 
 
-
-class Course extends BaseController
-{
-
+class Course extends BaseController {
 
     public function index()
+    {
+        $courseManager = new CourseModel();
+        $unaprovedCourses = $courseManager->getUnapprovedCoursesByUser(User::getUserConnected()->getId());
+
+        $view = new View('courses/index');
+        $view->assign('unaprovedCourses', $unaprovedCourses);
+
+    }
+
+
+    public function create()
+    {
+        $courseManager = new CourseModel();
+        $form = FormBuilder::render($courseManager->getCourseForm());
+        $view = new View('courses/createCourse');
+        $view->assign('form', $form);
+    }
+
+    public function allCourses()
     {
         //get All the courses
         $courseManager = new CourseModel();
         $form = FormBuilder::render($courseManager->getCourseForm());
-        $view = new View("createCourse", "front");
+        $view = new View("courses/showAllCourses", "front");
         $allCourses = $courseManager->getUnapprovedCoursesByUser(User::getUserConnected()->getId());
         $view->assign("form", $form);
-        $view->assign("allCourses", $allCourses);
+        $view->assign("courses", $allCourses);
 
+    }
+
+        public function searchCourse()
+    {
+        $courseManager = new CourseModel();
+        $courses = $courseManager->searchCourse($this->request->get('course'));
+        echo json_encode($courses);
     }
 
     public function myCourse()
@@ -46,15 +67,34 @@ class Course extends BaseController
         $courseManager = new CourseModel();
         $courses = $courseManager->getAll();
 
-        $view = new View("showAll", "front");
-        $view->assign("index", $courses);
+        $view = new View("courses/showAllCourses", "front");
+        $view->assign("courses", $courses);
+    }
+
+    public function showbyCategory()
+    {
+        $courseManager = new CourseModel();
+        $courses = $courseManager->getBy('category', $this->request->get("category_id"));
+
+        //$categoryManagerApp\Model\CourseCategory();
+
+        if(!$courses)
+        {
+            $this->route->goBack();
+            $this->session->addFlashMessage("error", "Il n'y a pas de cours dans cette catégorie");
+        }
+
+        $view = new View("course/showByCategorie");
+        $view->assign("course", $courses);
+        $view->assign("categorie", $categorie);
     }
 
     public function delete()
     {
         $courseManager = new CourseModel();
         $course = $courseManager->setId($this->request->get("id"));
-        $course->delete();
+        $course->setDeletedAt(date('Y-m-d H:i:s'));
+        $course->save();
         $this->route->goBack();
     }
 
@@ -103,8 +143,9 @@ class Course extends BaseController
                 }
 
                 $course->save();
-                $this->session->addFlashMessage("success", "Votre cours a bien été modifié");
                 $this->route->redirect("/show/course?id=".$course->getId(), "index");
+                $this->session->addFlashMessage("success", "Votre cours a bien été modifié");
+
 
             }
             else{
@@ -134,14 +175,15 @@ class Course extends BaseController
     }
 
 
-    public function create()
+    public function save()
     {
 
         $courseManager = new CourseModel();
         $verification = Verificator::checkForm($courseManager->getCourseForm(), $this->request);
         if($verification){
             $this->session->addFlashMessage("error", $verification[0]);
-            $this->route->redirect("/createCourse");
+            $this->route->goBack();
+            return;
         }
 
         try {
@@ -151,7 +193,7 @@ class Course extends BaseController
                 $file = $file->upload( "thumbnails", 1);
                 $courseManager->setCover($file->getLastInsertId());
              }
-
+  
             $courseManager->setName($this->request->get("name"));
             $courseManager->setDescription($this->request->get("description"));
             $courseManager->setCategory($this->request->get("category"));
@@ -159,7 +201,7 @@ class Course extends BaseController
             $courseManager->save();
             $courseName = $courseManager->getName();
         } catch (\Exception $e) {
-            $this->session->addFlashMessage("error", "500 Internal Server Error");
+            $this->session->addFlashMessage("error", $e->getMessage());
             $this->route->goBack();
             return;
         }
@@ -167,6 +209,46 @@ class Course extends BaseController
         $this->session->addFlashMessage("success", "Votre cours ". $courseName." a bien été créé");
         $this->route->redirect("/createCourse");
 
+    }
+
+
+    public function showRequests()
+    {
+        $courseManager = new CourseModel();
+        $courses = $courseManager->getAllRequests();
+        $view = new View("courses/showCoursesRequests", "back");
+        return $view->assign("courses", $courses);
+    }
+
+    public function verifyCourse(): void
+    {
+        $courseManager = new CourseModel();
+
+        try{
+            $course = $courseManager->setId($this->request->get("course_id"));
+            if(!$course) {
+                throw new \Exception("Ce cours n'existe pas");
+            }
+            $course->setStatus(1);
+            $course->save();
+        } catch (\InvalidArgumentException $e) {
+            $this->session->addFlashMessage("error", $e->getMessage());
+            $this->route->redirect("/show/courseRequests");
+            die();
+        }
+
+        $html = "<h1>Votre cours {$course->getName()} a été validé</h1>";
+
+        $confirmMail = new Mail();
+        $confirmMail->setSubject("Félicitations! Votre cours a été validé");
+        $confirmMail->setContent($html);
+        $confirmMail->setApiKey(MAILJET_API_KEY);
+        $confirmMail->setReceiver($course->user()->getEmail());
+        $confirmMail->setReceiverName($course->user()->fullName());
+        $confirmMail->sendMail();
+
+        $this->session->addFlashMessage("success", "Le cours a bien été validé");
+        $this->route->redirect("/show/courseRequests");
     }
 
 }

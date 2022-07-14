@@ -3,6 +3,7 @@
 namespace App\Core;
 
 use App\Core\Sql;
+use PDO;
 
 class QueryBuilder
 {
@@ -13,6 +14,8 @@ class QueryBuilder
     private $order = [];
 
     private $where = [];
+
+    private $limit;
 
     private $fields = ["*"];
 
@@ -75,6 +78,12 @@ class QueryBuilder
         return $this;
     }
 
+    public function limit(string $limit): self
+    {
+        $this->limit = $limit;
+        return $this;
+    }
+
     public function orderBy(string $key, string $direction): self
     {
         $direction = strtoupper($direction);
@@ -96,6 +105,10 @@ class QueryBuilder
         }
         if (!empty($this->order)) {
             $sql .= " ORDER BY " . implode(', ', $this->order);
+        }
+
+        if ($this->limit) {
+            $sql .= " LIMIT " . $this->limit;
         }
         return $sql;
     }
@@ -123,7 +136,7 @@ class QueryBuilder
     {
         $queryPrepared = $this->pdo->prepare($this->toSql());
         $queryPrepared->execute($this->params);
-        return $queryPrepared->fetchAll(\PDO::FETCH_CLASS, $className);
+        return $queryPrepared->fetchAll(PDO::FETCH_CLASS, $className);
     }
 
     public function fetchByClass(string $className)

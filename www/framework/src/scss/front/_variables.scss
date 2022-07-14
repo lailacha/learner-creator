@@ -7,8 +7,8 @@ $red: #ce0a0a;
 $green: #31aa66;
 $breakpoint-tablet: 990px;
 
-$body-color: #F0F7FF;
-$sidebar-color: #FFF;
+$body-color: var(--main-color);
+$sidebar-color: var(--sidebar-background-color);
 $toggle-color: #DDD;
 $text-color: #464646;
 $blue: #2F7DC0;

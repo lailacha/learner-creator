@@ -7,6 +7,7 @@ use App\Core\QueryBuilder;
 use App\Core\ReceivePassword;
 use App\Core\Session;
 use App\Model\Course;
+use App\Model\Settings;
 use App\Core\Verificator;
 use App\Core\View;
 use App\Core\Mail;
@@ -91,34 +92,37 @@ class User extends BaseController
             $verification = Verificator::checkForm($user->getRegisterForm(), $this->request);
 
             if (!$verification) {
-//                $user = $user->getBy("id", 33);
-//
-//                $user->setEmail("y.sssvhvhvhvsjjjjsss@gmail.com");
-//
-//                //$user->setPassword("Test1234");
-//                //$user->setLastname("SKrzypCZK   ");
-//                //$user->setFirstname("  YveS");
-//                //$user->generateToken();
-//
-//                $user->save();
+                if ($_POST["csrf_token"] !== $_SESSION['csrf_token']) {
+                    $session->addFlashMessage("error", "csrf not valid! ");
+                    header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
+                } else {
+                    $isRegistred = $user->getBy("email", $_POST["email"]);
+                    if (!$isRegistred) {
 
-                $user->setFirstname(htmlspecialchars($_POST["firstname"]));
-                $user->setLastname(htmlspecialchars($_POST["lastname"]));
-                $user->setEmail(htmlspecialchars($_POST["email"]));
-                $user->setPassword(htmlspecialchars($_POST["password"]));
+                        $user->setFirstname(htmlspecialchars($_POST["firstname"]));
+                        $user->setLastname(htmlspecialchars($_POST["lastname"]));
+                        $user->setEmail(htmlspecialchars($_POST["email"]));
+                        $user->setPassword(htmlspecialchars($_POST["password"]));
 
-                $user->generateToken((Helpers::createToken()));
-                $this->sendRegisterMail($user);
+                        $user->generateToken((Helpers::createToken()));
 
-                $user->save();
-                $session->addFlashMessage("success", "Your registration is OK!");
-                return;
+                        $user->save();
+                        $this->sendRegisterMail($user);
 
+                        $session->addFlashMessage("success", "Your registration is OK!");
+                    } else {
+                        $session->addFlashMessage("error", "Vous etes déjà inscrit");
+                    }
+                }
+            } else {
+                $session->addFlashMessage("error", $verification[0]);
             }
         }
 
+        }
 
-    }
+
+    
 
     public function recoverPassword()
     {

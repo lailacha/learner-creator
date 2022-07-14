@@ -11,6 +11,7 @@ use App\Model\User as userManager;
 
     protected $pdo;
     protected $table;
+    protected  static $instance;
 
     public function __construct()
     {

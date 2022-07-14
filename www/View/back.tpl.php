@@ -23,25 +23,31 @@
                 <p>LearnCreator</p>
                 <ul class="main-items">
                     <li class="item link body2 ">Dashboard</li>
-                    <li class="item body2 ">Apparence</li>
+                    
+                    <li class="item body2 ">
+                    <a href="/AppearanceSettings">  Apparence </a></li>
                     <li class="body2  flex column dropdown">
-                        <a class="item dropdown-menu">Settings <i class=" ml-1 fa-solid fa-chevron-down" id="test"></i></a>
-                        <ul class="dropdown-items">
-                            <li>Typography and colors</li>
-                            <li>Logo</li>
-                        </ul>
-                    </li>
+                    <li class="item body2 ">
+                    <a href="/generalSettings">Settings </a></li>
+                    <li class="body2  flex column dropdown">
+
                     <li class="body2  flex column dropdown">
                         <a class="item dropdown-menu">Courses <i class=" ml-1 fa-solid fa-chevron-down"></i></a>
                         <ul class="dropdown-items">
+                            <a href="/category">
                             <li>Category</li>
+                            </a>
                         </ul>
                     </li>
                     <li class="body2  flex column dropdown">
                         <a class="item dropdown-menu">Management <i class=" ml-1 fa-solid fa-chevron-down"></i></a>
                         <ul class="dropdown-items">
+                           <a href="/users">
                             <li>Users</li>
+                           </a> 
                             <li><a href="/reportComments">Reports</a></li>
+                            <li><a href="/show/courseRequests">Courses Requests</a></li>
+
                         </ul>
                     </li>
                 </ul>

@@ -58,6 +58,11 @@ class Main extends BaseController
                 fwrite($myfile, $txt);
                 fwrite($myfile, "\n");
 
+
+                $txt = 'define("CAPTCHA_SECRET_KEY","' . $_GET["CAPTCHA_SECRET_KEY"] . '");';
+                fwrite($myfile, $txt);
+                fwrite($myfile, "\n");
+
                 $txt = 'define("MAIL_SENDER_NAME","' . $_GET["MAIL_SENDER_NAME"] . '");';
                 fwrite($myfile, $txt);
                 fwrite($myfile, "\n");
@@ -99,7 +104,7 @@ class Main extends BaseController
                 echo("********************************");
                 echo("<br>");
                 echo("Bravo L'instalation est faite");
-                $user->initdb();
+                //$user->initdb();
             }
         }
     }

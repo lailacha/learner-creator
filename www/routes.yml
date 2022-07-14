@@ -30,6 +30,15 @@
   security: ["professor", "admin"]
 
 -
+  path: /show/preferences
+  controller: course
+  action: showPreferences
+  method: GET
+  param: []
+  security: []
+
+
+-
   path: /search/course
   controller: course
   action: searchCourse
@@ -478,7 +487,7 @@
   action: create
   method: POST
   path: /teacher/new
-  param: [ "cv", "motivation", "theme", "diplome" ]
+  param: [ "cv", "motivation", "theme", "diplome" , "user_id"]
 
 -
   controller: admin
@@ -520,4 +529,5 @@
   controller: teacher
   action: index
   method: GET
-  path: /add/teacher
+  path: /add/
+  

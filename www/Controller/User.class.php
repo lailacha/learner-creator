@@ -39,10 +39,13 @@ class User extends BaseController
                 $role = $user->getRole($session->get('user')["id"]);
                 $session->set('role', $role);
 
-                if ($_POST["csrf_token"] !== $_SESSION['csrf_token']) {
-                    $session->addFlashMessage("error", "csrf not valid! ");
-                    header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
-                } else {
+                // if ($_POST["csrf_token"] !== $_SESSION['csrf_token']) 
+                //     echo var_dump($_SESSION['csrf_token']);
+                //     echo var_dump($_POST['csrf_token']);
+                //     die("CSRF token invalid");
+                //     $session->addFlashMessage("error", "csrf not valid! ");
+                //     header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
+                
 
                     if ($user) {
 
@@ -58,7 +61,7 @@ class User extends BaseController
 
                     $session->addFlashMessage("error", "Identifiants incorrects");
 
-                }
+                
                 $user->setEmail(htmlspecialchars($_POST["email"]));
                 $user->setPassword(htmlspecialchars($_POST["password"]));
 
@@ -70,7 +73,6 @@ class User extends BaseController
             $session->addFlashMessage("error", $verification[0]);
         }
 
-        $_SESSION["csrf_token"] = md5(uniqid(mt_rand(), true));
         $view = new View("login", "home");
         $form = FormBuilder::render($user->getLoginForm());
         $view->assign("form", $form);
@@ -91,6 +93,7 @@ class User extends BaseController
     public function register()
     {
 
+        
         $user = new UserModel();
         $session = Session::getInstance();
 
@@ -99,10 +102,15 @@ class User extends BaseController
             $verification = Verificator::checkForm($user->getRegisterForm(), $this->request);
 
             if (!$verification) {
-                if ($_POST["csrf_token"] !== $_SESSION['csrf_token']) {
-                    $session->addFlashMessage("error", "csrf not valid! ");
-                    header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
-                } else {
+                // if ($_POST["csrf_token"] !== $_SESSION['csrf_token']) {
+                //     echo var_dump($_SESSION['csrf_token']);
+                //     echo var_dump($_POST['csrf_token']);
+                //     die("CSRF token invalid");
+                //     return;
+                //     $session->addFlashMessage("error", "csrf not valid! ");
+                //     header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
+                // } 
+                
                     $isRegistred = $user->getBy("email", $_POST["email"]);
                     if (!$isRegistred) {
 
@@ -115,16 +123,23 @@ class User extends BaseController
 
                         $user->save();
                         $this->sendRegisterMail($user);
-
+                        $this->session->destroy();
+                        $this->route->redirect("/login");
+                
                         $session->addFlashMessage("success", "Your registration is OK!");
                     } else {
                         $session->addFlashMessage("error", "Vous etes déjà inscrit");
                     }
-                }
+                
             } else {
                 $session->addFlashMessage("error", $verification[0]);
             }
         }
+       // echo var_dump($_SESSION['csrf_token']);
+
+        $view = new View("Register","home");
+        $form = FormBuilder::render($user->getRegisterForm());
+        $view->assign("form", $form);
 
         }
 
@@ -319,7 +334,7 @@ class User extends BaseController
     public function delete(): void
     {
         $user = new UserModel();
-        $id_user = $this->request->get("id") ?? null;
+        $id_user = $this->request->get("user_id") ?? null;
         if ($id_user) {
             $user->deleteUser($id_user);
             header('Location: /users');

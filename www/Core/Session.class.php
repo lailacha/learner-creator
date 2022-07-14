@@ -58,4 +58,11 @@ class Session
         $this->ensureStarted();
         unset($_SESSION[$key]);
     }
+
+
+    public function destroy(): void
+    {
+        $this->ensureStarted();
+        session_destroy();
+    }
 }

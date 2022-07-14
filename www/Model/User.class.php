@@ -352,15 +352,6 @@ class User extends Sql
                     "error" => "Votre confirmation de mot de passe ne correspond pas",
                     "confirm" => "password"
                 ],
-            "csrf_token" => [
-                    "placeholder" => $_SESSION['csrf_token'],
-                    "value" => $_SESSION['csrf_token'],
-                    "type" => "hidden",
-                    "id" => "pwdcsrf",
-                    "class" => "formRegister",
-                    "required" => true,
-                    "error" => "Le token csrf ne correspond pas"
-                ],
                 "firstname" => [
                     "placeholder" => "Votre prénom ...",
                     "type" => "text",
@@ -445,7 +436,7 @@ class User extends Sql
                         "selected" => 1
 
                     ]],
-                "id" => [
+                "user_id" => [
                     "value" => $this->getId(),
                     "type" => "hidden",
                     "id" => "idUser",
@@ -486,15 +477,15 @@ class User extends Sql
                     "error" => "Votre confirmation de mot de passe ne correspond pas",
                     "confirm" => "password",
                 ],
-                "csrf_token" => [
-                    "placeholder" => $_SESSION['csrf_token'],
-                    "value" => $_SESSION['csrf_token'],
-                    "type" => "text",
-                    "id" => "pwdcsrf",
-                    "class" => "formRegister",
-                    "required" => true,
-                    "error" => "Le token csrf ne correspond pas"
-                ]
+                // "csrf_token" => [
+                //     "placeholder" => $_SESSION['csrf_token'],
+                //     "value" => $_SESSION['csrf_token'],
+                //     "type" => "text",
+                //     "id" => "pwdcsrf",
+                //     "class" => "formRegister",
+                //     "required" => true,
+                //     "error" => "Le token csrf ne correspond pas"
+                // ]
             ]
         ];
     }
@@ -517,16 +508,15 @@ class User extends Sql
                     "class" => "formRegister",
                     "required" => true,
                 ],
-            
-                "csrf_token" => [
-                    "placeholder" => $_SESSION['csrf_token'],
-                    "value" => $_SESSION['csrf_token'],
-                    "type" => "hidden",
-                    "id" => "pwdcsrf",
-                    "class" => "formRegister",
-                    "required" => true,
-                    "error" => "Le token csrf ne correspond pas"
-                ]   
+                // "csrf_token" => [
+                //     "placeholder" => $_SESSION['csrf_token'],
+                //     "value" => $_SESSION['csrf_token'],
+                //     "type" => "hidden",
+                //     "id" => "pwdcsrf",
+                //     "class" => "formRegister",
+                //     "required" => true,
+                //     "error" => "Le token csrf ne correspond pas"
+                // ]   
             ]
         ];
     }

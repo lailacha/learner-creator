@@ -15,7 +15,7 @@
 
     <?php foreach ($listRequestsTeacher as $item) : ?>
         <tr>
-            <td><?= $item->getUser()["firstname"] ?> <?= $item->getUser()["lastname"] ?></td>
+            <td><?= $item->getUser()->getFirstname()?> <?= $item->getUser()->getLastname() ?></td>
             <td><?= $item->getTheme() ?></td>
             <td><?= $item->getTheme() ?></td>
             <td><?= $item->getStatut() === 1 ? "Valid" : ($item->getStatut() === 0 ? "Non Valid" : "Refusé") ?></td>

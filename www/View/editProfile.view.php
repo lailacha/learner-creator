@@ -18,12 +18,11 @@
         <h3>Création date</h3>
         <p>15/10/2000</p>
         <h3>Type of account </h3>
-        <p>Learner</p>
+        <p><?php echo \App\Model\User::getUserConnected()->getRole() ?></p>
     </div>
 
     <a href="/teacher/new" class="btn-secondary">Faire une demande pour devenir professeur chez nous</a>
 </div>
-    <a href="/add/teacher" class="btn-secondary">Faire une demande pour devenir professeur chez nous</a>
     
 </div>
 <div class="col-md-10">

@@ -68,25 +68,40 @@ class Course extends BaseController {
     // Affiche tous les cours selon les préférences du users, ses favoris
     public function showAll()
     {
-        // $courseManager = new CourseModel();
+        $courseManager = new CourseModel();
 
-        // $courses = $courseManager->getAll();
+        $courses = $courseManager->getAll();
 
-        // $view = new View("courses/showAllCourses", "front");
-        // $view->assign("courses", $courses);
+        $view = new View("courses/showAllCourses", "front");
+        $view->assign("courses", $courses);
+    }
 
 
+    public function showPreferences() {
+        $courseManager = new CourseModel();
         $view = new View("showAll", "front");
         $user = User::getUserConnected()->getId();
         $learner = new Learner();
-        $categoryPref =$learner->getAllCategories($user);
-        $courseManager = $learner->getAll('category', $categoryPref);
+        $checkPref = $learner->checkPrefUser($user);
 
-        return $view->assign("courseManager", $courseManager);
+            if($checkPref == 1){
+            $categoryPref = $learner->getAllCategories($user);
+            $courses = $courseManager->getAll();
+            $courseManager = $courseManager->getAll("category", $categoryPref);
+            $view->assign("courseManager", $courseManager);
+            }
 
+         $like = new LikeModel();
+         if ($like->getSaveLikes($user) > 0){
+         $likeCourse = $like->getAllLike($user);
+         $course = new CourseModel();
+         $displayCourse = $course->getAllBy("id", $likeCourse); 
+ 
+ 
+         $view->assign("displayCourse",$displayCourse);
+          }
 
     }
-
 
     public function showByFavoriteCategory()
     {

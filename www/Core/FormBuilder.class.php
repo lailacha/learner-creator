@@ -8,7 +8,9 @@ class FormBuilder
 {
 
     public static function render(array $config): string
-    {
+        {
+
+        //$_SESSION["csrf_token"] = md5(uniqid(mt_rand(), true));
         
         $html = "<form 
 				method='" . ($config["config"]["method"] ?? "POST") . "' 
@@ -29,6 +31,7 @@ class FormBuilder
             $input["type"] === "hidden" ?  $html .= self::renderHidden($name,$input) : "";
         }
 
+       // $html .= " <input type='hidden' name='csrf_token' value='".$_SESSION["csrf_token"]."'>";
         $html .= " <input type='submit' value='".($config["config"]["submit"] ?? '')."'>";
         $html .= "</form>";
 

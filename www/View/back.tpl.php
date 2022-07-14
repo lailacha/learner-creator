@@ -47,7 +47,7 @@
                            </a> 
                             <li><a href="/reportComments">Reports</a></li>
                             <li><a href="/show/courseRequests">Courses Requests</a></li>
-
+                            <li><a href="/teachers/allRequests">Teacher Requests</a></li>
                         </ul>
                     </li>
                 </ul>

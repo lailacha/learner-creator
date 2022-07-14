@@ -116,7 +116,7 @@ class Admin extends BaseController
         $requestManager = $requestManager->setId($id_request);
         $requestManager->setStatut(-1);
         $requestManager->save();
-        header('Location: /teachers/requestInProgress');
+        header('Location: /teachers/allRequests');
         $session = Session::getInstance();
         $session->addFlashMessage("success", "The request has been refused");
     }

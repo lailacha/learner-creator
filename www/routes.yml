@@ -30,6 +30,14 @@
   security: ["professor", "admin"]
 
 -
+  path: /show/myCourses
+  controller: course
+  action: myCourses
+  method: GET
+  param: []
+  security: ["professor"]
+
+-
   path: /show/preferences
   controller: course
   action: showPreferences
@@ -416,7 +424,10 @@
   action: save
   method: POST
   path: /save/settings
-  param: ["main_color", "sidebar_color", "big_title_size", "logo", "primary_color"]
+  param: ["main_color", "sidebar_color", "big_title_size", "logo", "primary_color", "main_font"]
+
+
+- 
   controller: user
   action: saveCatPref
   method: POST

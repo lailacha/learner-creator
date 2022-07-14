@@ -1,3 +1,28 @@
+<h2>Mes suggestions</h2>
+<div class="row flex">
+
+ <?php if (isset($suggestions)) : ?>
+
+
+ <?php foreach ($suggestions as $course): ?>
+    <div class="course-thumbnail col-md-2">
+                <img class="cover"  src="<?php echo $course->cover() ?>" alt="">
+                <a  href="/show/course?id=<?php echo $course->getId() ?>"><?php echo $course->getName() ?></a>
+                <p><?php echo $course->getDescription() ?></p>
+                <a onclick="return confirm('are you sure to delete?');" href="/delete/course?id=<?php echo $course->getId() ?> "></i></a>
+            </div>
+<?php endforeach; ?>
+<?php endif; ?>
+</div>
+    <?php if (!isset($suggestions)) : ?>
+        
+        <p> Vous n'avez pas de préférences</p>
+       
+        
+
+    <?php endif; ?>
+
+<?php if (isset($courses)) : ?>
 
 <h2 class="ml-2 mb-2">Reprendre les cours</h2>
 <div class="row flex">
@@ -10,6 +35,7 @@
             </div>
 <?php endforeach; ?>
 </div>
+<?php endif; ?>
 
 <div onclick="location.href='/searchCourses';" class="col-md-5 bg-primary card mt-4" >
                     <h2>Search a course</h2>

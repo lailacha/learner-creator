@@ -76,6 +76,7 @@ class FormBuilder
     {
         $property = $select["options"]["property"] ?? "";
         $value = $select["options"]["value"] ?? "";
+        $selected = $select["options"]["selected"] ?? "";
 
         $data = "";
 
@@ -86,7 +87,7 @@ class FormBuilder
         
         $data .= "<select class='".($select["class"] ?? '')."' name='".($name ?? '')."' id='".($option["id"] ?? '')."' >";
         foreach ($select["options"]["data"] as $option){
-            $data .= " <option class='".($option["class"] ?? '')."' ".($option["selected"] ?? '')." value='".($option[$value] ?? '')."' >";
+            $data .= " <option class='".($option["class"] ?? '')."' ".( $option[$value] === $selected? 'selected' : '')." value='".($option[$value] ?? '')."' >";
             $data .= $option[$property];
             $data .= "";
             $data .= " </option>";

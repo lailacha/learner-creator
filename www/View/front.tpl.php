@@ -23,6 +23,7 @@
     --main-color: <?php echo $settings->getBy('id', 'main_color')->getValue() ?>;
     --big-title-size: <?php echo $settings->getBy('id', 'big_title_size')->getValue() ?>;
     --primary-color: <?php echo $settings->getBy('id', 'primary_color')->getValue() ?>;
+    --main-font: <?php echo $settings->getBy('id', 'main_font')->getValue() ?>;
     }
 </style>
 <body class="flex grid">

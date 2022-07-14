@@ -32,6 +32,7 @@ class AppearanceSettings extends BaseController
         if(!$errors)
         {
 
+      
             if(!empty($this->request->get('main_color')) && $this->request->get('main_color') !== $settingsManager->getBy('id', 'main_color')->getValue())
             {
                 $settings = $settingsManager->getBy('id', 'main_color');
@@ -58,6 +59,14 @@ class AppearanceSettings extends BaseController
             {
                 $settings = $settingsManager->getBy('id', 'big_title_size');
                 $settings->setValue($this->request->get('big_title_size'));
+                $settings->save();
+            }
+
+            if(!empty($this->request->get('main_font')) && $this->request->get('main_font') !== $settingsManager->getBy('id', 'main_font')->getValue())
+            {
+        
+                $settings = $settingsManager->getBy('id', 'main_font');
+                $settings->setValue($this->request->get('main_font'));
                 $settings->save();
             }
 

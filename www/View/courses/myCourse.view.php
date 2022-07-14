@@ -1,6 +1,6 @@
 
 <div class="col-md-12 mt-5">
-    <h1 class="mb-3 ">Create a course</h1>
+    <h1 class="mb-3 ">My courses</h1>
 
     <div class="flex">
         <div class="col-md-6">

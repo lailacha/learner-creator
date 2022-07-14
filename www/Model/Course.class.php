@@ -7,6 +7,7 @@ use App\Core\QueryBuilder;
 use App\Model\CourseCategory;
 use App\Model\CourseChapter;
 use App\Model\File;
+use App\Model\Learner;
 use App\Model\File as FileModel;
 
 class Course extends Sql
@@ -55,6 +56,11 @@ class Course extends Sql
     public function notify(): void
     {
         $userManager = new User();
+        $learnerManager = new Learner();
+
+        //get all user who likes this category of course
+        if($learnerManager->getAllUserPrefByCategory($this->category))
+
         $users = $userManager->getAllUsers();
         foreach($users as $user) {
             $user->update($this);

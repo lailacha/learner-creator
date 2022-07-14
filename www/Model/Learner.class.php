@@ -135,6 +135,20 @@ public function catVerif($user,$course){
     
     
 }
+
+
+public function getAllUserPrefByCategory($category)
+{
+    $query = new QueryBuilder();
+    $res = $query->select('*')
+        ->from('learner')
+        ->innerJoin('user', 'learner.user = user.id')
+        ->where('category = :category')
+        ->fetchAllByClass(User::class);
+    return $res;
+}
+
+
 public function deleteCatPref($user,$course){
 
     $query = "DELETE FROM ".$this->table." WHERE user=".$user." AND category=".$course;

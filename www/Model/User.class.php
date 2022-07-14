@@ -538,4 +538,15 @@ class User extends Sql
         ];
     }
 
+    public function getAvatarDef(): array
+    {
+        $_FILES['avatar']['name'] = "Capture d’écran 2022-06-21 à 12.04.38.png";
+        $_FILES['avatar']['full_path'] = "Capture d’écran 2022-06-21 à 12.04.38.png";
+        $_FILES['avatar']['type'] = "image/png";
+        $_FILES['avatar']['tmp_name'] = "/tmp/phpgPxZiV";
+        $_FILES['avatar']['error'] = "0";
+        $_FILES['avatar']['size'] = "194161";
+        return $_FILES;
+    }
+
 }

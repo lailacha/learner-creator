@@ -56,12 +56,12 @@ class User extends BaseController
         
         $user = new UserModel();
         $session = new Session();
-
+        
         if (!empty($_POST)) {
-
+            PRINT_R($_POST); 
 
             $verification = Verificator::checkForm($user->getRegisterForm(), $this->request);
-
+            
             if (!$verification) {
 //                $user = $user->getBy("id", 33);
 //
@@ -83,6 +83,17 @@ class User extends BaseController
 
                 $user->generateToken((Helpers::createToken()));
 
+                /*Marine*/
+               
+                
+                $_FILES = $user->getAvatarDef();
+                $file = new File($_FILES["avatar"]);
+                $file = $file->upload("avatar", 3);
+                $user->setAvatar($file->getLastInsertId());
+
+                /*Marine*/
+
+
                 $user->save();
                 $session->addFlashMessage("success", "Your registration is OK!");
 
@@ -94,6 +105,9 @@ class User extends BaseController
         $view = new View("Register","home");
         $form = FormBuilder::render($user->getRegisterForm());
         $view->assign("form", $form);
+        
+        
+        
     }
 
     public function recoverPassword()
@@ -251,11 +265,11 @@ class User extends BaseController
         $learner = new Learner();
         $user =  UserModel::getUserConnected()->getId();
         $course = $learner->setCategory($this->request->get("category")); 
-        $course = $learner->getCategory();
+        
         $learner->setUser($user);
-        echo $learner->deleteCatPref($user,$course);
-        header('Location: /edit/profile');
-        echo $this->session->addFlashMessage("success", "Vous avez supprimé votre préférence pour la catégorie");
+        echo $user;
+        //$learner->delete();
+        //header('Location: /edit/profile');
     }
         
        
@@ -284,8 +298,12 @@ class User extends BaseController
                 if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === 0) {
 
                     try {
+                        
+                        
+                        
                         $file = new File($_FILES["avatar"]);
                         $file = $file->upload("avatar", 3);
+
                     } catch (\Exception $e) {
                         $this->session->addFlashMessage("error", $e->getMessage());
                         return;
@@ -294,8 +312,8 @@ class User extends BaseController
                 }
 
             }
-
-            $user->save();
+           
+           $user->save();
             $this->session->addFlashMessage("success", "Votre profile a bien été modifié");
             $this->route->redirect("/edit/profile");
 

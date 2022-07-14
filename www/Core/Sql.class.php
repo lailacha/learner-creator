@@ -149,7 +149,7 @@ abstract class Sql
 
     public function save(): void
     {
-
+        echo "bouh";
 
         $colums = get_object_vars($this);
         $varToExclude = get_class_vars(get_class());

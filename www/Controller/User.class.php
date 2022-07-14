@@ -118,11 +118,10 @@ class User extends BaseController
                 $session->addFlashMessage("error", $verification[0]);
             }
         }
-
+        $view = new View("Register","home");
+        $form = FormBuilder::render($user->getRegisterForm());
+        $view->assign("form", $form);
         }
-
-
-    
 
     public function recoverPassword()
     {

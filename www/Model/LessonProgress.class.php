@@ -3,7 +3,11 @@
 
 namespace App\Model;
 
+use App\Model\User;
+use App\Model\Course;
 use App\Core\Sql;
+use App\Core\QueryBuilder;
+
 
 class LessonProgress extends Sql
 {
@@ -62,6 +66,36 @@ class LessonProgress extends Sql
     public function getUserProgress($lesson, $user)
     {
         return $this->getOneByMany(["lesson" => $lesson, "user" =>  $user]) ?  true : false;
+    }
+
+    public function getLastProgressLesson()
+    {
+
+        $query = new QueryBuilder();
+
+        $last = $query->from('user_progress_lesson')
+            ->where("id=(SELECT max(id) FROM " . DBPREFIXE . "user_progress_lesson)")
+            ->fetchByClass('App\Model\LessonProgress');
+
+            return $last;
+    }
+
+
+    public function getLastLessons()
+    {
+            $query = new QueryBuilder();
+                $last = $query ->select('l.id, c.name, c.cover, c.id, c.description ')
+                ->from('user_progress_lesson p')
+                ->innerJoin('lesson l', 'p.lesson = l.id')
+                ->innerJoin('course_chapter cc', 'cc.id = l.chapter')
+                ->innerJoin('course c', 'cc.course = c.id')
+                ->where('p.user = :user')
+                ->setParams([
+                    'user' => User::getUserConnected()->getId()
+                ])
+                ->fetchAllByClass(Course::class);
+
+            return $last;
     }
 
 }

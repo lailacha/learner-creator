@@ -15,6 +15,8 @@ class QueryBuilder
 
     private $where = [];
 
+    private $limit;
+
     private $fields = ["*"];
 
     private $params = [];
@@ -76,6 +78,12 @@ class QueryBuilder
         return $this;
     }
 
+    public function limit(string $limit): self
+    {
+        $this->limit = $limit;
+        return $this;
+    }
+
     public function orderBy(string $key, string $direction): self
     {
         $direction = strtoupper($direction);
@@ -97,6 +105,10 @@ class QueryBuilder
         }
         if (!empty($this->order)) {
             $sql .= " ORDER BY " . implode(', ', $this->order);
+        }
+
+        if ($this->limit) {
+            $sql .= " LIMIT " . $this->limit;
         }
         return $sql;
     }

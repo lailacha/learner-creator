@@ -7,7 +7,6 @@ use App\Model\Settings;
 class View{
 
     private $view;
-    private $settings;
     private $template;
     private $data = [];
 
@@ -15,7 +14,7 @@ class View{
     {
         $this->setView($view);
         $this->setTemplate($template);
-        $this->settings = new Settings();
+       // $this->settings = new Settings();
     }
 
     public function setView($view):void
@@ -48,7 +47,6 @@ class View{
     public function __destruct()
     {
             extract($this->data);
-        $settings = $this->settings;
         include "View/".$this->template.".tpl.php";
         
     }

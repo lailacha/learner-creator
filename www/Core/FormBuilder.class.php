@@ -18,15 +18,15 @@ class FormBuilder
 				action='" . ($config["config"]["action"] ?? "") . "'>";
 
         foreach ($config["inputs"] as $name=>$input){
-                $input["type"] === "checkbox" ?   $html .= self::renderCheckbox($name,$input) : "";
-                $input["type"] === "color" ?   $html .= self::renderColor($name,$input) : "";
-                $input["type"] === "radio" ?   $html .= self::renderRadio($name,$input) : "";
-                $input["type"] === "textarea" ?   $html .= self::renderTextarea($name,$input) : "";
-                $input["type"] === "select" ?   $html .= self::renderSelect($name,$input) : "";
-                $input["type"] === "file" || $input["type"] === "text" || $input["type"] === "password"|| $input["type"] === "email" ?   $html .= self::renderInput($name,$input) : "";
-                $input["type"] === "captcha" ?  $html .= (new Recaptcha())->renderRecaptcha() : "";
-                $input["type"] === "hidden" ?  $html .= self::renderHidden($name,$input) : "";
-                $input["type"] === "custom" ?  $html .= self::renderCustomHtml($input) : "";
+            $input["type"] === "checkbox" ?   $html .= self::renderCheckbox($name,$input) : "";
+            $input["type"] === "color" ?   $html .= self::renderColor($name,$input) : "";
+            $input["type"] === "radio" ?   $html .= self::renderRadio($name,$input) : "";
+            $input["type"] === "textarea" ?   $html .= self::renderTextarea($name,$input) : "";
+            $input["type"] === "select" ?   $html .= self::renderSelect($name,$input) : "";
+            $input["type"] === "file" || $input["type"] === "text" || $input["type"] === "password"|| $input["type"] === "submit"|| $input["type"] === "email" || $input["type"] === "number" ? $html .= self::renderInput($name,$input) : "";
+            $input["type"] === "captcha" ?  $html .= (new Recaptcha())->renderRecaptcha() : "";
+            $input["type"] === "custom" ?  $html .= self::renderCustomHtml($input) : "";
+            $input["type"] === "hidden" ?  $html .= self::renderHidden($name,$input) : "";
         }
 
         $html .= " <input type='submit' value='".($config["config"]["submit"] ?? '')."'>";
@@ -37,12 +37,13 @@ class FormBuilder
 
     private static function renderCheckbox(string $name, array $checkbox): string
     {
-        if(isset($data["label"]))
+        $data = "";
+        if(isset($checkbox["label"]))
         {
-            $data .= "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
+            $data .= "<label for='".($name ?? "")."'>".$checkbox["label"]."</label>";
         }
+        $data .= " <input type='hidden' name='".($name ?? '')."'  value='false'>";
         $data .= " <input type='checkbox' class='".($checkbox["class"] ?? '')."' ".($checkbox["checked"] ?? '')." id='".($checkbox["id"] ?? '')."' name='".($name ?? '')."'  value='".($checkbox["value"] ?? '')."'>";
-         $data .= " <input type='hidden' name='".($name ?? '')."'  value='0'>";
 
         return $data;
 
@@ -70,10 +71,17 @@ class FormBuilder
 
     private static function renderSelect(string $name, array $select): string
     {
-        $property = $select["options"]["property"];
-        $value = $select["options"]["value"];
+        $property = $select["options"]["property"] ?? "";
+        $value = $select["options"]["value"] ?? "";
 
-        $data = "<select class='".($select["class"] ?? '')."' name='".($name ?? '')."' id='".($option["id"] ?? '')."' >";
+        $data = "";
+
+        if(isset($select["label"]))
+        {
+            $data = "<label for='".($name ?? "")."'>".$select["label"]."</label>";
+        }
+        
+        $data .= "<select class='".($select["class"] ?? '')."' name='".($name ?? '')."' id='".($option["id"] ?? '')."' >";
         foreach ($select["options"]["data"] as $option){
             $data .= " <option class='".($option["class"] ?? '')."' ".($option["selected"] ?? '')." value='".($option[$value] ?? '')."' >";
             $data .= $option[$property];

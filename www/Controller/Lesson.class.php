@@ -28,6 +28,7 @@ class Lesson extends BaseController
     public function index()
     {
         $courseId = $this->request->get('course_id');
+   
         $courseManager = new CourseManager();
         $course = $courseManager->setId($courseId);
         $lessonManager = new LessonManager();
@@ -88,7 +89,8 @@ class Lesson extends BaseController
     {
         $LessonManager = new LessonManager();
         $courseManager = new CourseManager();
-        $course = $courseManager->setId(63);
+        $course = $courseManager->setId($this->request->get("course_id"));
+  
         $verification = Verificator::checkForm($LessonManager->getCreateLessonForm($course), $this->request);
         if ($verification) {
             $this->session->addFlashMessage("error", $verification[0]);

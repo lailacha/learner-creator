@@ -9,6 +9,8 @@ use App\Core\SQL;
 use App\Core\QueryBuilder;
 use App\Core\Security;
 use App\Core\Session;
+use App\Model\Settings;
+
 
 //E
 

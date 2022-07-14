@@ -4,6 +4,11 @@
   path: /
 
 -
+  controller: main
+  action: dashboard
+  path: /homePage
+
+-
   path: /404
   controller: BaseController
   action: abort
@@ -108,6 +113,13 @@
   action: edit
   method: GET
   param: ["id" ]
+
+-
+  path: /update/course
+  controller: course
+  action: edit
+  method: POST
+  param: ["id" , "name", "description", "category", "cover"]
 
 
 -
@@ -354,20 +366,25 @@
   path: /save/profile
   param: ["firstname", "lastname", "avatar"]
 
-
-
-- controller: teacher
+-
+  controller: GeneralSettings
   action: index
   method: GET
-  path: /teacher/new
+  path: /generalSettings
+  param: []
 
 
+- controller: GeneralSettings
+  action: save
+  method: POST
+  path: /save/generalSettings
+  param: ["site_name", "default_role", "allow_comment", "site_description"]
 
 -
   controller: AppearanceSettings
   action: index
   method: GET
-  path: /settings
+  path: /AppearanceSettings
   param: []
 
 
@@ -375,7 +392,7 @@
   action: save
   method: POST
   path: /save/settings
-  param: ["main_color", "sidebar_color", "big_title_size", "logo"]
+  param: ["main_color", "sidebar_color", "big_title_size", "logo", "primary_color"]
 
 -
   controller: admin
@@ -420,7 +437,7 @@
   security: admin
   method: GET
   path: /delete/user
-  param: ["id"]
+  param: ["user_id"]
 
 -
   controller: teacher

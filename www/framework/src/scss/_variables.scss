@@ -7,7 +7,7 @@ $grey: #AAA;
 $light-grey: #F2F2F2;
 $violet-electric: #5D5FEF;
 $light-back-main-color: #464646;
-$primary-color: #3BCDB3;
+$primary-color:  var(--primary-color);
 $dark-grey: #444;
 $red: #ce0a0a;
 $green: #31aa66;
@@ -29,7 +29,7 @@ $green: #31aa66;
 $breakpoint-tablet: 990px;
 
 $body-color: #F0F7FF;
-$sidebar-color: #FFF;
+$sidebar-color: var(--sidebar-background-color);
 $toggle-color: #DDD;
 $text-color: #464646;
 $blue: #2F7DC0;

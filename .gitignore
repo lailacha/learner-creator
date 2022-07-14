@@ -1,3 +1,11 @@
 db_data
+.idea
 www/.env*
 /www/framework/webpack/node_modules/
+.idea/
+.idea/workspace.xml
+.idea/php.xml
+.DS_Store
+www/images/avatar/*
+www/images/pdf/*
+www/images/thumbnails/*

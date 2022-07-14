@@ -144,7 +144,7 @@ class FormBuilder
             {
                 $data .= "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
             }
-            $data .= " <textarea class='".($textarea["class"] ?? '')."' id='".($textarea["id"] ?? '')."' cols='".($textarea["cols"] ?? '')."' placeholder='".($textarea["content"] ?? '')."' rows='".($textarea["rows"] ?? '')."' name='".($name ?? "")."'>";
+            $data .= " <textarea class='".($textarea["class"] ?? '')."' id='".($textarea["id"] ?? '')."' cols='".($textarea["cols"] ?? '')."' placeholder='".($textarea["placeholder"] ?? '')."' rows='".($textarea["rows"] ?? '')."' name='".($name ?? "")."'>";
             $data .= $textarea["value"] ?? "";
             $data .= "</textarea>";
         return $data;

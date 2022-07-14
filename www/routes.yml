@@ -139,7 +139,7 @@
   action: login
   path: /login
   method: POST
-  param: [ "email", "password" ]
+  param: ["email", "password","csrf_token"]
 
 
 -
@@ -160,7 +160,7 @@
   action: register
   method: POST
   path: /register
-  param: ["firstname", "lastname","email", "password", "passwordConfirm", "g-recaptcha-response"]
+  param: ["firstname", "lastname","email", "password", "passwordConfirm","csrf_token", "g-recaptcha-response"]
 
 -
   controller: user
@@ -181,6 +181,17 @@
   controller: user
   action: changePassword
   path: /changePassword
+  method: GET
+  param: []
+
+
+-
+  controller: user
+  action: changePassword
+  path: /changePassword
+  method: POST
+  param: []
+
 
 -
   controller: user
@@ -191,6 +202,8 @@
   controller: user
   action: verifyAccount
   path: /verifyAccount
+  method: GET
+  param: ["token","email"]
 
 -
   controller: user
@@ -213,10 +226,99 @@
   path: /save/profile
   param: ["firstname", "lastname", "avatar"]
 
-
 -
   controller: admin
   action: home
   security: "admin"
   path: /dashboard
+
+-
+  controller: main
+  action: install
+  method: GET
+  path: /installeur
+  param: []
+
+-
+  controller: admin
+  action: users
+  method: GET
+  path: /users
+  security: "admin"
+
+
+-
+  controller: admin
+  action: editUser
+  security: admin
+  method: GET
+  path: /edit/user
+  param: ["id"]
+
+-
+  controller: admin
+  action: editUser
+  security: admin
+  method: POST
+  path: /edit/user
+  param: ["id"]
+
+-
+  controller: user
+  action: delete
+  security: admin
+  method: GET
+  path: /delete/user
+  param: ["id"]
+
+-
+  controller: teacher
+  action: index
+  method: GET
+  path: /teacher/new
+
+
+
+-
+  controller: teacher
+  action: create
+  method: POST
+  path: /teacher/new
+  param: [ "cv", "motivation", "theme", "diplome" ]
+
+-
+  controller: admin
+  action: requestTeachers
+  method: GET
+  path: /teachers/allRequests
+  param: []
+
+-
+  controller: admin
+  action: download
+  method: GET
+  path: /download
+  param: ["id"]
+
+-
+  controller: admin
+  action: showRequestTeacher
+  method: GET
+  path: /show/requestTeacher
+  param: ["id"]
+
+-
+  controller: admin
+  action: validRequestTeacher
+  method: GET
+  path: /valid/requestTeacher
+  param: ["id"]
+
+
+-
+  controller: admin
+  action: refuseRequestTeacher
+  method: GET
+  path: /refuse/requestTeacher
+  param: ["id"]
 

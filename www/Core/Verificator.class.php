@@ -13,7 +13,16 @@ class Verificator
         $captcha = new Recaptcha();
         $errors = [];
 
-        if( count($config["inputs"]) !== count($data)){
+        //var_dump($config["inputs"]);
+        //var_dump($data);
+
+        // ajout du cas où il n'y a pas d'erreur 
+        if(is_null($data)){
+            $errors = [];
+            return $errors;
+        }
+
+        if(count($config["inputs"]) !== count($data)){
                 $errors[] = "Le nombre d'inputs ne correspond pas au nombre d'inputs envoyés";
 //             echo var_dump(array_keys($config["inputs"]));
 //             echo "<br>";
@@ -57,6 +66,8 @@ class Verificator
         return $errors;
     }
 
+    
+    
 
     public static function checkEmail($email): bool
     {

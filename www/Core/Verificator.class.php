@@ -21,12 +21,20 @@ class Verificator
             return $errors;
         }
 
-        if(count($config["inputs"]) !== count($data)){
+        if(count($config["inputs"]) !== count($inputsToVerify)){
                 $errors[] = "Le nombre d'inputs ne correspond pas au nombre d'inputs envoyés";
         }
 
         foreach ($config["inputs"] as $name=>$input)
         {
+
+            if(!empty($input["max"]) && strlen($data[$name]) > $input["max"]) {
+                $errors[]=$name ." est trop grand. Le maximum de caractères est ".$input["max"]."";
+            }
+
+            if(!empty($input["min"]) && strlen($data[$name]) < $input["min"]) {
+                $errors[]=$name ." est trop petitx. Le minimum de caractères est ".$input["min"]."";
+            }
 
             if(!empty($input["required"]) && empty($data[$name]) ){
                 $errors[]=$name ." ne peut pas être vide";
@@ -83,11 +91,11 @@ class Verificator
             return false;
         }
 
-        if($fileSize > (5*MB))
+        if(($fileSize > (5*MB))  || $fileSize == 0)
         {
-            echo $fileSize;
             return false;
         }
+    
         return true;
     }
 

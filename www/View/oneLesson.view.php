@@ -27,13 +27,16 @@
             <p class="mb-0"> Author: <?php echo $lesson->user()->fullname(); ?></p>
             <p>Date: <?php echo $lesson->getCreatedAt(); ?></p>
         </div>
-        <div class="flex row">
-            <?php if (isset($form)) : ?>
-                <?php echo $form ?>
-
-            <?php endif; ?>
-        </div>
-        <?php include "./View/Partial/showComments.partial.php"; ?>
+    
+        <?php if($settings->getBy('id', 'allow_comment')->getValue() === "true"): ?>
+                <div class="flex row">
+                <?php if (isset($form)) : ?>
+                    <?php echo $form ?>
+    
+                <?php endif; ?>
+            </div>
+            <?php include "./View/Partial/showComments.partial.php";
+        endif; ?>
 
         <div class="flex">
             <a href="/show/course?id=<?php echo $lesson->course()->getId() ?>" class="mt-2">
@@ -42,7 +45,7 @@
             <a href="/createLesson?course_id=<?php echo $lesson->course()->getId() ?>" class="mt-2 ml-2">
                 <button>Create a new lesson</button>
             </a>
-            <?php if($lesson->getUser() === \App\Model\User::getUserConnected()->getId()): ?>
+            <?php if($lesson->getUser() === \App\Model\User::getUserConnected()->getId() || \App\Model\User::getUserConnected()->isAdmin()): ?>
                 <a href="/delete/lesson?lesson_id=<?php echo $lesson->getId() ?>" class="mt-2 ml-a">
                     <button class="error">Remove lesson</button>
                 </a>

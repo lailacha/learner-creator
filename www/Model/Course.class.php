@@ -302,7 +302,7 @@ class Course extends Sql
         return [
             "config" => [
                 "method" => "POST",
-                "action" => "/save/course?id=" . $this->getId(),
+                "action" => "/update/course?id=" . $this->getId(),
                 "id" => "formEditCourse",
                 "enctype" => "multipart/form-data",
                 "class" => "form course",
@@ -315,6 +315,7 @@ class Course extends Sql
                     "id" => "courseName",
                     "class" => "formCreateCourse",
                     "value" => $this->getName(),
+                    "max" => "255",
                     "required" => true,
                     "error" => "Votre nom doit faire entre 15 et 20 caractères"
                 ],
@@ -323,6 +324,7 @@ class Course extends Sql
                     "type" => "textarea",
                     "id" => "courseName",
                     "class" => "editable",
+                    "max" => "500",
                     "required" => true,
                     "value" => $this->getDescription(),
                     "error" => "Votre nom doit faire entre 15 et 20 caractères"

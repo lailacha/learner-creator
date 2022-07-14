@@ -23,7 +23,7 @@ class CourseCategory extends Sql
     /**
      * @return int
      */
-    public function getId(): ?  int
+    public function getId(): ?int
     {
         return $this->id;
     }

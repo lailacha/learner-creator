@@ -20,7 +20,7 @@
 
             <ul class="menu-links">
                 <li class="nav-link">
-                    <a href="#">
+                    <a href="/homePage">
                         <i class='bx bx-home-alt icon'></i>
                         <span class="text nav-text">Dashboard</span>
                     </a>
@@ -35,7 +35,7 @@
                 </li>
 
                 <li class="nav-link">
-                    <a href="/createCourse">
+                    <a href="/courses">
 
                         <i class='bx bxs-graduation icon'></i>
                         <span class="text nav-text">My courses</span>

@@ -9,11 +9,11 @@ use App\Model\User;
 use App\Core\FormBuilder;
 use App\Core\Verificator;
 use App\Core\View;
+use App\Model\CourseCategory;
 use App\Service\File;
 
 
-class Course extends BaseController
-{
+class Course extends BaseController {
 
     public function index()
     {
@@ -71,6 +71,24 @@ class Course extends BaseController
         $view->assign("courses", $courses);
     }
 
+    public function showbyCategory()
+    {
+        $courseManager = new CourseModel();
+        $courses = $courseManager->getBy('category', $this->request->get("category_id"));
+
+        //$categoryManagerApp\Model\CourseCategory();
+
+        if(!$courses)
+        {
+            $this->route->goBack();
+            $this->session->addFlashMessage("error", "Il n'y a pas de cours dans cette catégorie");
+        }
+
+        $view = new View("course/showByCategorie");
+        $view->assign("course", $courses);
+        $view->assign("categorie", $categorie);
+    }
+
     public function delete()
     {
         $courseManager = new CourseModel();
@@ -125,7 +143,7 @@ class Course extends BaseController
                 }
 
                 $course->save();
-                //$this->route->redirect("/show/course?id=".$course->getId(), "index");
+                $this->route->redirect("/show/course?id=".$course->getId(), "index");
                 $this->session->addFlashMessage("success", "Votre cours a bien été modifié");
 
 
@@ -164,7 +182,8 @@ class Course extends BaseController
         $verification = Verificator::checkForm($courseManager->getCourseForm(), $this->request);
         if($verification){
             $this->session->addFlashMessage("error", $verification[0]);
-            $this->route->redirect("/createCourse");
+            $this->route->goBack();
+            return;
         }
 
         try {
@@ -174,7 +193,7 @@ class Course extends BaseController
                 $file = $file->upload( "thumbnails", 1);
                 $courseManager->setCover($file->getLastInsertId());
              }
-
+  
             $courseManager->setName($this->request->get("name"));
             $courseManager->setDescription($this->request->get("description"));
             $courseManager->setCategory($this->request->get("category"));
@@ -182,7 +201,7 @@ class Course extends BaseController
             $courseManager->save();
             $courseName = $courseManager->getName();
         } catch (\Exception $e) {
-            $this->session->addFlashMessage("error", "500 Internal Server Error");
+            $this->session->addFlashMessage("error", $e->getMessage());
             $this->route->goBack();
             return;
         }
@@ -197,7 +216,7 @@ class Course extends BaseController
     {
         $courseManager = new CourseModel();
         $courses = $courseManager->getAllRequests();
-        $view = new View("showCoursesRequests", "back");
+        $view = new View("courses/showCoursesRequests", "back");
         return $view->assign("courses", $courses);
     }
 

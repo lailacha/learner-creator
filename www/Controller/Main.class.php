@@ -6,8 +6,28 @@ use App\Core\View;
 use App\Controller\BaseController;
 use App\Core\Session;
 use App\Model\User as UserModel;
+use App\Model\LessonProgress;
+use App\Model\Lesson;
+
+
 
 class Main extends BaseController{
+
+
+
+    public function dashboard(){
+        $user = UserModel::getUserConnected();
+
+        if($user->getRoleId() === 3)
+        {
+            $lessonProgressManager = new LessonProgress();
+            $lessonManager = new Lesson();
+            $lastLessonProgress = $lessonProgressManager->getLastLessons();
+    
+            $view = new View("dashboardLearner");
+            $view->assign("courses", $lastLessonProgress);
+        }
+    }
 
     public function home()
     {

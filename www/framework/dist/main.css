@@ -458,7 +458,6 @@ input[type=checkbox] {
   border: 1px solid #CCC;
   height: 34px;
 }
-
 .form input {
   margin-bottom: 1rem;
 }
@@ -4462,17 +4461,6 @@ body {
   padding: 20px;
   background-color: #1a365d;
 }
-.vitrine #formContent {
-  border-radius: 10px 10px 10px 10px;
-  background: #fff;
-  padding: 30px;
-  width: 90%;
-  max-width: 450px;
-  position: relative;
-  padding: 0px;
-  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
-  text-align: center;
-}
 .vitrine #formFooter {
   background-color: #f6f6f6;
   border-top: 1px solid #dce8f1;
@@ -4626,7 +4614,6 @@ body {
 .vitrine .underlineHover:hover:after {
   width: 100%;
 }
-<<<<<<< HEAD
 .vitrine label[for=email], .vitrine [for=password], .vitrine [for=firstname], .vitrine [for=lastname], .vitrine [for=passwordConfirm] {
   display: none;
 }
@@ -4817,6 +4804,3 @@ body {
 .vitrine .underlineHover:hover:after {
   width: 100%;
 }
-=======
-
->>>>>>>  Ajout de la fonctionnalité qui récupère tous les cours dans les préférences de l'utilisateur

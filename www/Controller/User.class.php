@@ -30,8 +30,10 @@ class User extends BaseController
 
     public function login()
     {
+
         $user = new UserModel();
         $session = Session::getInstance();
+
         $verification = Verificator::checkForm($user->getLoginForm(), $this->request);
 
         if (!$verification) {
@@ -96,7 +98,6 @@ class User extends BaseController
         
         $user = new UserModel();
         $session = Session::getInstance();
-
         if (!empty($_POST)) {
 
             $verification = Verificator::checkForm($user->getRegisterForm(), $this->request);
@@ -366,6 +367,7 @@ class User extends BaseController
        
     }
     public function deleteCatPref() {
+        $sessoion = Session::getInstance();
         $learner = new Learner();
         $user =  UserModel::getUserConnected()->getId();
         $course = $learner->setCategory($this->request->get("category")); 
@@ -373,7 +375,7 @@ class User extends BaseController
         $learner->setUser($user);
         echo $learner->deleteCatPref($user,$course);
         header('Location: /edit/profile');
-        echo $this->session->addFlashMessage("success", "Vous avez supprimé votre préférence pour la catégorie");
+        $session->addFlashMessage("success", "Vous avez supprimé votre préférence pour la catégorie");
     }
         
        

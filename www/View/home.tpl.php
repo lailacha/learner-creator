@@ -35,9 +35,13 @@
         </nav>
     </div>
 </header>
-            <?php include "./View/Partial/error-message.partial.php"; ?>
+<div class="wrapper fadeInDown">
 
-            <?php include $this->view . ".View.php"; ?>
+    <?php include "Partial/error-message.partial.php"; ?>
+
+    <?php include $this->view . ".view.php"; ?>
+</div>
+
 
 
 

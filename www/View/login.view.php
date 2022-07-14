@@ -1,4 +1,3 @@
-<div class="wrapper fadeInDown">
     <div id="formContent">
         <h2 class="active"> Sign In </h2>
 
@@ -16,4 +15,3 @@
         </div>
 
     </div>
-</div>

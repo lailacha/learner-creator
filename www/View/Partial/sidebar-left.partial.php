@@ -1,11 +1,11 @@
 <nav class="sidebar-left close">
     <header>
-        <div class="image-text">
+             <div class="image-text">
                 <span class="image">
-                    <img src="../../framework/assets/images/logo-learner.png"
+                    <img src="<?php echo $settings->getLogoFile(); ?> "
                          alt="">
                 </span>
-        </div>
+            </div>
 
         <i class='bx bx-chevron-right toggle'></i>
     </header>
@@ -20,7 +20,7 @@
 
             <ul class="menu-links">
                 <li class="nav-link">
-                    <a href="#">
+                    <a href="/homePage">
                         <i class='bx bx-home-alt icon'></i>
                         <span class="text nav-text">Dashboard</span>
                     </a>
@@ -35,7 +35,7 @@
                 </li>
 
                 <li class="nav-link">
-                    <a href="/createCourse">
+                    <a href="/courses">
 
                         <i class='bx bxs-graduation icon'></i>
                         <span class="text nav-text">My courses</span>

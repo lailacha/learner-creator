@@ -21,8 +21,8 @@
             <td><?= $user->getStatus() === 1 ? "Valid" : "Non valid"?></td>
 
             <td class="action">
-                <a class="button" href="/delete/user?id=<?= $user->getId() ?>">Delete</a>
-                <a class="button" href="/edit/user?id=<?= $user->getId() ?>">Editer</a>
+                <a class="button" href="/delete/user?user_id=<?= $user->getId() ?>">Delete</a>
+                <a class="button" href="/edit/user?user_id=<?= $user->getId() ?>">Editer</a>
             </td>
         </tr>
     <?php endforeach; ?>

@@ -9,7 +9,7 @@ font-family: $font1;
 
 h1{
   font-family: $font3;
-  font-size: rem(24px);
+  font-size: var(--big-title-size);
 }
 
 h2{

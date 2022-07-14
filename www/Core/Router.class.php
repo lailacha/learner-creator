@@ -5,6 +5,9 @@ namespace App\Core;
 
 use App\Core\HttpRequest;
 use App\Core\Route;
+use App\Exception\MultipleRouteFoundException;
+use App\Exception\NoRouteFoundException;
+
 
 
 class Router
@@ -24,21 +27,16 @@ class Router
 
     }
 
-    public function findRoute(HttpRequest $httpRequest)
+    public function findRoute(HttpRequest $httpRequest): \App\Core\Route
     {
-
-
-        $routeFound = array_filter($this->listRoutes, function ($route) use ($httpRequest) {
+        $routeFound = array_filter($this->listRoutes,function($route) use ($httpRequest){
             $method = $route["method"] ?? "GET";
 
-            if (!Security::checkRoute($route)) {
-                die("Not Authorized");
-            }
-
-            Security::checkAuth($route);
-
-            return preg_match("#^" . $route["path"] . "$#", $httpRequest->getUrl()) && $method === $httpRequest->getMethod();
+             return preg_match("#^" . $route["path"] . "$#", $httpRequest->getUrl()) && $method === $httpRequest->getMethod();
         });
+
+
+
         $numberRoute = count($routeFound);
         if ($numberRoute > 1) {
             throw new MultipleRouteFoundException();
@@ -46,6 +44,13 @@ class Router
             throw new NoRouteFoundException();
         } else {
             return new Route(array_shift($routeFound));
+        }
+
+        Security::checkAuth($routeFound);
+
+        if (!Security::checkRoute(array_values($routeFound)[0])) {
+
+            die("Not Authorized");
         }
 
     }

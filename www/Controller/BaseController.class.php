@@ -30,9 +30,13 @@ class BaseController
         return $this->session;
     }
 
-    public function abort($code = 404) : void
+    public function abort(?int $code = 404, ?string $message = null) : void
     {
         http_response_code($code);
+        if($message !== null) {
+            $this->session->addFlashMessage("error", $message);
+        }
+
         $view = new View($code, "front");
     }
 

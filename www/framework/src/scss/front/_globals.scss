@@ -204,7 +204,7 @@ $spaceRange: 5;
 
 h1 {
   font-family: $font2;
-  font-size: rem(24);
+  font-size: var(--big-title-size);
 }
 
 h2 {

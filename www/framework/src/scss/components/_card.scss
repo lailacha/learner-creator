@@ -1,0 +1,20 @@
+.card{
+  height: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius:  1rem;
+  color: $white;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+
+  &:hover{
+    transform: translateY(-5px) scale(1.005) translateZ(0);
+  }
+
+  svg{
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+}

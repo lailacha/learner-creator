@@ -1,18 +1,22 @@
 
-<div class="col-md-12 flex course">
+<section class="col-md-12 flex course">
     <div class="course-wrapper col-md-8">
         <div class="bg-primary p-1 breadcrumb">
             <h3 class="white m-0"><?php echo $lesson->course()->getName()." > ".$lesson->chapter()->getName()." > ".$lesson->getTitle(); ?> </h3>
         </div>
-        <h1><?php echo $lesson->getTitle(); ?>
+        <div class="flex jc-sb ai-center jc-center">
+        <h1 class="flex"><?php echo $lesson->getTitle(); ?>
             <?php if($lesson->getUser() === \App\Model\User::getUserConnected()->getId()): ?>
                 <a href="/edit/lesson?lesson_id=<?php echo $lesson->getId(); ?>"><i class="fas fa-edit"></i></a>
             <?php endif; ?>
+
         </h1>
+        <input type="checkbox" name="progress" id="progress" <?php echo $progressState ? "checked" : "unchecked" ?>/>
+        </div>
         <?php if(isset($video)): ?>
             <video class="w-100" preload="auto" autoplay="" loop="" muted="" controls>
                 <source src="<?php echo $video  ?>" type="video/mp4">
-                Your browser does not support the video tag. <!-- Text to be shown in case browser doesnt support html5 -->
+                Your browser does not support the video tag.
             </video>
         <?php endif; ?>
         <div class="text-container mt-2">
@@ -23,13 +27,16 @@
             <p class="mb-0"> Author: <?php echo $lesson->user()->fullname(); ?></p>
             <p>Date: <?php echo $lesson->getCreatedAt(); ?></p>
         </div>
-        <div class="flex row">
-            <?php if (isset($form)) : ?>
-                <?php echo $form ?>
-
-            <?php endif; ?>
-        </div>
-        <?php include "./View/Partial/showComments.partial.php"; ?>
+    
+        <?php if($settings->getBy('id', 'allow_comment')->getValue() === "true"): ?>
+                <div class="flex row">
+                <?php if (isset($form)) : ?>
+                    <?php echo $form ?>
+    
+                <?php endif; ?>
+            </div>
+            <?php include "./View/Partial/showComments.partial.php";
+        endif; ?>
 
         <div class="flex">
             <a href="/show/course?id=<?php echo $lesson->course()->getId() ?>" class="mt-2">
@@ -38,14 +45,12 @@
             <a href="/createLesson?course_id=<?php echo $lesson->course()->getId() ?>" class="mt-2 ml-2">
                 <button>Create a new lesson</button>
             </a>
-            <?php if($lesson->getUser() === \App\Model\User::getUserConnected()->getId()): ?>
+            <?php if($lesson->getUser() === \App\Model\User::getUserConnected()->getId() || \App\Model\User::getUserConnected()->isAdmin()): ?>
                 <a href="/delete/lesson?lesson_id=<?php echo $lesson->getId() ?>" class="mt-2 ml-a">
                     <button class="error">Remove lesson</button>
                 </a>
             <?php endif; ?>
         </div>
-
-
     </div>
     <div class="toggle-chapter col-md-2 flex jc-sb ai-center">
         <h3>Watchlist</h3>
@@ -85,8 +90,6 @@
                         </div>
                     </div>
                 </div>
-
-
             <?php endforeach; ?>
             <div class="flex column col-md-12 mt-2">
                 <a href="/create/chapter?course_id=<?php echo $lesson->course()->getId() ?>">
@@ -94,16 +97,27 @@
                         Add a chapter</button>
                 </a>
             </div>
-
         </div>
     </div>
-
-</div>
-
-
-
-
+</section>
 <script>
+
+    $('#progress').change(function() {
+        console.log('Progress') ;
+        $.ajax({
+            url: "/store/progress",
+            method: "POST",
+            data: {
+                lesson_id: <?php echo $lesson->getId() ?>,
+                user_id: <?php echo \App\Model\User::getUserConnected()->getId() ?>,
+                progress: $('#progress').is(':checked')
+            },
+            success: function(data) {
+                console.log(data);
+            }
+    })
+    });
+
     $('.toggle-description').hide();
     $('.toggle-chapter').hide();
 

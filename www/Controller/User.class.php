@@ -105,7 +105,7 @@ class User extends BaseController
                 //     return;
                 //     $session->addFlashMessage("error", "csrf not valid! ");
                 //     header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
-                // } 
+                // }
 
                 $isRegistred = $user->getBy("email", $_POST["email"]);
                 if (!$isRegistred) {
@@ -143,7 +143,6 @@ class User extends BaseController
     public function recoverPassword()
     {
         $user = new UserModel();
-        $form = $user->getForgetPswdForm();
         $receivePasswordManager = new ReceivePasswordModel();
         $receivePass = new ReceivePassword();
         $session = Session::getInstance();
@@ -167,7 +166,7 @@ class User extends BaseController
         }
 
         $view = new View("forgotPassword", "home");
-        $form = FormBuilder::render($form);
+        $form = FormBuilder::render($user->getForgetPswdForm());
         $view->assign("form", $form);
 
     }
@@ -209,20 +208,25 @@ class User extends BaseController
         if ($count === 1 && $result['status'] == 0 && $heureDifference < 48) {
 
             $view = new View("changePassword", "home");
+            $form = FormBuilder::render($user->getChangePswdForm());
+            $view->assign("form", $form);
 
             if (!empty($_POST)) {
-                // Plus tard faut utiliser Class verificator pour verifier le password
-                $receivePasswordManager = $receivePasswordManager->getBy('id', $result['id']);
-                $receivePasswordManager->setStatus(1);
-                $receivePasswordManager->save();
-                $user = $user->getBy('id', $idUser);
-                $user->setPassword($_POST['password']);
-                $user->save();
+                $this->request->setData($_POST);
+                $verification = Verificator::checkForm($user->getChangePswdForm(), $this->request);
+                if (!$verification) {
+                    $receivePasswordManager = $receivePasswordManager->getBy('id', $result['id']);
+                    $receivePasswordManager->setStatus(1);
+                    $receivePasswordManager->save();
+                    $user = $user->getBy('id', $idUser);
+                    $user->setPassword($_POST['password']);
+                    $user->save();
+                    $this->session->addFlashMessage("success", "Votre mot de passe a été modifié");
+                    $this->route->redirect("/login");
+                } else {
+                    $this->session->addFlashMessage("error", $verification[0]);
+                }
 
-            } else {
-
-                $form = FormBuilder::render($user->getChangePswdForm());
-                $view->assign("form", $form);
 
             }
 

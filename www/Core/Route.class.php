@@ -64,7 +64,7 @@ class Route
 
     public function run($httpRequest, $config)
     {
-        $controllerFile = "Controller/" . $this->controller . ".class.php";
+        $controllerFile = "Controller/" . ucfirst($this->controller) . ".class.php";
         if (!file_exists($controllerFile)) {
             die("Le fichier Controller n'existe pas");
         }

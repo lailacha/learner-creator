@@ -1,7 +1,5 @@
-<?php
-
-?>
-<table>
+<h2>Professor requests</h2>
+<table class=" dataTable display bg-white p-2" style="width:100%">
     <thead>
     <tr>
         <th>Nom complet</th>
@@ -16,7 +14,7 @@
     <?php foreach ($listRequestsTeacher as $item) : ?>
         <tr>
             <td><?= $item->getUser()->getFirstname()?> <?= $item->getUser()->getLastname() ?></td>
-            <td><?= $item->getTheme() ?></td>
+            <td><?=$item->getUser()->getEmail() ?></td>
             <td><?= $item->getTheme() ?></td>
             <td><?= $item->getStatut() === 1 ? "Valid" : ($item->getStatut() === 0 ? "Non Valid" : "Refusé") ?></td>
 

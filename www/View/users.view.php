@@ -1,7 +1,5 @@
-<?php
-
-?>
-<table>
+<h2>Users</h2>
+<table class=" dataTable display bg-white p-2" style="width:100%">
     <thead>
     <tr>
         <th>Nom Complet</th>

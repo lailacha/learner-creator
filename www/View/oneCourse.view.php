@@ -69,12 +69,15 @@
 
 
         <?php endforeach; ?>
+        <?php if($course->getUser() === (\App\Model\User::getUserConnected()->getId())  || \App\Model\User::getUserConnected()->isAdmin()): ?>
+
                 <div class="flex column col-md-12 mt-2">
                     <a href="/create/chapter?course_id=<?php echo $course->getId() ?>">
                     <button class="">
                         Add a chapter</button>
                     </a>
                 </div>
+        <?php endif; ?>
 
             </div>
             </div>

@@ -5,14 +5,7 @@ namespace App\Model;
 use App\Model\User;
 use App\Core\QueryBuilder;
 use App\Core\Sql;
-use App\Model\Learner as LearnerModel;
 use App\Model\CourseCategory;
-use App\Model\CourseChapter;
-use PDO;
-
-
-
-
 
 class Learner extends sql 
 {
@@ -165,12 +158,11 @@ public function deleteCatPref($user,$course){
     {
         $categories = new CourseCategory();
         
-    return ["config" => ["method" => "POST", "action" => "/save/catpref", "submit" => "Ajouter une catégorie préférée"],
+    return ["config" => ["method" => "POST", "action" => "/save/catpref", "class" => "form" ,"submit" => "Ajouter une catégorie préférée"],
             "inputs" => [ 
                 "category" => [
                     "type" => "select",
                     "id" => "categorySelect",
-                    "class" => "formRegister",
                     "options" => [
                         "data" =>
                             $categories->getCategories(),

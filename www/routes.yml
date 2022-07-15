@@ -141,6 +141,7 @@
 -
   path: /edit/course
   controller: course
+  security: ["professor", "admin"]
   action: edit
   method: GET
   param: ["id" ]

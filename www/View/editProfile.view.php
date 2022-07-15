@@ -21,11 +21,16 @@
         <p><?php echo \App\Model\User::getUserConnected()->getRole() ?></p>
     </div>
 
+    <?php if($user->getRoleId() == 3): ?>
+
     <a href="/teacher/new" class="btn-secondary">Faire une demande pour devenir professeur chez nous</a>
+
+    <?php endif; ?>
 </div>
     
 </div>
 <div class="col-md-10">
+    <h2>Mes préférences</h2>
     <?php if (isset($formCat)) : ?>
         <?php echo $formCat ?>
 

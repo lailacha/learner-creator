@@ -166,7 +166,7 @@ class RequestTeacher extends Sql
                 "method" => "POST",
                 "action" => "",
                 "id" => "",
-                "class" => "",
+                "class" => "form",
                 "enctype" => "multipart/form-data",
                 "submit" => "Valider"
             ],
@@ -176,7 +176,7 @@ class RequestTeacher extends Sql
                     "value" => "",
                     "type" => "textarea",
                     "id" => "motivationInput",
-                    "class" => "formRegister",
+                    "class" => " editable",
                     "required" => true,
                 ],
                 "theme" => [

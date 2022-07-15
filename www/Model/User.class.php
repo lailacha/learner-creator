@@ -365,9 +365,9 @@ class User extends Sql
                 "lastname" => [
                     "type" => "text",
                     "placeholder" => "Votre nom de famille ...",
-
                     "id" => "testRegister",
-                    "value" => "testRegister",
+                    "min" => 2,
+                    "max" => 100,
                     "class" => "formRegister",
                     "error" => " Votre nom doit faire entre 2 et 100 caractères",
                 ],

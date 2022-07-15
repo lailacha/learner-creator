@@ -5,8 +5,8 @@
         <input type="search" />
 
     </div>
-    <button onclick="location.href='/categories';" class="col-md-3 bg-primary rounded-25  ">
-            <h2 class="white">Search by category</h2>
+    <button onclick="location.href='/categories';" class="col-md-3  rounded-25  ">
+            Search by category
         </button>
     <section class="flex row search-results">
         <!--        <?php /*foreach ($courses as $course) : */ ?>

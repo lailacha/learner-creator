@@ -52,7 +52,7 @@ class Verificator
                 $errors[]= "Votre fichier n'est pas au bon format (jpeg, jpg, svg, png) et doit être > 1000.";
             }
 
-            if($input["type"]=="password" &&  !self::checkPwd($data[$name]) && empty($input["confirm"])) {
+            if ($input["type"] == "password" && !self::checkPwd($data[$name]) && empty($input["confirm"]) && $input["required"]) {
                 $errors[]=$input["error"];
             }
 

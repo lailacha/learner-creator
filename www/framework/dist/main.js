@@ -4057,6 +4057,62 @@ $(document).ready(function () {
   }
 });
 $(document).ready(function () {
+  var inputSubmit = $("#formRegister > input[type=submit]");
+  var checkbox = $('#checkPassword');
+  var inputModifyPassword = $('.modifyPassword');
+  var labels = inputModifyPassword.prev();
+  var inputPassword = $('#password');
+  var span = "<span class='' id='span'></span>";
+  inputModifyPassword.hide();
+  labels.hide();
+  $(inputSubmit).prop('disabled', true);
+  $(span).insertAfter(inputPassword);
+  inputPassword.on('keyup', function () {
+    var span = $('#span');
+    var password = inputPassword.val();
+
+    if (password.length > 0) {
+      $.ajax({
+        method: "POST",
+        url: "/verifyPassword",
+        data: {
+          password: password
+        }
+      }).done(function (data) {
+        if (data === "1") {
+          if ($('.spanSuccess').length === 0) {
+            span.removeClass('spanError').addClass('spanSuccess').css('color', 'green').text('Password correct');
+            $(inputSubmit).prop('disabled', false);
+          }
+        } else if (data === "0") {
+          if ($('.spanError').length === 0) {
+            span.removeClass('spanSuccess').addClass('spanError').css('color', 'red').text('Password incorrect');
+            $(inputSubmit).prop('disabled', true);
+          }
+        }
+      });
+    }
+  });
+  $(inputSubmit).click(function (e) {
+    if (checkbox.is(':checked') && inputModifyPassword[0].value === inputModifyPassword[1].value) {
+      if (inputModifyPassword[1].value.match(/[0-9]/g) && inputModifyPassword[1].value.match(/[A-Z]/g) && inputModifyPassword[1].value.match(/[a-z]/g) && inputModifyPassword[1].value.length >= 8) {} else {
+        e.preventDefault();
+        alert("Votre mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre");
+      }
+    } else if (checkbox.is(':checked')) {
+      e.preventDefault();
+      alert("Veuillez vérifier votre mot de passe ");
+    }
+  });
+  checkbox.click(function () {
+    if (checkbox.is(':checked')) {
+      inputModifyPassword.css('display', 'block');
+    } else {
+      $(inputSubmit).prop('disabled', false);
+      labels.hide();
+      inputModifyPassword.css('display', 'none');
+    }
+  });
   $(".search-bar input").on("keyup", function (e) {
     $.ajax({
       url: "/search/course?course=" + $(this).val(),

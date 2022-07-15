@@ -388,7 +388,7 @@
   action: saveProfile
   method: POST
   path: /save/profile
-  param: ["firstname", "lastname", "avatar"]
+  param: ["firstname", "lastname", "avatar", "password"]
 
 -
   controller: GeneralSettings
@@ -530,4 +530,11 @@
   action: index
   method: GET
   path: /add/
-  
+
+
+-
+  controller: user
+  action: verifyPassword
+  method: POST
+  path: /verifyPassword
+  param: ["password"]

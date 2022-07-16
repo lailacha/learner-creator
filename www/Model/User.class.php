@@ -267,6 +267,7 @@ class User extends Sql
         }
         return false;
     }
+    
 
 
     public function getEditProfileForm()

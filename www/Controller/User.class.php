@@ -87,6 +87,8 @@ class User extends BaseController
 
         session_destroy();
         echo "Se déconnecter";
+        $this->session->addFlashMessage("success", "Vous êtes maintenant déconnecté");
+        header('Location: /login');
     }
 
 
@@ -120,6 +122,9 @@ class User extends BaseController
                         $user->setPassword(htmlspecialchars($_POST["password"]));
 
                         $user->generateToken((Helpers::createToken()));
+                        $user->setAvatar(194);
+
+                        
 
                         $user->save();
                         $this->sendRegisterMail($user);
@@ -408,7 +413,8 @@ class User extends BaseController
                         $this->route->redirect("/edit/profile");
                         return;
                     }
-                    $user->setAvatar($file->getLastInsertId());
+                     $user->setAvatar($file->getLastInsertId());
+                    
                 }
 
                 $user->save();

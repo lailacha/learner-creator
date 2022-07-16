@@ -323,6 +323,7 @@ class User extends Sql
                     "label" => "Saisissez votre mot de passe",
                     "name" => "modifyPassword",
                     "id" => "checkPassword",
+                    "required" => false,
                     "class" => "formRegister ",
                     "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
                 ],

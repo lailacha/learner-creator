@@ -133,7 +133,7 @@ class User extends BaseController
         }
         // echo var_dump($_SESSION['csrf_token']);
 
-        $view = new View("Register", "home");
+        $view = new View("register", "home");
         $form = FormBuilder::render($user->getRegisterForm());
         $view->assign("form", $form);
 
@@ -181,7 +181,7 @@ class User extends BaseController
         $receivePasswordManager = new ReceivePasswordModel();
 
         $token = $_GET['token'] ?? null;
-        $email = $_GET['email'] ?? null;
+        $email = $_GET['mail'] ?? null;
         $idUser = $_GET['id'] ?? null;
 
 
@@ -195,6 +195,7 @@ class User extends BaseController
             ]);
 
         $result = $query->fetch();
+
 
         $count = (clone $query)->count();
 
@@ -247,7 +248,7 @@ class User extends BaseController
      */
     public function sendRegisterMail(UserModel $user)
     {
-        $html = '<a href="http://localhost/verifyAccount?token=' . $user->getToken() . '&email=' . $user->getEmail() . '"><h2>Click here to validate your account!</h2></a>';
+        $html = '<a href="http://learner-creator.online/verifyAccount?token=' . $user->getToken() . '&email=' . $user->getEmail() . '"><h2>Click here to validate your account!</h2></a>';
 
         $confirmMail = new Mail();
         $confirmMail->setSubject("Last step to validate your account...");

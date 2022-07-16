@@ -68,6 +68,14 @@ class HttpRequest
         return $this->data;
     }
 
+    /**
+     * @param mixed $data
+     */
+    public function setData($data): void
+    {
+        $this->data = $data;
+    }
+
 
     public function bindParam()
     {

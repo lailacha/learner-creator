@@ -93,6 +93,11 @@
 				</div>
         </section>
 </main>
-           
+<script>
+    const main = $('main');
+    console.log(main)
+    $(main).insertAfter('header')
+    $('.wrapper.fadeInDown').remove();
+</script>
 
        

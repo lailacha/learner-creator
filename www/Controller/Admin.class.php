@@ -60,7 +60,7 @@ class Admin extends BaseController
             die("user non trouvable");
         }
     }
-        
+
 
 
     public function requestTeachers(): void

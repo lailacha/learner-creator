@@ -308,7 +308,42 @@ class User extends Sql
                     "value" => $this->getLastname(),
                     "class" => "formRegister",
                     "error" => " Votre nom doit faire entre 2 et 100 caractères",
-                ],    
+                ],
+                "password" => [
+                    "type" => "password",
+                    "placeholder" => "Saisissez votre mot de passe",
+                    "id" => "password",
+                    "required" => true,
+                    "value" => "",
+                    "class" => "formRegister",
+                    "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
+                ],
+                "Modifier le mot de passe" => [
+                    "type" => "checkbox",
+                    "label" => "Saisissez votre mot de passe",
+                    "name" => "modifyPassword",
+                    "id" => "checkPassword",
+                    "class" => "formRegister ",
+                    "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
+                ],
+                "modifyPassword" => [
+                    "type" => "password",
+                    "placeholder" => "Saisissez votre mot de passe",
+                    "id" => "modifyPassword",
+                    "required" => false,
+                    "value" => "",
+                    "class" => "formRegister modifyPassword",
+                    "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
+                ],
+                "confirmModifyPassword" => [
+                    "type" => "password",
+                    "placeholder" => "Saisissez votre mot de passe",
+                    "id" => "validPassword",
+                    "required" => false,
+                    "value" => "",
+                    "class" => "formRegister modifyPassword",
+                    "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
+                ],
             ],
         ];
     }
@@ -319,9 +354,10 @@ class User extends Sql
             "config" => [
                 "method" => "POST",
                 "action" => "",
-                "id" => "formRegister",
+                "id" => "formLogin",
+                "class" => "formLogin",
                 "enctype" => "multipart/form-data",
-                "class" => "form register",
+//                "class" => "form register formLogin",
                 "submit" => "Sign in"
             ],
             "inputs" => [

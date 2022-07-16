@@ -12,7 +12,7 @@ class Recaptcha
     private $secretKey;
     private $publicKey;
 
-    public function __construct(string $publicKey = "6LdqSEAeAAAAAIrfjm8MfW03lxfTzmxiyVcWuSgy", string $secretKey = CAPTCHA_SECRET_KEY)
+    public function __construct(string $publicKey = CAPTCHA_PUBLIC_KEY, string $secretKey = CAPTCHA_SECRET_KEY)
     {
     $this->publicKey = $publicKey;
     $this->secretKey = $secretKey;

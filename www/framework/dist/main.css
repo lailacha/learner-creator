@@ -449,7 +449,7 @@ input[type=checkbox] {
   border-radius: 4px;
   min-height: 27px;
 }
-.form input[type=text] {
+.form input[type=text], .form input[type=password] {
   min-height: 1rem;
   padding: 0.5rem;
 }
@@ -4490,6 +4490,11 @@ body {
   text-decoration: none;
   color: #0d0d0d;
 }
+.vitrine .success {
+  color: #1a365d;
+  background-color: lightgray;
+  margin-bottom: 20px;
+}
 .vitrine input[type=button], .vitrine input[type=submit], .vitrine input[type=reset] {
   padding-top: 50px;
   background-color: #1a365d;
@@ -4646,6 +4651,11 @@ body {
   display: inline-block;
   margin: 40px 8px 10px 8px;
   color: #cccccc;
+}
+.vitrine .g-recaptcha {
+  margin: 5px;
+  display: flex;
+  justify-content: center;
 }
 .vitrine .wrapper {
   display: flex;

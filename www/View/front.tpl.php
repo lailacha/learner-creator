@@ -36,7 +36,7 @@
 
         <?php include "./View/Partial/error-message.partial.php"; ?>
 
-        <?php include $this->view . ".View.php"; ?>
+        <?php include $this->view . ".view.php"; ?>
 
     </div>
     <?php if (\App\Core\Session::getInstance()->get('user')){

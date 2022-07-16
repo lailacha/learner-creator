@@ -114,7 +114,7 @@ class FormBuilder
     private static function renderInput(string $name, array $input): string
     {
         $data = "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
-        $data .= " <input value='".($input["value"] ?? '')."'  type='".($input["type"] ?? 'text')."'  class='".($input["class"] ?? '')."'  id='".($input["id"] ?? '')."' placeholder='".($input["placeholder"] ?? '')."' ".($input["disabled"] ?? "")." name='".($name ?? "")."'./>";
+        $data .= " <input value='".($input["value"] ?? '')."'  type='".($input["type"] ?? 'text')."'  class='".($input["class"] ?? '')."'  id='".($input["id"] ?? '')."' placeholder='".($input["placeholder"] ?? '')."' ".(isset($input["disabled"]) ? "disabled" : "")." name='".($name ?? "")."'./>";
         return $data;
     }
 

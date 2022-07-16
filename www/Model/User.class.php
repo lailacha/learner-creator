@@ -309,15 +309,26 @@ class User extends Sql
                     "class" => "formRegister",
                     "error" => " Votre nom doit faire entre 2 et 100 caractères",
                 ],
+                "email" => [
+                    "type" => "email",
+                    "placeholder" => "Saisissez votre mot de passe",
+                    "id" => "",
+                    "value" => $this->getEmail(),
+                    "class" => "formRegister",
+                    "error" => "Votre mot de passe doit faidqsdsq",
+                    "required" => false,
+                    "disabled" => true,
+                ],
                 "password" => [
                     "type" => "password",
                     "placeholder" => "Saisissez votre mot de passe",
-                    "id" => "password",
+                    "id" => "passwordEditProfile",
                     "required" => true,
                     "value" => "",
                     "class" => "formRegister",
                     "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
                 ],
+
                 "Modifier le mot de passe" => [
                     "type" => "checkbox",
                     "label" => "Saisissez votre mot de passe",

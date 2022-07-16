@@ -21,7 +21,7 @@ $(document).ready(function () {
     const checkbox = $('#checkPassword');
     const inputModifyPassword = $('.modifyPassword');
     const labels = inputModifyPassword.prev();
-    const inputPassword = $('#password');
+    const inputPassword = $('#passwordEditProfile');
     const span = "<span class='' id='span'></span>"
 
     inputModifyPassword.hide();

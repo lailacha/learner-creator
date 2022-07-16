@@ -449,7 +449,7 @@ input[type=checkbox] {
   border-radius: 4px;
   min-height: 27px;
 }
-.form input[type=text], .form input[type=password] {
+.form input[type=text], .form input[type=password], .form input[type=email] {
   min-height: 1rem;
   padding: 0.5rem;
 }
@@ -2894,6 +2894,13 @@ body {
   align-items: center;
   flex-wrap: wrap;
 }
+.front .center {
+  display: flex;
+  justify-content: center;
+}
+.front #container_add_pref form {
+  margin: 10px 0;
+}
 .front #section4 h2 {
   font-size: 1.875rem;
   font-style: normal;
@@ -2939,6 +2946,48 @@ body {
   background-color: #860505;
   color: #FFF;
   border: #FFF solid 2px;
+}
+.front .btn-secondary {
+  font-size: 1rem;
+  text-decoration: none;
+  display: inline-block;
+  padding: 1em 2em;
+  color: #FFF;
+  text-transform: uppercase;
+  background: linear-gradient(96.16deg, #2F76C0 3.98%, #3BCDB3 72.64%);
+  border: 1px solid;
+  transition: background 0.3s;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: 500;
+}
+.front .btn-secondary:hover {
+  transition: color 0.3s;
+  color: #464646;
+  background: #FFF;
+  border: #3BCDB3 solid 1px;
+}
+.front .btn-secondary--small {
+  font-size: 0.75rem;
+  text-decoration: none;
+  display: inline-block;
+  padding: 0.5em 1em;
+  color: #FFF;
+  text-transform: uppercase;
+  background: linear-gradient(96.16deg, #2F76C0 3.98%, #3BCDB3 72.64%);
+  border: 1px solid;
+  transition: background 0.3s;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: 500;
+}
+.front .btn-secondary--small:hover {
+  transition: color 0.3s;
+  color: #464646;
+  background: #FFF;
+  border: #3BCDB3 solid 1px;
 }
 .front .breadcrumb {
   background-color: #2F7DC0;

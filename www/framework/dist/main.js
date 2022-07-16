@@ -4061,7 +4061,7 @@ $(document).ready(function () {
   var checkbox = $('#checkPassword');
   var inputModifyPassword = $('.modifyPassword');
   var labels = inputModifyPassword.prev();
-  var inputPassword = $('#password');
+  var inputPassword = $('#passwordEditProfile');
   var span = "<span class='' id='span'></span>";
   inputModifyPassword.hide();
   labels.hide();

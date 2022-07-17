@@ -2,8 +2,11 @@
     <header>
              <div class="image-text">
                 <span class="image">
-                    <img src="<?php echo $settings->getLogoFile(); ?> "
-                         alt="">
+                    <?php if ($settings->getLogoFile()) : ?>
+                        <img src="<?php echo $settings->getLogoFile() ?>" alt="logo">
+                    <?php else : ?>
+                    <img src="../../framework/assets/images/logo-learner.png" alt="logo">
+                    <?php endif; ?>
                 </span>
             </div>
 

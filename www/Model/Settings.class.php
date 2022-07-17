@@ -55,9 +55,17 @@ class Settings  extends Sql
     public function getLogoFile()
     {
         $fileManager = new FileModel();
+        $file = $fileManager->getBy('id', $this->getLogo());
 
-        return $fileManager->getBy('id', $this->getLogo())->getPath();
-    
+        if($file)
+        {
+            return $file->getPath();
+        }
+        else
+        {
+            return null;
+        }
+        
     }
 
 

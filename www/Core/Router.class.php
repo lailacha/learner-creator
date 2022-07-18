@@ -5,8 +5,10 @@ namespace App\Core;
 
 use App\Core\HttpRequest;
 use App\Core\Route;
+use App\Core\View;
 use App\Exception\MultipleRouteFoundException;
 use App\Exception\NoRouteFoundException;
+use App\Model\Course;
 
 
 
@@ -29,28 +31,53 @@ class Router
 
     public function findRoute(HttpRequest $httpRequest): \App\Core\Route
     {
-        $routeFound = array_filter($this->listRoutes,function($route) use ($httpRequest){
+
+        $courseManager = new Course();
+
+
+        $routeFound = array_filter($this->listRoutes,function($route) use ($httpRequest, $courseManager){
             $method = $route["method"] ?? "GET";
 
-             return preg_match("#^" . $route["path"] . "$#", $httpRequest->getUrl()) && $method === $httpRequest->getMethod();
+
+            if($method !== $httpRequest->getMethod())
+            {
+                return false;
+            }
+
+           if(preg_match("#^" . $route["path"] . "$#", $httpRequest->getUrl()))
+           {
+            return true;
+           }
+           else
+              {
+                    if(($route["path"]  == "/show/course" && $courseManager->getBySlug($httpRequest->getSlug())))
+                    {
+                        return true;
+                    }
+
+                    if(($route["path"]  == "/show/lesson" && $courseManager->getBySlug($httpRequest->getSlug())))
+                    {
+                        return true;
+                    }
+
+            return false;
+            }
         });
 
-
-
         $numberRoute = count($routeFound);
-        if ($numberRoute > 1) {
-            throw new MultipleRouteFoundException();
-        } else if ($numberRoute == 0) {
-            throw new NoRouteFoundException();
+         if ($numberRoute == 0) {
+            $view = new View("404");
+            die(); ;
         } else {
-            return new Route(array_shift($routeFound));
-        }
 
-        Security::checkAuth($routeFound);
+            Security::checkAuth($routeFound);
 
         if (!Security::checkRoute(array_values($routeFound)[0])) {
 
-            die("Not Authorized");
+            $view = new View("404");
+            die(); ;
+        }
+            return new Route(array_shift($routeFound));
         }
 
     }

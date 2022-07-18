@@ -5,6 +5,8 @@ namespace App\Core;
 use PDO;
 use App\Core\Session;
 use App\Model\User as userManager;
+use App\Core\QueryBuilder;
+
 
  class Sql
 {
@@ -201,6 +203,25 @@ use App\Model\User as userManager;
         $sql = "DELETE FROM ".$this->table." WHERE id=:id";
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute( ["id"=>$this->getId()] );
+    }
+
+    public function getBySlug($slug) 
+    {
+
+        $sql = "SELECT * FROM {$this->table} WHERE slug LIKE :slug";
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->bindValue(":slug", "%$slug%");
+        $queryPrepared->execute();
+        //fetch an array to json
+        $res = $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
+         if($res)
+         {
+            return $res;
+         }
+         else
+            {
+                return null;
+            }
     }
 
     public function save(): void

@@ -3,10 +3,10 @@
 namespace App\Model;
 
 use App\Core\Sql;
+use App\Core\Helpers;
 use App\Core\QueryBuilder;
 use App\Model\CourseCategory;
 use App\Model\CourseChapter;
-use App\Model\File;
 use App\Model\Learner;
 use App\Model\File as FileModel;
 
@@ -16,6 +16,7 @@ class Course extends Sql
     protected $id = null;
     protected $name;
     protected string $description;
+    protected string $slug;
     protected $created_at;
     protected $deleted_at;
     protected int $category;
@@ -44,9 +45,27 @@ class Course extends Sql
         $this->category = $category;
     }
 
+    /**
+     * @return void
+     */
+    public function setSlug(): void
+    {
+        //verify if the slugify name is already used in the database
+       if($this->getBy('slug', Helpers::slugify($this->name)))
+         {
+              $this->slug = $this->slug . '-' . $this->id;
+         }
+            else
+            {
+                $this->slug = Helpers::slugify($this->name);
+            }
+    }
+
 
     public function save(): void
     {
+        //generate a slug
+        $this->setSlug();
         parent::save();
         if (is_null($this->getId())) {
             $this->notify();
@@ -255,6 +274,21 @@ class Course extends Sql
         $categoryManager = new CourseCategory();
         $category = $categoryManager->setId($this->getCategory());
         return $category->getName();
+    }
+
+
+    public function getBySlug($slug) 
+    {
+        $query = new QueryBuilder();
+         if($query->select('*')
+            ->from('course')
+            ->where('slug = :slug')
+            ->setParams([
+                'slug' => $slug
+            ])){
+                return $query->fetchByClass(Course::class);
+            }
+        return null;
     }
 
     public function getChapters()

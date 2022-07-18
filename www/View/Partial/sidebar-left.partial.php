@@ -69,7 +69,7 @@
                 </li>
 
                 <li class="nav-link">
-                    <a href="#">
+                    <a href="/edit/profile">
                         <i class='bx bx-user-circle icon'></i>
                         <span class="text nav-text">My account</span>
                     </a>

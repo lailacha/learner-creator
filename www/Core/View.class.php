@@ -14,7 +14,6 @@ class View{
     {
         $this->setView($view);
         $this->setTemplate($template);
-       // $this->settings = new Settings();
     }
 
     public function setView($view):void
@@ -47,8 +46,8 @@ class View{
     public function __destruct()
     {
             extract($this->data);
-        include "View/".$this->template.".tpl.php";
-        
+
+            $this->view != "404" ?  include "View/".$this->template.".tpl.php" : include "View/404.view.php";
     }
 
 }

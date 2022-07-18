@@ -1,7 +1,8 @@
 <?php foreach($comments as $comment): ?>
 <div class="comment ">
     <div class="user-info mr-3 col-md-4">
-        <img src="../../framework/assets/images/avatar.png">
+    <img class="w-50"src="<?php echo $comment->avatar ?>">
+
         <p><?php echo $comment->userFirstname." ".$comment->userLastname ?></p>
     </div>
    <?php echo $comment->getContent() ?>

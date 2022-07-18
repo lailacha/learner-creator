@@ -2,7 +2,7 @@
 <?php foreach($comments as $comment): ?>
     <div class="comment ">
         <div class="user-info mr-3 col-md-4">
-            <img src="../../framework/assets/images/avatar.png">
+            <img class="w-50" src="<?php echo $comment->comment()->user()->avatar()?>">
             <p><?php echo $comment->comment()->user()->fullname()?></p>
         </div>
         <p><?php echo $comment->comment()->getContent() ?></p>
@@ -11,7 +11,7 @@
     <div class="report_comments flex column w-100 jc-sb col-md-12 mb-3">
         <p>
             Lesson:
-        <a href="/show/lesson?lesson_id="></a>
+        <a href="/show/lesson?lesson_id=<?php echo $comment->comment()->lesson()->getId() ?>"><?php echo $comment->comment()->lesson()->getTitle() ?></a>
         </p>
 
         <div class=" flex bg-red white" >

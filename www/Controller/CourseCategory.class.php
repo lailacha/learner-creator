@@ -101,7 +101,7 @@ class CourseCategory extends BaseController
             }
             
             $category->save();
-            $this->route->redirect('c');
+            $this->route->redirect('/category');
             $this->session->addFlashMessage("success", "Category updated");
         }
     }

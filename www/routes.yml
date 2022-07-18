@@ -51,7 +51,7 @@
   action: searchCourse
   method: GET
   param: ["course"]
-  security: ["teacher", "admin"]
+  security: ["teacher", "admin", "user"]
 
 -
   path: /searchCourses
@@ -59,7 +59,7 @@
   action: allCourses
   method: GET
   param: []
-  security: ["teacher", "admin"]
+  security: ["teacher", "admin", "user"]
 
 
 -

@@ -3,7 +3,6 @@
 namespace App\Core;
 
 
-
 class Error extends Decorator
 {
     /**

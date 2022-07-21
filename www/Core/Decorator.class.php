@@ -1,11 +1,6 @@
 <?php
 namespace App\Core;
 
-interface Component
-{
-    public function greeting(): string;
-}
-
 
 class Decorator implements Component
 {

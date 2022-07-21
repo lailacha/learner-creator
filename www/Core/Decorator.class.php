@@ -3,8 +3,9 @@ namespace App\Core;
 
 interface Component
 {
-    public function operation(): string;
+    public function greeting(): string;
 }
+
 
 class Decorator implements Component
 {

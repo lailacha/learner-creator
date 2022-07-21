@@ -26,7 +26,9 @@ class Main extends BaseController
         $simple = new InstalleurGreeting();
         $messageAcceuil = $this->message($simple);
 
+        /* Décoration du message de base si il y'a une erreur, pourais surcharger la c  */
         $messageAcceuilError = new Error($simple);
+
 
 
 
@@ -124,7 +126,7 @@ class Main extends BaseController
                 echo("********************************");
                 echo("<br>");
                 echo("Bravo L'instalation est faite");
-                //$user->initdb();
+                $user->initdb();
             }
         }
     }

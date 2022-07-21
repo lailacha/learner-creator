@@ -1,1 +1,0 @@
-fichier temoins pour certifier de l'installation

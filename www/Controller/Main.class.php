@@ -42,7 +42,7 @@ class Main extends BaseController
         if (file_exists($filename)) {
             $view = new View("home", "home");
             //$session->addFlashMessage("success", "Le fichier s'est bien installé.");
-            $session->addFlashMessage($messageAcceuil);
+            $session->addFlashMessage("success", $messageAcceuil);
         } else {
             $view = new View("installeur", "back");
             //$session->addFlashMessage("success", "Le fichier $filename n'existe pas.");

@@ -75,7 +75,7 @@ abstract class Sql
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute();
 
-        /* $esgi_commentaire_lesson=
+        $esgi_commentaire_lesson=
         "
         CREATE TABLE `esgi_commentaire_lesson` (
           `id` int NOT NULL,
@@ -107,7 +107,7 @@ abstract class Sql
         $queryPrepared = $this->pdo->prepare($insert);
         $queryPrepared->execute();
         
- */    }
+    }
 
     /**
      * @return array

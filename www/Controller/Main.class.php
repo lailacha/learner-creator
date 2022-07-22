@@ -6,12 +6,32 @@ use App\Core\View;
 use App\Controller\BaseController;
 use App\Core\Session;
 use App\Model\User as UserModel;
+use App\Core\Decorator;
+use App\Core\InstalleurGreeting;
+use App\Core\Error;
 
 class Main extends BaseController
 {
+    public function message(InstalleurGreeting $component): string
+    {
+
+    return $component->greeting();
+
+    }
+    
 
     public function home()
     {
+        /* Resultat simple */
+        $simple = new InstalleurGreeting();
+        $messageAcceuil = $this->message($simple);
+
+        /* Décoration du message de base si il y'a une erreur, pourais surcharger la c  */
+        $messageAcceuilError = new Error($simple);
+
+
+
+
         $session = new Session();
         $user = new UserModel();
 
@@ -21,10 +41,12 @@ class Main extends BaseController
 
         if (file_exists($filename)) {
             $view = new View("home", "home");
-            $session->addFlashMessage("success", "Le fichier s'est bien installé.");
+            //$session->addFlashMessage("success", "Le fichier s'est bien installé.");
+            $session->addFlashMessage("success", $messageAcceuil);
         } else {
             $view = new View("installeur", "back");
-            $session->addFlashMessage("success", "Le fichier $filename n'existe pas.");
+            //$session->addFlashMessage("success", "Le fichier $filename n'existe pas.");
+            $session->addFlashMessage("success",$messageAcceuilError);
 
         }
     }
@@ -104,9 +126,10 @@ class Main extends BaseController
                 echo("********************************");
                 echo("<br>");
                 echo("Bravo L'instalation est faite");
-                //$user->initdb();
+                $user->initdb();
             }
         }
     }
 
 }
+

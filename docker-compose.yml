@@ -37,5 +37,4 @@ services:
     environment:
         - PMA_ARBITRARY=1
 
-      
-      
+

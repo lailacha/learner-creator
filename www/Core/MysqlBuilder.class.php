@@ -3,7 +3,6 @@
 
 namespace App\Core;
 
-use App\Connexion;
 use App\Interface\QueryBuilder as QueryBuilder;
 use PDO;
 
@@ -17,22 +16,27 @@ class MysqlBuilder implements QueryBuilder
     public function __construct()
     {
         $this->pdo = Connexion::getInstance();
+        $this->query = new \stdClass();
+        $this->query->fields = ["*"];
+        $this->query->params = [];
+        $this->query->where = [];
+        $this->query->order = [];
     }
 
     public function select(string ...$fields): QueryBuilder
     {
-        if ($this->fields === ["*"]) {
-            $this->fields = $fields;
+        if ($this->query->fields === ["*"]) {
+            $this->query->fields = $fields;
         } else {
-            $this->fields = array_merge($this->fields, $fields);
+            $this->query->fields = array_merge($this->fields, $fields);
         }
-        $this->query->fields = $this->fields;
         return $this;
     }
 
     public function from(string $table, string $alias = null): QueryBuilder
     {
         $this->query->from = $alias === null ? $table : $table . " " . $alias;
+
         return $this;
     }
 
@@ -62,7 +66,13 @@ class MysqlBuilder implements QueryBuilder
 
     public function orderBy(string $key, string $direction): QueryBuilder
     {
-        // TODO: Implement orderBy() method.
+        $direction = strtoupper($direction);
+        if (!in_array($direction, ['ASC', 'DESC'])) {
+            $this->query->order[] = $key;
+        } else {
+            $this->query->order[] = $key . " " . $direction;
+        }
+        return $this;
     }
 
     public function innerJoin(string $table, string $condition): QueryBuilder
@@ -73,16 +83,18 @@ class MysqlBuilder implements QueryBuilder
 
     public function toSql(): string
     {
+
+
         $fields = implode(", ", $this->query->fields);
         $sql = "SELECT " . $fields . " FROM " . $this->query->from;
-        if ($this->query->where) {
+        if (!empty($this->query->where)) {
             $where = implode(" AND ", $this->query->where);
             $sql .= " WHERE " . $where;
         }
         if (!empty($this->query->order)) {
             $sql .= " ORDER BY " . implode(', ', $this->query->order);
         }
-        if ($this->query->limit) {
+        if (!empty($this->query->limit)) {
             $sql .= " LIMIT " . $this->query->limit;
         }
         return $sql;

@@ -4,7 +4,6 @@
 @import "globals";
 @import "components/form";
 @import "components/course-list";
-@import "components/button";
 @import "components/grid";
 @import "components/flash-message";
 
@@ -14,13 +13,12 @@ body{
 
 .back {
   @import "back/main";
-
 }
 
 .front {
   @import "front/main";
 
 }
-
-
-
+.vitrine{
+  @import "vitrine";
+}

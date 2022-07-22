@@ -4,7 +4,7 @@ services:
     build: site
     container_name: apache
     ports :
-     - "85:80"
+     - "80:80"
     volumes:
      - ./www:/var/www/html/
      - ./server/000-default.conf:/etc/apache2/sites-available/000-default.conf
@@ -14,7 +14,7 @@ services:
      - database
 
   database:
-    image: mysql:5.7
+    image: mysql:8
     container_name: mysql
     ports :
       - "3305:3305"
@@ -37,5 +37,4 @@ services:
     environment:
         - PMA_ARBITRARY=1
 
-      
-      
+

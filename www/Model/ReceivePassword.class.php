@@ -115,6 +115,16 @@ class ReceivePassword extends Sql
                     "required" => true,
                 ],
 
+                "csrf_token" => [
+                    "placeholder" => $_SESSION['csrf_token'],
+                    "value" => $_SESSION['csrf_token'],
+                    "type" => "hidden",
+                    "id" => "pwdcsrf",
+                    "class" => "formRegister",
+                    "required" => true,
+                    "error" => "Le token csrf ne correspond pas"
+                ]
+
             ]
         ];
     }

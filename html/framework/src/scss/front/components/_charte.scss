@@ -1,0 +1,16 @@
+#section-charte {
+  box-sizing: initial;
+  height: 300px;
+  
+}
+
+$breakpoint-tablet: 768px;
+@media (max-width: 990px) {
+  #section-charte {
+    box-sizing: initial;
+    height: 300px;
+    width: 500px;
+    
+  }
+
+}

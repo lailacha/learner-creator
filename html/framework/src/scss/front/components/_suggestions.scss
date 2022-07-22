@@ -1,0 +1,88 @@
+#section-suggestions {
+
+  height: 300px;
+  width: 400px;
+  background-color: $white;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  padding: 0 0 0 20px;
+
+
+  & .container-suggestions {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: auto;
+    max-height: 200px;
+
+    & div {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      margin: 10px 5px 10px 0;
+      justify-content: space-around;
+
+
+
+      & .suggestions-icon, & .suggestions-button {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+      }
+
+      & .suggestions-details {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+      }
+    }
+
+    & .suggestions-icon i{
+/*      background-color: $body-color;
+      border-radius: 4px;*/
+      color: $blue;
+    }
+  }
+}
+
+
+$breakpoint-tablet: 768px;
+@media (max-width: 990px) {
+
+#section-suggestions {
+  margin-top: 20%;
+  height: 300px;
+  margin-top: 30%;
+  width: 500px;
+  background-color: #FFF;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  /* padding: 0 0 0 20px; */
+}
+
+.sidebar-left {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 500px;
+  padding: 10px 14px;
+  background: #FFF;
+  transition: all 0.3s ease;
+  z-index: 100;
+  border-top-right-radius: 10px;
+}
+
+}

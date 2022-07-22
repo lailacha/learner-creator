@@ -86,7 +86,6 @@ class Mail
         );
         curl_setopt($ch, CURLOPT_USERPWD, $this->apiKey);
         $server_output = curl_exec($ch);
-        print_r($server_output);
 
         curl_close ($ch);
 

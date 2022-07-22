@@ -31,9 +31,9 @@ The project is ready :tada:
 
 
 
-### Disign Patern 
+### Design Paterns 
 
-Le disign Patern:
+Le décorator:
 
 Définition: 
 
@@ -53,3 +53,43 @@ www/Core/Decorator.class.php
 www/Core/InstalleurGreeting.class.php
 www/Core/Error.class.php
 
+
+L'observer
+
+Définition:
+
+L'oberver permet de mettre en place simplementun mécanisme de notification. En ayant un objet observé et un observateur. On va avoir des suscribers à un evenement et ceux-ci seront alerté si besoin. On
+
+Cas d'utilisation:
+
+Ici, nous utilison l'observateur pour observer chaque création de cours afin d'alerter les users qui ont ajouté cette catégorie de cours à leur préférences par mail. 
+Avec le modèle MVC et le fonctionnement de notre appplication, il était compliqué de créer un observer classique. Nous avons donc ici un semblant d'observateur mais il n'utilise pas les interfaces classiques.
+
+Emplacement:
+
+www/Model/User.class.php => fonction update
+www/Model/Course.class.php => fonction notify et save
+
+Le query builder
+
+Définition:
+Le Query Builder est un objet qui permet de simplifier la création de requêtes SQL grâce à des méthodes génériques.
+
+
+Emplacement:
+www/core/MysqlBuilder.class.php
+Vous allez trouver un exemple d’utilisation dans l’index.php
+
+
+Le singleton
+
+Définition:
+
+Le Singleton est utilisé  dans le but de limiter le nombre d’instance d'une classe afin de pouvoir réutiliser la même instance (au lieu d'en créer une non nécessaire).
+
+Cas d'utilisation:
+Ici nous instancions une fois l'objet PDO afin de garder la même connection à la base de données et ainsi éviter les multiples instances.
+
+Emplacement:
+
+ www/Core/Sql.class.php

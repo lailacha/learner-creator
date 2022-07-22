@@ -1,11 +1,14 @@
 <nav class="sidebar-left close">
     <header>
-        <div class="image-text">
+             <div class="image-text">
                 <span class="image">
-                    <img src="../../framework/assets/images/logo-learner.png"
-                         alt="">
+                    <?php if ($settings->getLogoFile()) : ?>
+                        <img src="<?php echo $settings->getLogoFile() ?>" alt="logo">
+                    <?php else : ?>
+                    <img src="../../framework/assets/images/logo-learner.png" alt="logo">
+                    <?php endif; ?>
                 </span>
-        </div>
+            </div>
 
         <i class='bx bx-chevron-right toggle'></i>
     </header>
@@ -20,7 +23,7 @@
 
             <ul class="menu-links">
                 <li class="nav-link">
-                    <a href="#">
+                    <a href="/homePage">
                         <i class='bx bx-home-alt icon'></i>
                         <span class="text nav-text">Dashboard</span>
                     </a>
@@ -34,15 +37,23 @@
                     </a>
                 </li>
 
+                <?php if( \App\Model\User::getUserConnected()->getRoleId() === 2 ):?>
                 <li class="nav-link">
-                    <a href="/createCourse">
 
+                        <a href="/courses">
                         <i class='bx bxs-graduation icon'></i>
                         <span class="text nav-text">My courses</span>
                     </a>
                 </li>
+                <?php endif; ?>
 
 
+                <li class="nav-link">
+                    <a href="/searchCourses">
+                        <i class='bx bx-search icon'></i>
+                        <span class="text nav-text">Search courses</span>
+                    </a>
+                </li>
                 <li class="nav-link">
                     <a href="#">
                         <i class='bx bx-pie-chart-alt icon'></i>
@@ -58,7 +69,7 @@
                 </li>
 
                 <li class="nav-link">
-                    <a href="#">
+                    <a href="/edit/profile">
                         <i class='bx bx-user-circle icon'></i>
                         <span class="text nav-text">My account</span>
                     </a>
@@ -69,7 +80,7 @@
 
         <div class="bottom-content">
             <li class="">
-                <a href="#">
+                <a href="/logout">
                     <i class='bx bx-log-out icon'></i>
                     <span class="text nav-text">Logout</span>
                 </a>

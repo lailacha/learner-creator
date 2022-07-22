@@ -38,17 +38,18 @@ class Teacher extends BaseController
                 $requestManager->setTheme($this->request->get('theme'));
                 $requestManager->setMotivation($this->request->get('motivation'));
                 $requestManager->setDiplome($this->request->get('diplome'));
-                $requestManager->setUserId(1);
+                $requestManager->setUserId($this->request->get('user_id'));
                 $requestManager->setCv($file->getLastInsertId());
 
             }
         } catch (\Exception $e) {
             $this->session->addFlashMessage("error", $e->getMessage());
+            $this->route->goBack();
 
             return;
         }
         $requestManager->save();
-        $this->session->addFlashMessage("success", "Votre cours a bien été créé");
+        $this->session->addFlashMessage("success", "Votre demande a bien été envoyée");
         $this->route->goBack();
 
 

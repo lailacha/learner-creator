@@ -3,6 +3,7 @@
 namespace App\Model;
 
 
+use App\Model\User;
 use App\Core\QueryBuilder;
 use App\Core\Sql;
 
@@ -155,7 +156,7 @@ class RequestTeacher extends Sql
         $query = new QueryBuilder();
         return $query->from('user')
             ->where('id = ' . $this->user_id)
-            ->fetch();
+            ->fetchByClass(User::class);
     }
 
     public function getCreateRequestForm()
@@ -165,7 +166,7 @@ class RequestTeacher extends Sql
                 "method" => "POST",
                 "action" => "",
                 "id" => "",
-                "class" => "",
+                "class" => "form",
                 "enctype" => "multipart/form-data",
                 "submit" => "Valider"
             ],
@@ -175,7 +176,7 @@ class RequestTeacher extends Sql
                     "value" => "",
                     "type" => "textarea",
                     "id" => "motivationInput",
-                    "class" => "formRegister",
+                    "class" => " editable",
                     "required" => true,
                 ],
                 "theme" => [
@@ -199,6 +200,10 @@ class RequestTeacher extends Sql
                     "required" => true,
                     "class" => "diplome",
                     "placeholder" => "Votre dernier diplome",
+                ],
+                "user_id" => [
+                    "type" => "hidden",
+                    "value" => User::getUserConnected()->getId(),
                 ],
 
             ]

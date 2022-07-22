@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use App\Model\Settings;
+
 class View{
 
     private $view;
@@ -43,10 +45,9 @@ class View{
 
     public function __destruct()
     {
-        //$this->data = ["firstname"=>"yves"] -----> $firstname = "yves"
-        extract($this->data);
-        include "View/".$this->template.".tpl.php";
-        
+            extract($this->data);
+
+            $this->view != "404" ?  include "View/".$this->template.".tpl.php" : include "View/404.view.php";
     }
 
 }

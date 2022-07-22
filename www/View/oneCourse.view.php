@@ -2,7 +2,7 @@
 <div class="col-md-12 flex course">
     <div class="course-container col-md-8">
         <h1><?php echo $course->getName(); ?>
-        <?php if($course->getUser() === \App\Model\User::getUserConnected()->getId()): ?>
+        <?php if($course->getUser() === (\App\Model\User::getUserConnected()->getId())  || \App\Model\User::getUserConnected()->isAdmin()): ?>
             <a href="/edit/course?id=<?php echo $course->getId(); ?>"><i class="fas fa-edit"></i></a>
         <?php endif; ?>
         </h1>
@@ -11,10 +11,16 @@
         <p><?php echo $course->getDescription(); ?></p>
         <label class="mt-5" for="">Category of the course:</label>
         <p><?php echo $course->getCategoryName(); ?></p>
+              
         <img class="cover"  src="<?php echo $course->cover() ?>" alt="">
+
+        <a href="/saveLike?course=<?php echo $course->getId() ?>" class="mt-2 ml-2">
+        <input type="image" src="../framework/assets/images/like.png" height="30" width="30"/>
+         </a>
+
         <div class="flex">
-            <a href="/createCourse" class="mt-2">
-                <button>Go back to the course creator</button>
+            <a href="/courses" class="mt-2">
+                <button>Go back to the courses</button>
             </a>
             <a href="/createLesson?course_id=<?php echo $course->getId() ?>" class="mt-2 ml-2">
                 <button>Create a lesson</button>
@@ -63,12 +69,15 @@
 
 
         <?php endforeach; ?>
+        <?php if($course->getUser() === (\App\Model\User::getUserConnected()->getId())  || \App\Model\User::getUserConnected()->isAdmin()): ?>
+
                 <div class="flex column col-md-12 mt-2">
                     <a href="/create/chapter?course_id=<?php echo $course->getId() ?>">
                     <button class="">
                         Add a chapter</button>
                     </a>
                 </div>
+        <?php endif; ?>
 
             </div>
             </div>

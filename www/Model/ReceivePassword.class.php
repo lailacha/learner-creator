@@ -35,14 +35,8 @@ class ReceivePassword extends Sql
         parent::setTable(DBPREFIXE . "receive_password");
     }
 
-    public function save(): void
-    {
-
-        parent::save();
-    }
-
     /**
-     * @return null
+     *
      */
     public function getId()
     {

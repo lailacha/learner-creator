@@ -19,6 +19,11 @@
     background-color:  $light-back-main-color;
     color: $white;
 
+    a{
+    color: $white;
+    text-decoration: none;
+    }
+
     #logo{
       max-width: rem(155px);
       max-height: rem(155px);
@@ -56,7 +61,8 @@
       width: 80%;
     }
 
-    li{
+    li,{
+
       width: 100%;
       list-style-type: none;
 

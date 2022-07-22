@@ -33,6 +33,7 @@
         </nav>
     </div>
 </header>
+            <?php include "./View/Partial/error-message.partial.php"; ?>
 
             <?php include $this->view . ".View.php"; ?>
 

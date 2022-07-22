@@ -4,22 +4,76 @@
   path: /
 
 -
+  controller: main
+  action: dashboard
+  path: /homePage
+
+-
   path: /404
   controller: BaseController
   action: abort
 
-
 -
-  path: /createCourse
+  path: /courses
   controller: course
   action: index
   method: GET
   param: []
+  security: ["teacher", "admin"]
+
+-
+  path: /show/courses
+  controller: course
+  action: showAll
+  method: GET
+  param: []
+  security: ["teacher", "admin"]
+
+-
+  path: /show/myCourses
+  controller: course
+  action: myCourses
+  method: GET
+  param: []
+  security: ["teacher"]
+
+-
+  path: /show/preferences
+  controller: course
+  action: showPreferences
+  method: GET
+  param: []
+  security: ["admin", "user", "teacher"]
+
+-
+  path: /search/course
+  controller: course
+  action: searchCourse
+  method: GET
+  param: ["course"]
+  security: ["teacher", "admin", "user"]
+
+-
+  path: /searchCourses
+  controller: course
+  action: allCourses
+  method: GET
+  param: []
+  security: ["teacher", "admin", "user"]
+
 
 -
   path: /createCourse
   controller: course
   action: create
+  method: GET
+  param: []
+  security: ["teacher", "admin"]  
+
+-
+  path: /save/course
+  controller: course
+  action: save
   method: POST
   param: [ "name", "description", "cover", "category" ]
 
@@ -29,6 +83,23 @@
   action: delete
   method: GET
   param: [ "id" ]
+  security: ["admin", "teacher"]
+
+-
+  path: /show/courseRequests
+  controller: course
+  action: showRequests
+  method: GET
+  param: []
+  security: ["admin"]
+
+-
+  path: /verify/course
+  controller: course
+  action: verifyCourse
+  method: GET
+  param: [ "course_id" ]
+  security: ["admin"]
 
 -
   path: /create/chapter
@@ -36,6 +107,8 @@
   action: create
   method: GET
   param: [ "course_id"]
+  security: ["admin","teacher"]
+
 
 -
   path: /create/chapter
@@ -43,6 +116,8 @@
   action: create
   method: POST
   param: [ "course_id", "name", "description" ]
+  security: ["admin", "teacher"]
+
 
 
 -
@@ -51,22 +126,100 @@
   action: getOneCourse
   method: GET
   param: [ "id" ]
+  security: ["admin", "user", "teacher"]
 
 
 -
+  path: /showCourses
+  controller: course
+  action: showAll
+  method: GET
+  security: ["admin", "user", "teacher"]
+
+
+-
+  path: /saveLike
+  controller: course
+  action: saveLike
+  method: GET
+  param: ["course" ]
+  security: ["admin", "user", "teacher"]
+
+  
+-
   path: /edit/course
   controller: course
+  security: ["teacher", "admin"]
   action: edit
   method: GET
   param: ["id" ]
 
-
 -
-  path: /edit/course
+  path: /update/course
   controller: course
   action: edit
   method: POST
-  param: [ "id","name", "description", "cover", "category" ]
+  param: ["id" , "name", "description", "category", "cover"]
+  security: ["admin", "user", "teacher"]
+
+
+
+-
+  path: /show/category
+  controller: CourseCategory
+  action: getOneCategory
+  method: GET
+  param: [ "category_id"]
+  security: ["admin", "user", "teacher"]
+
+
+-
+  path: /save/category
+  controller: CourseCategory
+  action: save
+  method: POST
+  security: ["admin"]
+  param: [ "name", "description" ]
+
+-
+  path: /edit/category
+  controller: CourseCategory
+  action: edit
+  method: GET
+  security: ["admin"]
+  param: ["category_id"]
+
+-
+  path: /update/category
+  controller: CourseCategory
+  action: update
+  method: POST
+  security: ["admin"]
+  param: [ "category_id", "name", "description" ]
+
+-
+  path: /delete/category
+  controller: CourseCategory
+  action: delete
+  method: GET
+  security: ["admin"]
+  param: ["id"]
+
+-
+  path: /category
+  controller: CourseCategory
+  action: create
+  method: GET
+  security: ["admin"]
+  param: []
+
+-
+  path: /categories
+  controller: CourseCategory
+  action: allCategories
+  method: GET
+  security: ["user", "teacher", "admin"]
+  param: []
 
 -
   path: /createLesson
@@ -74,13 +227,17 @@
   action: index
   method: GET
   param: [ "course_id"]
+  security: ["admin", "teacher"]
+
 
 -
   path: /createLesson
   controller: lesson
   action: create
   method: POST
-  param: [ "title", "text", "video", "course", "chapter" ]
+  param: [ "title", "text", "video", "course", "chapter", "course_id"]
+  security: ["admin", "teacher"]
+
 
 -
   path: /show/lesson
@@ -88,6 +245,8 @@
   action: getOneLesson
   method: GET
   param: [ "lesson_id" ]
+  security: ["admin", "user", "teacher"]
+
 
 -
   path: /edit/lesson
@@ -95,6 +254,8 @@
   action: edit
   method: GET
   param: ["lesson_id" ]
+  security: ["admin", "teacher"]
+
 
 -
   path: /update/lesson
@@ -102,6 +263,8 @@
   action: update
   method: POST
   param: [ "lesson_id", "title", "text", "video", "course", "chapter" ]
+  security: ["admin", "teacher"]
+
 
 -
   path: /delete/lesson
@@ -109,12 +272,34 @@
   action: delete
   method: GET
   param: [ "lesson_id" ]
+  security: ["admin", "teacher"]
+
+
+
+- 
+  path: /store/progress
+  controller: LessonProgress
+  action: store
+  method: POST
+  param : ["user_id", "lesson_id", "progress"]
+  security: ["admin", "user", "teacher"]
+
+
 
 - path: /create/comment
   controller: LessonCommentaire
   action: store
   method: POST
   param: ["content", "lesson_id"]
+  security: ["admin", "user", "teacher"]
+
+- path: /delete/comment
+  controller: LessonCommentaire
+  action: delete
+  method: POST
+  param: ["commentaire_id"]
+  security: ["admin", "user", "teacher"]
+
 
 -
   controller: main
@@ -133,6 +318,7 @@
   action: login
   path: /login
   method: GET
+  
 
 -
   controller: user
@@ -176,6 +362,23 @@
   method: GET
   param: ["email"]
 
+-
+  controller: reportComment
+  action: showAll
+  path: /reportComments
+  method: GET
+  param: []
+  security: [ "admin" ]
+
+-
+  controller: reportComment
+  action: reportComment
+  path: /reportComment
+  method: POST
+  param: ["comment_id", "reason"]
+  security: ["admin", "user", "teacher"]
+
+
 
 -
   controller: user
@@ -218,6 +421,7 @@
   method: GET
   path: /edit/profile
   param: []
+  security: ["admin", "user", "teacher"]
 
 -
   controller: user
@@ -225,11 +429,68 @@
   method: POST
   path: /save/profile
   param: ["firstname", "lastname", "avatar"]
+  security: ["admin", "user", "teacher"]
+
+
+-
+  controller: GeneralSettings
+  action: index
+  method: GET
+  path: /generalSettings
+  security: ["admin"]
+  param: []
+
+
+- controller: GeneralSettings
+  action: save
+  method: POST
+  path: /save/generalSettings
+  param: ["site_name", "default_role", "allow_comment", "site_description"]
+  security: ["admin"]
+
+
+-
+  controller: AppearanceSettings
+  action: index
+  method: GET
+  path: /AppearanceSettings
+  param: []
+  security: ["admin"]
+
+
+
+- controller: AppearanceSettings
+  action: save
+  method: POST
+  path: /save/settings
+  param: ["main_color", "sidebar_color", "big_title_size", "logo", "primary_color", "main_font"]
+  security: ["admin"]
+
+
+
+- 
+  controller: user
+  action: saveCatPref
+  method: POST
+  path: /save/catpref
+  param: ["category"]
+  security: ["admin", "user", "teacher"]
+
+
+-
+  controller: user
+  action: deleteCatPref
+  method: GET
+  path: /delete/catpref
+  param: ["category"]
+  security: ["admin", "user", "teacher"]
+
+  
 
 -
   controller: admin
   action: home
-  security: "admin"
+  security: ["admin"]
   path: /dashboard
 
 -
@@ -244,39 +505,39 @@
   action: users
   method: GET
   path: /users
-  security: "admin"
+  security: ["admin"]
 
 
 -
   controller: admin
   action: editUser
-  security: admin
+  security: ["admin"]
   method: GET
   path: /edit/user
-  param: ["id"]
+  param: ["user_id"]
 
 -
   controller: admin
   action: editUser
-  security: admin
+  security: ["admin"]
   method: POST
   path: /edit/user
-  param: ["id"]
+  param: ["id", "lastname", "firstname", "email", "role", "user_id"]
 
 -
   controller: user
   action: delete
-  security: admin
+  security: ["admin"]
   method: GET
   path: /delete/user
-  param: ["id"]
+  param: ["user_id"]
 
 -
   controller: teacher
   action: index
   method: GET
   path: /teacher/new
-
+  security: ["admin", "user", "teacher"]
 
 
 -
@@ -284,7 +545,9 @@
   action: create
   method: POST
   path: /teacher/new
-  param: [ "cv", "motivation", "theme", "diplome" ]
+  param: [ "cv", "motivation", "theme", "diplome" , "user_id"]
+  security: ["admin", "user", "teacher"]
+
 
 -
   controller: admin
@@ -292,6 +555,8 @@
   method: GET
   path: /teachers/allRequests
   param: []
+  security: ["admin"]
+
 
 -
   controller: admin
@@ -306,6 +571,8 @@
   method: GET
   path: /show/requestTeacher
   param: ["id"]
+  security: ["admin"]
+
 
 -
   controller: admin
@@ -313,6 +580,8 @@
   method: GET
   path: /valid/requestTeacher
   param: ["id"]
+  security: ["admin"]
+
 
 
 -
@@ -321,4 +590,12 @@
   method: GET
   path: /refuse/requestTeacher
   param: ["id"]
+  security: ["admin"]
 
+
+-  
+  controller: teacher
+  action: index
+  method: GET
+  path: /add/
+  

@@ -1,10 +1,10 @@
 
 <div class="col-md-12 mt-5">
-    <h1 class="mb-3 ">Create a course</h1>
+    <h1 class="mb-3 ">My courses</h1>
 
     <div class="flex">
         <div class="col-md-6">
-            <table id="example" class="display bg-white p-2" style="width:100%">
+            <table id="" class=" dataTable display bg-white p-2" style="width:100%">
                 <thead>
                 <tr>
                     <th>Name</th>
@@ -33,3 +33,13 @@
     </div>
 
 </div>
+<script>
+    $('#example').DataTable();
+
+    const dialog = document.querySelector('.modal');
+    document.getElementById('show').onclick = function() { dialog.show();
+        body.style.filter = "blur(5px)";
+    };
+    document.getElementById('hide').onclick = function() { dialog.close();
+    };
+</script>

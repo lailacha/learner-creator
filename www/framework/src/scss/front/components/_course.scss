@@ -1,7 +1,63 @@
 
+.search-bar{
+  height: 3rem;
+  background-color: $white;
+  cursor: pointer;
+  display: flex;
+  border-radius: 50px;
+  align-items: center;
+  position: relative;
+
+  i{
+    position: absolute;
+  }
+
+  input{
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    padding-left: 3rem;
+  }
+}
+
+.course-thumbnail
+{
+  display: flex;
+    border-radius: 15px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: $white;
+  margin-left: 2rem;
+  padding: 0;
+  img {
+    width: 90%;
+    height: 80%;
+    object-fit: cover;
+  }
+
+  a {
+    margin-top: 1rem;
+    display: block;
+    text-decoration: none;
+  }
+
+  p{
+    text-align: center;
+  }
+}
+
 .course{
+
   .cover {
-width: 80%;
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+  }
+
+  input[type="checkbox"]{
+    height: 1.5rem;
   }
 }
 
@@ -33,6 +89,11 @@ width: 80%;
     color: #000;
     text-decoration: none;
   }
+  .likeButton{
+    color: red;
+    text-decoration: none;
+  }
+  
 
 
 }
@@ -63,7 +124,7 @@ $table-control-color: #333333 !default;
 $table-paging-button-active: #ffffff !default;
 
 // Hover colour of paging buttons on mouse over
-$table-paging-button-hover: $primary-color !default;
+$table-paging-button-hover: #4d9386 !default;
 
 // Colour to use when shading
 $table-shade: black !default;
@@ -250,7 +311,7 @@ table.dataTable {
   &.hover tbody,
   &.display tbody {
     tr:hover {
-      background-color: shade($primary-color, 3.6%); // shade by f5
+      background-color: shade(#4d9386, 3.6%); // shade by f5
 
       &.selected {
         background-color: shade($table-row-selected, 3.6%);

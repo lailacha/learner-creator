@@ -37,7 +37,7 @@ class Admin extends BaseController
     {
 
         $user = new UserModel();
-        $id_user = $this->request->get("id");
+        $id_user = $this->request->get("user_id");
         $user = $user->getBy('id', $id_user);
 
 
@@ -47,7 +47,7 @@ class Admin extends BaseController
             $view->assign("user", $user);
             $view->assign("form", $form);
             if ($_POST) {
-                $user = $user->getBy("id", $_POST['id']);
+                $user = $user->getBy("id", $_POST['user_id']);
                 $user->setEmail($_POST['email']);
                 $user->setLastname($_POST['lastname']);
                 $user->setFirstname($_POST['firstname']);
@@ -60,6 +60,7 @@ class Admin extends BaseController
             die("user non trouvable");
         }
     }
+        
 
 
     public function requestTeachers(): void
@@ -115,7 +116,7 @@ class Admin extends BaseController
         $requestManager = $requestManager->setId($id_request);
         $requestManager->setStatut(-1);
         $requestManager->save();
-        header('Location: /teachers/requestInProgress');
+        header('Location: /teachers/allRequests');
         $session = Session::getInstance();
         $session->addFlashMessage("success", "The request has been refused");
     }

@@ -1,0 +1,84 @@
+.dashboard{
+
+  .violet{
+    background-color: rgba(139,140,251,0.2);
+  }
+
+  .orange{
+    background-color: rgba(190,154,154,0.2);
+  }
+
+  .bordered{
+    border: 1px solid lightgray;
+  }
+
+  .users-img{
+    width: rem(37px);
+    height: rem(37px);
+  }
+  @media only screen and (max-width: $lg-width) {
+    #charts {
+      justify-content: center;
+    }
+  }
+
+  #professor-request-table, #last-courses-table{
+    color: lighten($light-back-main-color, 20);
+    padding: 0 1em ;
+    max-height: rem(230px);
+    overflow: scroll;
+  }
+
+  #quick-links{
+
+    color: lighten($light-back-main-color, 20);
+    font-family: $font3;
+    a{
+      display: block;
+      position: relative;
+      font-size: rem(16px);
+      line-height: 20px;
+      cursor: pointer;
+
+      &:after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0px;
+        width: 0px;
+        height: 1px;
+        transition: all 0.2s ease-in-out;
+        transition-duration: 0.75s;
+        background-color: darken(black, 5%);
+      }
+
+      &:hover:after{
+        width:  100px;}
+    }
+  }
+
+  table{
+    border: none;
+    border-spacing: 10px;
+
+
+    th{
+      font-family: $font3;
+      text-align: start;
+      color: lighten($light-back-main-color, 20%);
+    }
+
+    tr{
+      font-family: $font3;
+      color: lighten($light-back-main-color, 20%);
+
+
+    }
+   tr .subscribers-col{
+     text-align: end;
+
+   }
+
+  }
+
+}

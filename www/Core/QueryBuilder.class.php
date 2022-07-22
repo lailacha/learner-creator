@@ -21,7 +21,7 @@ class QueryBuilder
     public function __construct()
     {
         try {
-            $this->pdo = new \PDO(DBDRIVER . ":host=" . DBHOST . ";port=" . DBPORT . ";dbname=" . DBNAME, DBUSER, DBPWD
+            $this->pdo = new \PDO(DBDRIVER . ":host=" . DBHOST . ";port=" . DBPORT . ";dbname=" . DBNAME . ";charset=utf8mb4", DBUSER, DBPWD
                 , [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING]);
         } catch (\Exception $e) {
             die("Erreur SQL : " . $e->getMessage());
@@ -68,6 +68,13 @@ class QueryBuilder
         return $this;
     }
 
+    public function innerJoin(string $table, string $condition): self
+    {
+        $table = DBPREFIXE . $table;
+        $this->from .= " INNER JOIN " . $table . " ON  " . $condition;
+        return $this;
+    }
+
     public function orderBy(string $key, string $direction): self
     {
         $direction = strtoupper($direction);
@@ -102,7 +109,7 @@ class QueryBuilder
         } else {
             $result = $queryPrepared->fetch($this->pdo::FETCH_ASSOC);
         }
-        return $result ? $result : null;
+        return $result ?: null;
     }
 
     public function fetchAll(): array
@@ -110,6 +117,20 @@ class QueryBuilder
         $queryPrepared = $this->pdo->prepare($this->toSql());
         $queryPrepared->execute($this->params);
         return $queryPrepared->fetchAll($this->pdo::FETCH_ASSOC);
+    }
+
+    public function fetchAllByClass(string $className)
+    {
+        $queryPrepared = $this->pdo->prepare($this->toSql());
+        $queryPrepared->execute($this->params);
+        return $queryPrepared->fetchAll(\PDO::FETCH_CLASS, $className);
+    }
+
+    public function fetchByClass(string $className)
+    {
+        $queryPrepared = $this->pdo->prepare($this->toSql());
+        $queryPrepared->execute($this->params);
+        return $queryPrepared->fetchObject($className);
     }
 
     public function count(): int

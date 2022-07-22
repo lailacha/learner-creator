@@ -17,7 +17,7 @@ class CourseCategory extends Sql
 
     public function __construct()
     {
-        parent::__construct();
+        $this->getPDO();
         $this->table  = DBPREFIXE."course_category";
     }
     /**
@@ -71,6 +71,7 @@ class CourseCategory extends Sql
         $query = "
         SELECT name FROM ".$this->table." WHERE id = :category";
         $req = $this->pdo->prepare($query);
+
         $req->execute();
         $res = $req->fetchAll(PDO::FETCH_ASSOC);
         return $res;

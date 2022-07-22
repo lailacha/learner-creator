@@ -1,0 +1,31 @@
+#section1 div {
+  border-radius: 6px;
+  cursor: pointer;
+  transition: $tran;
+  display: flex;
+  align-items: center;
+  background-color: $white;
+  height: 50px;
+  padding-left: 10px;
+
+  & i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  & input {
+    height: 100%;
+    width: 100%;
+    outline: none;
+    border: none;
+    background-color: $white;
+    color: $text-color;
+    border-radius: 6px;
+    font-size: rem(17);;
+    font-weight: 600;
+    transition: $tran;
+    font-family: $font1;
+    padding-left: 10px;
+  }
+}

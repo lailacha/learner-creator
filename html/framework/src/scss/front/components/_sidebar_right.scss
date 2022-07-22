@@ -1,0 +1,152 @@
+@media (max-width: 990px) {
+
+  .sidebar-right {
+    display: none;
+
+
+    & #part1 {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      background-color: $body-color;
+      padding: 10px 0;
+      border-radius: 5px;
+      & > * {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: flex-start;
+        height: 100%;
+        justify-content: center;
+      }
+      & img {
+        height: 40px;
+        width: 40px;
+      }
+
+      & div {
+
+        & a {
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          flex-direction: row;
+          text-decoration: none;
+
+          color: $blue;
+          font-family: $font2;
+          font-size: rem(16);
+
+          & svg {
+            height: 18px;
+            width: 18px;
+            padding: 0 5px 0 0px;
+
+            & path {
+              fill: $blue;
+            }
+
+          }
+
+        }
+      }
+    }
+
+
+  }
+
+}
+
+@media (min-width: 991px) {
+
+  .sidebar-right {
+    &  * {
+      margin: 0;
+      padding: 0;
+    }
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    background: $sidebar-color;
+    height: 100vh;
+    width: 250px;
+    top: 0;
+    right: 0;
+    padding: 20px 14px;
+    transition: $tran;
+    z-index: 100;
+    border-top-left-radius: 10px;
+
+    & #profile-container {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      background-color: $body-color;
+      padding: 10px 0;
+      border-radius: 5px;
+
+      figure{
+        margin: 0;
+        width: 40px;
+        height: 40px;
+      }
+
+      & > * {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: flex-start;
+        height: 100%;
+        justify-content: center;
+      }
+      & img {
+        height: 40px;
+        width: 40px;
+        object-fit: cover;
+        border-radius: 600px;
+      }
+
+      & div {
+
+        & a {
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          flex-direction: row;
+          text-decoration: none;
+
+          color: $blue;
+          font-family: $font2;
+          font-size: rem(16);
+
+          & svg {
+            height: 18px;
+            width: 18px;
+            padding: 0 5px 0 0px;
+
+            & path {
+              fill: $blue;
+            }
+
+          }
+
+        }
+      }
+    }
+
+
+  }
+
+}
+
+
+
+
+@import "rappel";
+@import "recent_activity";
+@import "completion_progress";

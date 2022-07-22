@@ -11,24 +11,39 @@ use App\Core\QueryBuilder;
  class Sql
 {
 
-    protected $pdo;
+    protected static $pdo = null;
     protected $table;
     protected  static $instance;
 
-    public function __construct()
+    private function __construct()
     {
-
         try{
             $this->pdo = new \PDO( DBDRIVER.":host=".DBHOST.";port=".DBPORT.";dbname=".DBNAME.";charset=utf8mb4" , DBUSER , DBPWD
                 , [\PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"]);
 
-        }catch(\Exception $e){
-            die("Erreur SQL : ".$e->getMessage());
-        }
-
-        $getCalledClassExploded = explode("\\", strtolower(get_called_class())); // App\Model\User
-        $this->table = DBPREFIXE.end($getCalledClassExploded);
     }
+
+    public function getPDO()
+    {
+        if (is_null(self::$pdo)) {
+            try{
+                self::$pdo = new \PDO( DBDRIVER.":host=".DBHOST.";port=".DBPORT.";dbname=".DBNAME.";charset=utf8mb4" , DBUSER , DBPWD, [\PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+    
+            }catch(\Exception $e){
+                die("Erreur SQL : ".$e->getMessage());
+            }
+    
+            $getCalledClassExploded = explode("\\", strtolower(get_called_class())); // App\Model\User
+            $this->table = DBPREFIXE.end($getCalledClassExploded);
+
+        }
+        return self::$pdo;
+    }
+
+  
+
+    
+
 
 
 
@@ -60,7 +75,7 @@ use App\Core\QueryBuilder;
 
         $sql = "SELECT * FROM " . $this->table . " WHERE " . $type . "=:$type";
 
-        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared = self::$pdo->prepare($sql);
         $queryPrepared->execute([$type => $param]);
         return $queryPrepared->fetchObject(get_called_class());
 
@@ -72,7 +87,7 @@ use App\Core\QueryBuilder;
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute();
 
-        /* $esgi_commentaire_lesson=
+        $esgi_commentaire_lesson=
         "
         CREATE TABLE `esgi_commentaire_lesson` (
           `id` int NOT NULL,
@@ -113,6 +128,7 @@ use App\Core\QueryBuilder;
          $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute();
         return $queryPrepared->fetchObject(get_called_class());
+
     }
 
     /**
@@ -123,6 +139,7 @@ use App\Core\QueryBuilder;
         $sql = "SELECT * FROM ".$this->table;
         $strict ? $sql .= " WHERE deleted_at IS NULL" : null;
         $queryPrepared = $this->pdo->prepare($sql);
+
         $queryPrepared->execute();
         if($class) {
             return $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
@@ -142,7 +159,7 @@ use App\Core\QueryBuilder;
     public function getOneByOne($attribute, $value){
 
         $sql = "SELECT * FROM ".$this->table." WHERE ".$attribute."=:value";
-        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared = self::$pdo->prepare($sql);
         $queryPrepared->execute( ["value"=>$value] );
         return $queryPrepared->fetchObject(get_called_class());
     }
@@ -160,14 +177,14 @@ use App\Core\QueryBuilder;
         }
         $sql = "SELECT * FROM ".$this->table." WHERE ".$where."";
 
-        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared = self::$pdo->prepare($sql);
         $queryPrepared->execute( $attributes);
         return $queryPrepared->fetchObject(get_called_class());
     }
 
     public function getLastInsertId(): string
     {
-        return $this->pdo->lastInsertId();
+        return self::$pdo->lastInsertId();
     }
 
 
@@ -181,6 +198,7 @@ use App\Core\QueryBuilder;
         $sql = "SELECT *" . " FROM " . $this->table . " WHERE " . $field . "=:$field";
         $strict ? $sql .= " AND deleted_at IS NULL" : "";
         $queryPrepared = $this->pdo->prepare($sql);
+
         $queryPrepared->execute([$field => $value]);
         return $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
     }
@@ -201,7 +219,7 @@ use App\Core\QueryBuilder;
      public function delete() :void
     {
         $sql = "DELETE FROM ".$this->table." WHERE id=:id";
-        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared = self::$pdo->prepare($sql);
         $queryPrepared->execute( ["id"=>$this->getId()] );
     }
 
@@ -241,9 +259,11 @@ use App\Core\QueryBuilder;
             }
             $sql = "UPDATE " . $this->table . " SET " . implode(",", $update) . " WHERE id=:id";
         }
-
-        $queryPrepared = $this->pdo->prepare($sql);
+        
+        $queryPrepared = self::$pdo->prepare($sql);
+       
         $queryPrepared->execute($colums);
+        
 
         //Si ID null alors insert sinon update
     }

@@ -1,0 +1,30 @@
+@function rem($pxVal) {
+  $base: 16;
+  @return ($pxVal / $base) * 1rem;
+}
+
+@mixin conver-bg() {
+  // background-image: url($url);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center
+}
+
+
+/*
+@mixin theme-colors($light-theme: true) {
+  @if $light-theme {
+    $body-color: #F0F7FF;
+    $sidebar-color: #FFF;
+    $primary-color: #3BCDB3;
+    $toggle-color: #DDD;
+    $text-color: #464646;
+  } @else {
+    $body-color: #18191a;
+    $sidebar-color: #242526;
+    $primary-color: #3a3b3c;
+    $toggle-color: #fff;
+    $text-color: #ccc;
+  }
+}
+*/

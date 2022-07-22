@@ -5,11 +5,10 @@ namespace App\Core;
 class Helpers
 {
 
-public static function createToken() : string{
+public static function createToken() : string {
     $bytes = random_bytes(128);
     return substr(str_shuffle(bin2hex($bytes)), 0, 255);
 	}
-
 
     public static function slugify($text, string $divider = '-')
 {
@@ -31,5 +30,6 @@ public static function createToken() : string{
 
   return $text;
 }
+
 
 }

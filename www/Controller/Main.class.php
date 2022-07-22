@@ -12,13 +12,18 @@ use App\Model\Lesson;
 use App\Model\Learner;
 use App\Model\Course;
 use App\Model\User;
-
-
-
-
+use App\Core\InstalleurGreeting;
+use App\Core\Error;
 
 class Main extends BaseController
 {
+    public function message(InstalleurGreeting $component): string
+    {
+
+    return $component->greeting();
+
+    }
+    
 
 
 
@@ -48,6 +53,16 @@ class Main extends BaseController
 
     public function home()
     {
+        /* Resultat simple */
+        $simple = new InstalleurGreeting();
+        $messageAcceuil = $this->message($simple);
+
+        /* Décoration du message de base si il y'a une erreur, pourais surcharger la c  */
+        $messageAcceuilError = new Error($simple);
+
+
+
+
         $session = new Session();
         $user = new UserModel();
 
@@ -56,11 +71,13 @@ class Main extends BaseController
         $filename = 'conf.php';
 
         if (file_exists($filename)) {
-            $view = new View("home", "home");
-            $session->addFlashMessage("success", "Le fichier s'est bien installé.");
+            $view = new View("home", "front");
+            //$session->addFlashMessage("success", "Le fichier s'est bien installé.");
+            $session->addFlashMessage("success", $messageAcceuil);
         } else {
-            $view = new View("installeur", "back");
-            $session->addFlashMessage("success", "Le fichier $filename n'existe pas.");
+            $view = new View("installeur", "front");
+            //$session->addFlashMessage("success", "Le fichier $filename n'existe pas.");
+            $session->addFlashMessage("success",$messageAcceuilError);
 
         }
     }
@@ -73,6 +90,14 @@ class Main extends BaseController
 
     public function install()
     {
+        $session = new Session();
+        /* Resultat simple */
+        $simple = new InstalleurGreeting();
+        $messageAcceuil = $this->message($simple);
+
+        /* Décoration du message de base si il y'a une erreur, pourais surcharger la c  */
+        $messageAcceuilError = new Error($simple);
+
 
         $user = new UserModel();
 
@@ -137,12 +162,18 @@ class Main extends BaseController
                 $txt = "fichier temoins pour certifier de l'installation";
                 fwrite($myfile, $txt);
                 #echo($myfile);
-                echo("********************************");
+
+                /* echo("********************************");
                 echo("<br>");
-                echo("Bravo L'instalation est faite");
+                echo("Bravo L'instalation est faite"); */
+
+                $view = new View("home", "front");
+                //$session->addFlashMessage("success", "Le fichier s'est bien installé.");
+                $session->addFlashMessage("success", $messageAcceuil);
                 //$user->initdb();
             }
         }
     }
 
 }
+

@@ -1,0 +1,68 @@
+$xs-width: 300px;
+$sm-width: 650px;
+$md-width: 900px;
+$lg-width: 1250px;
+$xl-width: 1900px;
+
+
+
+.grid{
+  box-sizing: border-box;
+  .container{
+    max-width: $xl-width;
+    box-sizing: border-box;
+    .row{
+      box-sizing: border-box;
+      display: flex;
+      flex-wrap: wrap;
+      margin-right: -15px;
+      margin-left: -15px;}
+
+  }
+
+  $columns: 12;
+  $grid-gutter: 30px;
+  $breakpoints: (
+          xl: $xl-width,
+          lg: $lg-width,
+          md: $md-width,
+          sm: $sm-width,
+          xs: $xs-width,
+  );
+
+  $maxBreakpoints: ((300px), (600px), (900px), (1250px), (1900px));
+
+  @mixin generateGrid($breakpoint: null) {
+    $infix: if($breakpoint == null, '', '-#{$breakpoint}');
+
+    @for $i from 0 through $columns {
+      .col#{$infix}-#{$i} {
+        box-sizing: border-box;
+        width: ((100 / $columns) * $i) * 1%;
+        padding-right: calc(#{$grid-gutter}/2) ;
+        padding-left: calc(#{$grid-gutter}/2) ;
+      }
+
+      .col-offset#{$infix}-#{$i} {
+        @if $i == 0 {
+          margin-left: 0;
+        } @else {
+          margin-left: 100% / $columns * $i;
+        }
+      }
+
+    }
+  }
+
+
+
+  @include generateGrid;
+
+  @each $breakpoint, $width in $breakpoints {
+    @media (min-width: $width) {
+      @include generateGrid($breakpoint);
+    }
+  }
+}
+
+

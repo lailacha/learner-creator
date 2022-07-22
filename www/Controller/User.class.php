@@ -89,6 +89,7 @@ class User extends BaseController
         echo "Se déconnecter";
         $this->session->addFlashMessage("success", "Vous êtes maintenant déconnecté");
         header('Location: /login');
+
     }
 
 

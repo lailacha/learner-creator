@@ -1,0 +1,18 @@
+.message{
+
+  color: $white;
+  padding: rem(8px);
+  margin: rem(8px);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &.success{
+  background: $green;
+}
+
+  &.error {
+    background: $red;
+  }
+
+}

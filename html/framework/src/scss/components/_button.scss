@@ -1,0 +1,25 @@
+
+.icon {
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius:  5px;
+}
+
+button,  input[type="submit"]{
+  border: #3BCDB3 solid 1px;
+  background-color: #FFFFFF;
+  font-family: $font1;
+  padding: 15px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button {
+
+  &.error {
+    background-color: #860505;
+    color: $white;
+    border: $white solid 2px;
+  }
+}

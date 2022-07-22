@@ -1,0 +1,24 @@
+.flash-message{
+
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.25rem;
+  &.error {
+    color: white;
+    background-color: $error-color;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+  }
+
+  &.success {
+    color: white;
+    background-color: #3BCDB3;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+  }
+
+
+
+}

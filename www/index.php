@@ -27,6 +27,10 @@ function myAutoloader( $class )
 
 spl_autoload_register("App\myAutoloader");
 
+use App\Core\MysqlBuilder;
+use App\Core\QueryBuilder;
+use App\Core\Security;
+
 
 
 
@@ -47,20 +51,23 @@ catch(Exception $e)
 {
     echo "Une erreur s'est produite";
 }
-/*
-Exemple utilisation querybuilder
+
+$objectController->$action();
+
+
+
+//Exemple utilisation MysqlBuilder
 
 
 echo "<pre>";
-$query = new QueryBuilder();
+$query = new MysqlBuilder();
 
-$test = $query->from('user')
-    ->where('email = :email')
-    ->setParam('email',"oussama.dahbi98@gmail.com")
-    ->orderBy("id", "DESC")
+$test = $query->from('esgi_file')
+    ->where('extension = :extension')
+    ->setParam('extension',"jpeg")
+    ->orderBy("id", "ASC")
     ->fetchAll();
 
 
 print_r($test);
 
-*/

@@ -1,0 +1,289 @@
+.front .dark {
+  --body-bg: #{$body-dark-color};
+  --sidebar-background-color: #{$sidebar-dark-color};
+  --primary-dark-color: #{$primary-dark-color};
+  --color-text: #{$text-dark-color};
+  background-color: var(--body-bg) !important;
+
+
+  & #sidebar-left {
+    & .sidebar-left {
+
+      & .menu-bar .mode {
+        background-color: var(--primary-dark-color);
+      }
+
+      & li.search-box {
+        background-color: var(--primary-dark-color);
+
+        & input {
+          background-color: var(--primary-dark-color);
+        }
+      }
+
+      & .text, .icon {
+        color: var(--color-text);
+      }
+
+    }
+
+  }
+
+  & #sidebar-right{
+    color: var(--color-text);
+  }
+
+  & .container {
+    background-color: var(--body-bg);
+    color: var(--color-text);
+
+    & .home {
+      color: var(--color-text);
+    }
+  }
+
+}
+
+/*  Border  */
+.no-border {
+  border: none;
+}
+
+/*  Spacing  */
+$baseSpace: 0.8rem;
+$spaceRange: 5;
+
+.mr-a {
+  margin-right: auto;
+}
+
+.ml-a {
+  margin-left: auto;
+}
+
+
+.h-25 {
+  height: 25%;
+}
+
+.h-50 {
+  height: 50%
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.xs-space {
+  margin-top: 20px
+}
+
+
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+
+@for $i from 0 through $spaceRange {
+  .m-#{$i} {
+    margin: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .mt-#{$i} {
+    margin-top: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .mb-#{$i} {
+    margin-bottom: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .mr-#{$i} {
+    margin-right: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .ml-#{$i} {
+    margin-left: calc(#{$baseSpace} * #{$i}) !important;
+  }
+
+
+  .p-#{$i} {
+    padding: calc(#{$baseSpace} * #{$i}) !important;
+  }
+
+  .pt-#{$i} {
+    padding-top: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .pb-#{$i} {
+    padding-bottom: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .pr-#{$i} {
+    padding-right: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .pl-#{$i} {
+    padding-left: calc(#{$baseSpace} * #{$i}) !important;
+  }
+}
+
+
+.d-block {
+  display: block;
+}
+
+/*  Flex  */
+
+
+.flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.column {
+  flex-direction: column !important;
+}
+
+.fd-row-reverse {
+  flex-direction: row-reverse;
+}
+
+.fd-col-reverse {
+  flex-direction: column-reverse;
+}
+
+.fg-1 {
+  flex-grow: 1;
+}
+
+.jc-center {
+  justify-content: center;
+}
+
+.jc-sb {
+  justify-content: space-between;
+}
+
+.jc-sa {
+  justify-content: space-around;
+}
+
+.ai-center {
+  align-items: center;
+}
+
+.ai-start {
+  align-items: flex-start;
+}
+
+
+/*  width  */
+
+.w-25 {
+  width: 25%;
+}
+
+.w-50 {
+  width: 50%;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+
+/* Typography */
+
+.underline {
+  text-decoration: underline;
+}
+
+/*  Colors */
+
+.bg-pink {
+  background-color: #ffc0cb;
+}
+
+.bg-violet {
+  background-color: $violet-electric;
+}
+
+.bg-white {
+  background-color: $white;
+}
+
+.bg-primary {
+  background-color: $primary-color;
+}
+
+.bg-black {
+  background-color: $black;
+}
+
+.bg-red {
+  background-color: $error-color;
+}
+
+.white {
+  color: $white;
+}
+
+.primary {
+  color: $primary-color;
+}
+
+.bg-back-light-main-color {
+  background-color: $light-back-main-color;
+}
+
+.back-light-main-color {
+  color: $light-back-main-color;
+}
+
+.back-lighter-main-color {
+  color: lighten($light-back-main-color, 20);
+}
+
+.lighter-text {
+  color: #D4C6C6;
+}
+
+.tox-notification {
+  display: none !important;
+}
+
+input[type="checkbox"] {
+  width: 2rem;
+  height: 2rem;
+  color: $primary-color;
+  vertical-align: middle;
+  -webkit-appearance: none;
+  background: none;
+  border: 0;
+  outline: 0;
+  flex-grow: 0;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  transition: background 300ms;
+  cursor: pointer;
+}
+
+[type=checkbox]::before {
+  content: "";
+  color: transparent;
+  display: block;
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+  border: 0;
+  background-color: transparent;
+  background-size: contain;
+  box-shadow: inset 0 0 0 1px #CCD3D8;
+}
+
+
+[type=checkbox]:checked {
+  background-color: currentcolor;
+}
+
+[type=checkbox]:checked::before {
+  box-shadow: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E %3Cpath d='M15.88 8.29L10 14.17l-1.88-1.88a.996.996 0 1 0-1.41 1.41l2.59 2.59c.39.39 1.02.39 1.41 0L17.3 9.7a.996.996 0 0 0 0-1.41c-.39-.39-1.03-.39-1.42 0z' fill='%23fff'/%3E %3C/svg%3E");
+}

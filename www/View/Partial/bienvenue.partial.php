@@ -1,7 +1,7 @@
-<section  class="section" id="section2">
+<section  class="section" id="section_welcome">
     <div class="text-banner">
 
-        <h1>Hello <?= $_SESSION['user']['lastname']." ".$_SESSION['user']['firstname'] ?>, Welcome back
+        <h1>Hello <?= $user->getLastname()." ".$user->getFirstname() ?>, Welcome back
 
             <svg width="53" height="49" viewBox="0 0 53 49" fill="none" xmlns="http://www.w3.org/2000/svg"
                  xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -25,9 +25,43 @@
 
 
     </div>
-    <div>
+    <div id="container_avatar">
         <figure>
-            <img src="assets/images/img.png">
+            <img src="<?php echo \App\Model\User::getUserConnected()->avatar(); ?>">
         </figure>
     </div>
 </section>
+
+<style>
+
+
+    #container_avatar{
+        height: 150px;
+        width: 150px;
+    }
+    figure{
+        margin: 0;
+        height: 150px;
+        width: 150px;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+    }
+    #container_avatar figure img{
+        height: 130px;
+        width: 130px;
+        border-radius: 25px;
+
+    }
+    #section_welcome{
+        margin-top: 30px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-around;
+        background: linear-gradient(96.16deg, #2F76C0 3.98%, #3BCDB3 72.64%);
+        color: white;
+        height: 150px;
+        border-radius: 25px;
+    }
+</style>

@@ -17,7 +17,7 @@
     min-height: 27px;
   }
 
-  input[type="text"]{
+  input[type="text"], input[type="password"], input[type="email"]{
     min-height: 1rem;
     padding: 0.5rem;
   }

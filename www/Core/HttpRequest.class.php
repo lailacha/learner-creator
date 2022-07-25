@@ -12,6 +12,14 @@ class HttpRequest
     private $method;
     private $param;
     private $data;
+
+    /**
+     * @param mixed $data
+     */
+    public function setData($data): void
+    {
+        $this->data = $data;
+    }
     private $route;
 
 
@@ -85,8 +93,8 @@ class HttpRequest
             {
                 if(isset($_GET[$param] ))
                 {
-                    $this->param[] = $_GET[$param];
-                    $this->data[$param] = $_GET[$param] ;
+                    $this->param[] = htmlspecialchars($_GET[$param]);
+                    $this->data[$param] = htmlspecialchars($_GET[$param]) ;
                 }
 
                 if(isset($_FILES[$param]))
@@ -101,8 +109,8 @@ class HttpRequest
                 {
                     if(isset($_POST[$param] ))
                     {
-                        $this->param[] = $_POST[$param] ;
-                        $this->data[$param] = $_POST[$param];
+                        $this->param[] = htmlspecialchars($_POST[$param]) ;
+                        $this->data[$param] = htmlspecialchars($_POST[$param]);
                     }
 
                     if(isset($_FILES[$param]))

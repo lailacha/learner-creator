@@ -17,16 +17,16 @@
         <a href="/saveLike?course=<?php echo $course->getId() ?>" class="mt-2 ml-2">
         <input type="image" src="../framework/assets/images/like.png" height="30" width="30"/>
          </a>
-
+         <?php if($course->getUser() === (\App\Model\User::getUserConnected()->getId())  || \App\Model\User::getUserConnected()->isAdmin()): ?>
         <div class="flex">
-            <a href="/courses" class="mt-2">
+            <a href="/searchCourses" class="mt-2">
                 <button>Go back to the courses</button>
             </a>
             <a href="/createLesson?course_id=<?php echo $course->getId() ?>" class="mt-2 ml-2">
                 <button>Create a lesson</button>
             </a>
         </div>
-
+        <?php endif; ?>
     </div>
     <div class="toggle-chapter col-md-2 flex jc-sb ai-center">
         <h3>Watchlist</h3>
@@ -49,7 +49,10 @@
                     <h3><?php echo $chapter->getName(); ?></h3>
                     <div class>
                         <i class="icon fa fa-eye"></i>
+                        <?php if($course->getUser() === (\App\Model\User::getUserConnected()->getId())  || \App\Model\User::getUserConnected()->isAdmin()): ?>
                         <a href="/createLesson?course_id=<?php echo $course->getId() ?>"> <i class="fa-solid fa-plus"></i> </a>
+                        <?php endif; ?>
+
                     </div>
                 </div>
 

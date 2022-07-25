@@ -18,7 +18,7 @@ class View{
 
     public function setView($view):void
     {
-        $this->view = strtolower($view);
+        $this->view = $view;
     }
     public function setTemplate($template):void
     {

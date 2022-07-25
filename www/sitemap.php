@@ -1,5 +1,6 @@
 ﻿<?php
 
+
     $servername = "database";
     $username = "root";
     $password = "password";
@@ -8,7 +9,8 @@
 
     $links = $conn->query("SELECT id, updated_at FROM esgi_course");
 
-    $base_url = "http://localhost/show/course?id=";
+    $base_url = "https://learner-creator.online/show/course?id=";
+
 
     header("Content-Type: application/xml; charset=utf-8");
     echo '<?xml version="1.0" encoding="UTF-8" ?>' . PHP_EOL;

@@ -16,6 +16,7 @@ class User extends Sql
     protected $id = null;
     protected $firstname = null;
     protected $lastname = null;
+    protected $createdAt = null;
     protected $email = null;
     protected $avatar;
     protected $role_id = 1;
@@ -132,6 +133,15 @@ class User extends Sql
     public function setPassword(string $password): void
     {
         $this->password = password_hash($password, PASSWORD_DEFAULT);
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getCreatedAt(): string
+    {
+        return $this->createdAt;
     }
 
     public function fullName(): ?string
@@ -270,9 +280,10 @@ class User extends Sql
     
 
 
+
     public function getEditProfileForm()
     {
-       
+
         return [
             "config" => [
                 "method" => "POST",
@@ -309,7 +320,43 @@ class User extends Sql
                     "value" => $this->getLastname(),
                     "class" => "formRegister",
                     "error" => " Votre nom doit faire entre 2 et 100 caractères",
-                ],    
+                ],
+                "password" => [
+                    "type" => "password",
+                    "placeholder" => "Saisissez votre mot de passe",
+                    "id" => "passwordEditProfile",
+                    "required" => true,
+                    "value" => "",
+                    "class" => "formRegister",
+                    "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
+                ],
+                "Modifier le mot de passe" => [
+                    "type" => "checkbox",
+                    "label" => "Modifier votre mot de passe",
+                    "name" => "modifyPassword",
+                    "id" => "checkPassword",
+                    "required" => false,
+                    "class" => "formRegister ",
+                    "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
+                ],
+                "modifyPassword" => [
+                    "type" => "password",
+                    "placeholder" => "Saisissez votre mot de passe",
+                    "id" => "modifyPassword",
+                    "required" => false,
+                    "value" => "",
+                    "class" => "formRegister modifyPassword",
+                    "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
+                ],
+                "confirmModifyPassword" => [
+                    "type" => "password",
+                    "placeholder" => "Saisissez votre mot de passe",
+                    "id" => "validPassword",
+                    "required" => false,
+                    "value" => "",
+                    "class" => "formRegister modifyPassword",
+                    "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
+                ],
             ],
         ];
     }
@@ -320,9 +367,10 @@ class User extends Sql
             "config" => [
                 "method" => "POST",
                 "action" => "",
-                "id" => "formRegister",
+                "id" => "formLogin",
+                "class" => "formLogin",
                 "enctype" => "multipart/form-data",
-                "class" => "form register",
+//                "class" => "form register formLogin",
                 "submit" => "Sign in"
             ],
             "inputs" => [
@@ -336,15 +384,15 @@ class User extends Sql
                     "unicity" => true,
                     "errorUnicity" => "Un compte existe déjà avec cet email"
                 ],
-            "password" => [
-                "placeholder" => "Votre mot de passe ...",
+                "password" => [
+                    "placeholder" => "Votre mot de passe ...",
                     "type" => "password",
                     "id" => "pwdRegister",
                     "class" => "formRegister",
                     "required" => true,
                     "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
                 ],
-            "passwordConfirm" => [
+                "passwordConfirm" => [
                     "placeholder" => "Confirmation ...",
                     "type" => "password",
                     "id" => "pwdConfirmRegister",

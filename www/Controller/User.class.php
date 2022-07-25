@@ -22,14 +22,12 @@ use PDO;
 use App\Core\Sql;
 
 
-
-
-
 class User extends BaseController
 {
 
     public function login()
     {
+
         $user = new UserModel();
         $session = Session::getInstance();
         $verification = Verificator::checkForm($user->getLoginForm(), $this->request);
@@ -45,23 +43,23 @@ class User extends BaseController
                 //     die("CSRF token invalid");
                 //     $session->addFlashMessage("error", "csrf not valid! ");
                 //     header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
-                
 
-                    if ($user) {
 
-                        $user->setEmail(htmlspecialchars($_POST["email"]));
-                        $user->setPassword(htmlspecialchars($_POST["password"]));
-                        $user->login($_POST['email'], $_POST['password']);
+                if ($user) {
 
-                        $session->addFlashMessage("success", "Bienvenue");
-                        $session->addFlashMessage("success", "Vous êtes maintenant connecté");
-                        header('Location: /edit/profile');
+                    $user->setEmail(htmlspecialchars($_POST["email"]));
+                    $user->setPassword(htmlspecialchars($_POST["password"]));
+                    $user->login($_POST['email'], $_POST['password']);
 
-                    }
+                    $session->addFlashMessage("success", "Bienvenue");
+                    $session->addFlashMessage("success", "Vous êtes maintenant connecté");
+                    header('Location: /edit/profile');
 
-                    $session->addFlashMessage("error", "Identifiants incorrects");
+                }
 
-                
+                $session->addFlashMessage("error", "Identifiants incorrects");
+
+
                 $user->setEmail(htmlspecialchars($_POST["email"]));
                 $user->setPassword(htmlspecialchars($_POST["password"]));
 
@@ -81,12 +79,10 @@ class User extends BaseController
     }
 
 
-
     public function logout()
     {
 
         session_destroy();
-        echo "Se déconnecter";
         $this->session->addFlashMessage("success", "Vous êtes maintenant déconnecté");
         header('Location: /login');
 
@@ -96,10 +92,9 @@ class User extends BaseController
     public function register()
     {
 
-        
+
         $user = new UserModel();
         $session = Session::getInstance();
-
         if (!empty($_POST)) {
 
             $verification = Verificator::checkForm($user->getRegisterForm(), $this->request);
@@ -112,51 +107,45 @@ class User extends BaseController
                 //     return;
                 //     $session->addFlashMessage("error", "csrf not valid! ");
                 //     header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
-                // } 
-                
-                    $isRegistred = $user->getBy("email", $_POST["email"]);
-                    if (!$isRegistred) {
+                // }
 
-                        $user->setFirstname(htmlspecialchars($_POST["firstname"]));
-                        $user->setLastname(htmlspecialchars($_POST["lastname"]));
-                        $user->setEmail(htmlspecialchars($_POST["email"]));
-                        $user->setPassword(htmlspecialchars($_POST["password"]));
+                $isRegistred = $user->getBy("email", $_POST["email"]);
+                if (!$isRegistred) {
 
-                        $user->generateToken((Helpers::createToken()));
-                        $user->setAvatar(194);
+                    $user->setFirstname(htmlspecialchars($_POST["firstname"]));
+                    $user->setLastname(htmlspecialchars($_POST["lastname"]));
+                    $user->setEmail(htmlspecialchars($_POST["email"]));
+                    $user->setPassword(htmlspecialchars($_POST["password"]));
 
-                        
+                    $user->generateToken((Helpers::createToken()));
+                    $user->setAvatar(194);
+                    $user->save();
+                    $this->sendRegisterMail($user);
+                    $this->session->destroy();
+                    $this->route->redirect("/login");
 
-                        $user->save();
-                        $this->sendRegisterMail($user);
-                        $this->session->destroy();
-                        $this->route->redirect("/login");
-                
-                        $session->addFlashMessage("success", "Your registration is OK!");
-                    } else {
-                        $session->addFlashMessage("error", "Vous etes déjà inscrit");
-                    }
-                
+                    $session->addFlashMessage("success", "Your registration is OK!");
+                } else {
+                    $session->addFlashMessage("error", "Vous etes déjà inscrit");
+                }
+
+
             } else {
                 $session->addFlashMessage("error", $verification[0]);
             }
         }
-       // echo var_dump($_SESSION['csrf_token']);
+        // echo var_dump($_SESSION['csrf_token']);
 
-        $view = new View("Register","home");
+        $view = new View("register", "home");
         $form = FormBuilder::render($user->getRegisterForm());
         $view->assign("form", $form);
 
-        }
+    }
 
-
-
-    
 
     public function recoverPassword()
     {
         $user = new UserModel();
-        $form = $user->getForgetPswdForm();
         $receivePasswordManager = new ReceivePasswordModel();
         $receivePass = new ReceivePassword();
         $session = Session::getInstance();
@@ -180,7 +169,7 @@ class User extends BaseController
         }
 
         $view = new View("forgotPassword", "home");
-        $form = FormBuilder::render($form);
+        $form = FormBuilder::render($user->getForgetPswdForm());
         $view->assign("form", $form);
 
     }
@@ -195,7 +184,7 @@ class User extends BaseController
         $receivePasswordManager = new ReceivePasswordModel();
 
         $token = $_GET['token'] ?? null;
-        $email = $_GET['email'] ?? null;
+        $email = $_GET['mail'] ?? null;
         $idUser = $_GET['id'] ?? null;
 
 
@@ -210,6 +199,7 @@ class User extends BaseController
 
         $result = $query->fetch();
 
+
         $count = (clone $query)->count();
 
         $dateFinal = new DateTime();
@@ -222,20 +212,25 @@ class User extends BaseController
         if ($count === 1 && $result['status'] == 0 && $heureDifference < 48) {
 
             $view = new View("changePassword", "home");
+            $form = FormBuilder::render($user->getChangePswdForm());
+            $view->assign("form", $form);
 
             if (!empty($_POST)) {
-                // Plus tard faut utiliser Class verificator pour verifier le password
-                $receivePasswordManager = $receivePasswordManager->getBy('id', $result['id']);
-                $receivePasswordManager->setStatus(1);
-                $receivePasswordManager->save();
-                $user = $user->getBy('id', $idUser);
-                $user->setPassword($_POST['password']);
-                $user->save();
+                $this->request->setData($_POST);
+                $verification = Verificator::checkForm($user->getChangePswdForm(), $this->request);
+                if (!$verification) {
+                    $receivePasswordManager = $receivePasswordManager->getBy('id', $result['id']);
+                    $receivePasswordManager->setStatus(1);
+                    $receivePasswordManager->save();
+                    $user = $user->getBy('id', $idUser);
+                    $user->setPassword(htmlspecialchars($_POST['password']));
+                    $user->save();
+                    $this->session->addFlashMessage("success", "Votre mot de passe a été modifié");
+                    $this->route->redirect("/login");
+                } else {
+                    $this->session->addFlashMessage("error", $verification[0]);
+                }
 
-            } else {
-
-                $form = FormBuilder::render($user->getChangePswdForm());
-                $view->assign("form", $form);
 
             }
 
@@ -256,7 +251,7 @@ class User extends BaseController
      */
     public function sendRegisterMail(UserModel $user)
     {
-        $html = '<a href="http://localhost/verifyAccount?token=' . $user->getToken() . '&email=' . $user->getEmail() . '"><h2>Click here to validate your account!</h2></a>';
+        $html = '<a href="http://learner-creator.online/verifyAccount?token=' . $user->getToken() . '&email=' . $user->getEmail() . '"><h2>Click here to validate your account!</h2></a>';
 
         $confirmMail = new Mail();
         $confirmMail->setSubject("Last step to validate your account...");
@@ -305,7 +300,7 @@ class User extends BaseController
 
         $courseManger = new Course();
         $courses = $courseManger->getAllBy('user', $user->getId());
-       
+
 
         $view = new View("showProfile", "back");
         $view->assign('user', $user);
@@ -320,22 +315,21 @@ class User extends BaseController
         $user = UserModel::getUserConnected();
 
         $learner = new Learner();
-        
-        
-        
+
+
         $formCat = FormBuilder::render($learner->getCategoryPrefForm());
         $view->assign("formCat", $formCat);
         $form = FormBuilder::render($user->getEditProfileForm());
         $view->assign("form", $form);
         $view->assign("user", $user);
-    
+
         $categoriesNumb = $learner->getAllCategories($user->getId());
         $view->assign("categoriesNumb", $categoriesNumb);
 
         $categories = new CourseCategory();
         $view->assign("categories", $categories);
-       
-        
+
+
     }
 
     public function delete(): void
@@ -348,50 +342,51 @@ class User extends BaseController
         }
     }
 
-    public function saveCatPref()  {
-         
-        
-        $learner = new Learner(); 
-        $user =  UserModel::getUserConnected()->getId();
-        $course = $learner->setCategory($this->request->get("category")); 
-        $course =  $learner->getCategory();
-        
+    public function saveCatPref()
+    {
+
+
+        $learner = new Learner();
+        $user = UserModel::getUserConnected()->getId();
+        $course = $learner->setCategory($this->request->get("category"));
+        $course = $learner->getCategory();
+
         $learner->setUser($user);
-        
-        $catVerif = $learner->catVerif($user,$course);
-        
-        if($catVerif === 0) {
-           
-           $learner->save();
+
+        $catVerif = $learner->catVerif($user, $course);
+
+        if ($catVerif === 0) {
+
+            $learner->save();
             header('Location: /edit/profile');
         } else {
             echo $this->session->addFlashMessage("success", "Vous avez déjà préféré cette catégorie");
             header('Location: /edit/profile');
-                 
-        } 
-       
+
+        }
+
     }
-    public function deleteCatPref() {
+
+    public function deleteCatPref()
+    {
+        $sessoion = Session::getInstance();
         $learner = new Learner();
-        $user =  UserModel::getUserConnected()->getId();
-        $course = $learner->setCategory($this->request->get("category")); 
+        $user = UserModel::getUserConnected()->getId();
+        $course = $learner->setCategory($this->request->get("category"));
         $course = $learner->getCategory();
         $learner->setUser($user);
-        echo $learner->deleteCatPref($user,$course);
+        echo $learner->deleteCatPref($user, $course);
         header('Location: /edit/profile');
-        echo $this->session->addFlashMessage("success", "Vous avez supprimé votre préférence pour la catégorie");
+        $session->addFlashMessage("success", "Vous avez supprimé votre préférence pour la catégorie");
     }
-        
-       
-    
-    
+
 
     public function saveProfile()
     {
         $user = UserModel::getUserConnected();
         $errors = Verificator::checkForm($user->getEditProfileForm(), $this->request);
         if (!$errors) {
-            
+
             if (!empty($this->request->get('firstname')) && $this->request->get('firstname') !== $user->getFirstname()) {
                 $user->setFirstname($this->request->get('firstname'));
             }
@@ -399,37 +394,52 @@ class User extends BaseController
             if (!empty($this->request->get('lastname')) && $this->request->get('lastname') !== $user->getLastname()) {
                 $user->setLastname($this->request->get('lastname'));
             }
-
-                {
-                    $user->setFirstname($this->request->get('firstname'));
-                    $user->setLastname($this->request->get('lastname'));
-                }
-                if(!empty($this->request->get("avatar")) && $this->request->get("avatar") !== $user->getAvatar() && isset($_FILES['avatar']) && $_FILES['avatar']['error'] === 0) {
-
-                    try {
-                        $file = new File($_FILES["avatar"]);
-                        $file = $file->upload( "avatar", 3);
-                    } catch (\Exception $e) {
-                        $this->session->addFlashMessage("error", $e->getMessage());
-                        $this->route->redirect("/edit/profile");
-                        return;
-                    }
-                     $user->setAvatar($file->getLastInsertId());
-                    
-                }
-
-                $user->save();
-                $this->session->addFlashMessage("success", "Votre profile a bien été modifié");
-                $this->route->redirect("/edit/profile");
-
+            if (isset($_POST['modifyPassword']) && !empty($_POST['modifyPassword']) && $_POST['modifyPassword'] === $_POST['confirmModifyPassword']) {
+                $user->setPassword($_POST['modifyPassword']);
             }
-            else{
-                $this->session->addFlashMessage("error",$errors[0]);
-                $this->route->redirect("/edit/profile");
 
+            {
+                $user->setFirstname($this->request->get('firstname'));
+                $user->setLastname($this->request->get('lastname'));
             }
+            if (!empty($this->request->get("avatar")) && $this->request->get("avatar") !== $user->getAvatar() && isset($_FILES['avatar']) && $_FILES['avatar']['error'] === 0) {
+
+                try {
+                    $file = new File($_FILES["avatar"]);
+                    $file = $file->upload("avatar", 3);
+                } catch (\Exception $e) {
+                    $this->session->addFlashMessage("error", $e->getMessage());
+                    $this->route->redirect("/edit/profile");
+                    return;
+
+                }
+                $user->setAvatar($file->getLastInsertId());
+            }
+
+            $user->save();
+            $this->session->addFlashMessage("success", "Votre profile a bien été modifié");
+            $this->route->redirect("/edit/profile");
+
+        } else {
+            $this->session->addFlashMessage("error", $errors[0]);
+            $this->route->redirect("/edit/profile");
 
         }
+
+    }
+
+    public function verifyPassword()
+    {
+
+        $password = $_POST['password'];
+        $user = UserModel::getUserConnected();
+        if (password_verify($password, $user->getPassword())) {
+            echo 1;
+        } else {
+            echo 0;
+        }
+
+    }
 }
 
 

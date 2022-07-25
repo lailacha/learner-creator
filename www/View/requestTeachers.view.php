@@ -10,8 +10,8 @@
     </tr>
     </thead>
     <tbody>
-
     <?php foreach ($listRequestsTeacher as $item) : ?>
+
         <tr>
             <td><?= $item->getUser()->getFirstname()?> <?= $item->getUser()->getLastname() ?></td>
             <td><?=$item->getUser()->getEmail() ?></td>

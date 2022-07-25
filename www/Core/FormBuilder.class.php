@@ -43,11 +43,14 @@ class FormBuilder
         $data = "";
         if(isset($checkbox["label"]))
         {
-            $data .= "<label for='".($name ?? "")."'>".$checkbox["label"]."</label>";
+            $data .= "<label for='".($name ?? "")."'>".$checkbox["label"];
         }
         $data .= " <input type='hidden' name='".($name ?? '')."'  value='false'>";
         $data .= " <input type='checkbox' class='".($checkbox["class"] ?? '')."' ".($checkbox["checked"] ?? '')." id='".($checkbox["id"] ?? '')."' name='".($name ?? '')."'  value='".($checkbox["value"] ?? '')."'>";
-
+        if(isset($checkbox["label"]))
+        {
+            $data .= "</label>";
+        }
         return $data;
 
     }

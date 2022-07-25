@@ -269,8 +269,15 @@ h4 {
   align-items: center;
   flex-wrap: wrap;
 }
-
-
+.center{
+  display: flex;
+  justify-content: center;
+}
+#container_add_pref{
+  form{
+    margin: 10px 0;
+  }
+}
 #section4 {
   & h2 {
     font-size: rem(30);

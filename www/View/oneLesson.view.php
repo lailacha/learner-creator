@@ -6,7 +6,7 @@
         </div>
         <div class="flex jc-sb ai-center jc-center">
         <h1 class="flex"><?php echo $lesson->getTitle(); ?>
-            <?php if($lesson->getUser() === \App\Model\User::getUserConnected()->getId()): ?>
+            <?php if($lesson->getUser() === (\App\Model\User::getUserConnected()->getId())  || \App\Model\User::getUserConnected()->getRoleId() === 3) : ?>
                 <a href="/edit/lesson?lesson_id=<?php echo $lesson->getId(); ?>"><i class="fas fa-edit"></i></a>
             <?php endif; ?>
 
@@ -45,7 +45,7 @@
             <a href="/createLesson?course_id=<?php echo $lesson->course()->getId() ?>" class="mt-2 ml-2">
                 <button>Create a new lesson</button>
             </a>
-            <?php if($lesson->getUser() === \App\Model\User::getUserConnected()->getId() || \App\Model\User::getUserConnected()->isAdmin()): ?>
+            <?php if(\App\Model\User::getUserConnected()->getRoleId() === 3 ): ?>
                 <a href="/delete/lesson?lesson_id=<?php echo $lesson->getId() ?>" class="mt-2 ml-a">
                     <button class="error">Remove lesson</button>
                 </a>
@@ -73,7 +73,9 @@
                         <h3><?php echo $chapter->getName(); ?></h3>
                         <div class>
                             <i class="icon fa fa-eye"></i>
+                            <?php if($lesson->getUser() === (\App\Model\User::getUserConnected()->getId())  || \App\Model\User::getUserConnected()->getRoleId() === 3) : ?>
                             <a href="/createLesson?course_id=<?php echo $lesson->course()->getId() ?>"> <i class="fa-solid fa-plus"></i> </a>
+                            <?php endif; ?>
                         </div>
                     </div>
 

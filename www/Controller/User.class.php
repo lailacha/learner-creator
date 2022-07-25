@@ -83,7 +83,9 @@ class User extends BaseController
     {
 
         session_destroy();
-        header('Location: /');
+        $this->session->addFlashMessage("success", "Vous êtes maintenant déconnecté");
+        header('Location: /login');
+
     }
 
 
@@ -126,6 +128,7 @@ class User extends BaseController
                 } else {
                     $session->addFlashMessage("error", "Vous etes déjà inscrit");
                 }
+
 
             } else {
                 $session->addFlashMessage("error", $verification[0]);
@@ -408,6 +411,7 @@ class User extends BaseController
                     $this->session->addFlashMessage("error", $e->getMessage());
                     $this->route->redirect("/edit/profile");
                     return;
+
                 }
                 $user->setAvatar($file->getLastInsertId());
             }

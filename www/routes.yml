@@ -429,6 +429,7 @@
   method: POST
   path: /save/profile
   param: ["firstname", "lastname", "avatar", "password"]
+
   security: ["admin", "user", "teacher"]
 
 

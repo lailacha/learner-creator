@@ -1,0 +1,317 @@
+body {
+  font-family: $font1;
+  background-color: $body-color;
+  transition: $tran;
+}
+
+
+/*  Flex  */
+
+
+.flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.column {
+  flex-direction: column !important;
+}
+
+.fd-row-reverse {
+  flex-direction: row-reverse;
+}
+
+.fd-col-reverse {
+  flex-direction: column-reverse;
+}
+
+.jc-center {
+  justify-content: center;
+}
+
+.jc-sb {
+  justify-content: space-between;
+}
+
+.jc-sa {
+  justify-content: space-around;
+}
+
+.ai-center {
+  align-items: center;
+}
+
+.ai-start {
+  align-items: flex-start;
+}
+
+/*  Spacing  */
+$baseSpace: 0.8rem;
+$spaceRange: 5;
+
+.mr-a {
+  margin-right: auto;
+}
+
+.ml-a {
+  margin-left: auto;
+}
+
+
+.h-25 {
+  height: 25%;
+}
+
+.h-50 {
+  height: 50%
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.xs-space {
+  margin-top: 20px
+}
+
+
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+
+@for $i from 0 through $spaceRange {
+  .m-#{$i} {
+    margin: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .mt-#{$i} {
+    margin-top: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .mb-#{$i} {
+    margin-bottom: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .mr-#{$i} {
+    margin-right: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .ml-#{$i} {
+    margin-left: calc(#{$baseSpace} * #{$i}) !important;
+  }
+
+
+  .p-#{$i} {
+    padding: calc(#{$baseSpace} * #{$i}) !important;
+  }
+
+  .pt-#{$i} {
+    padding-top: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .pb-#{$i} {
+    padding-bottom: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .pr-#{$i} {
+    padding-right: calc(#{$baseSpace} * #{$i}) !important;
+  }
+  .pl-#{$i} {
+    padding-left: calc(#{$baseSpace} * #{$i}) !important;
+  }
+}
+
+/*  width  */
+
+.w-25 {
+  width: 25%;
+}
+
+.w-50 {
+  width: 50%;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.bg-violet {
+  background-color: $violet-electric;
+}
+
+.bg-white {
+  background-color: $white;
+}
+
+.bg-primary {
+  background-color: $primary-color;
+}
+
+.bg-black {
+  background-color: $black;
+}
+
+.bg-red {
+  background-color: $error-color;
+}
+
+.white {
+  color: $white;
+}
+
+.primary {
+  color: $primary-color;
+}
+
+.back-light-main-color {
+  color: $light-back-main-color;
+}
+
+.back-lighter-main-color {
+  color: lighten($light-back-main-color, 20);
+}
+
+.lighter-text {
+  color: #D4C6C6;
+}
+
+.tox-notification {
+  display: none !important;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+/*
+/*body {
+  @include theme-colors($light-theme: true);
+
+  body.dark {
+    @include theme-colors($light-theme: false);
+  }
+}*/
+
+
+::selection {
+  background-color: $primary-color;
+  color: $white;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+h1 {
+  font-family: $font2;
+  font-size: var(--big-title-size);
+}
+
+h2 {
+  font-family: $font2;
+  font-size: rem(16);
+}
+
+h3 {
+  font-family: $font2;
+  font-size: rem(14);
+}
+
+h4 {
+  font-family: $font2;
+  font-size: rem(8);
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  background-color: $body-color;
+  transition: $tran;
+
+
+  & .home {
+    font-size: rem(30);
+    font-weight: 400;
+    color: $text-color;
+    padding: 12px 60px;
+    width: 100%;
+
+    & .section {
+      margin: 50px 0;
+    }
+  }
+}
+
+#section1 {
+
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#section2 {
+  display: flex;
+  justify-content: space-around;
+  background: $linear;
+  color: $white;
+  border-radius: 25px;
+  padding: 10px;
+}
+
+
+#section3 {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.center{
+  display: flex;
+  justify-content: center;
+}
+#container_add_pref{
+  form{
+    margin: 10px 0;
+  }
+}
+#section4 {
+  & h2 {
+    font-size: rem(30);
+    font-style: normal;
+    font-weight: bold;
+    margin: 0 0 20px 0;
+  }
+}
+
+
+@media (max-width: 990px) {
+
+  #section2 {
+    display: flex;
+    justify-content: space-around;
+    background: linear-gradient(96.16deg, #2F76C0 3.98%, #3BCDB3 72.64%);
+    color: #FFF;
+    border-radius: 25px;
+    flex-direction: column;
+    padding: 10%;
+
+  }
+  .container {
+
+    padding-left: 20px;
+
+    & .home {
+      font-size: 1.875rem;
+      font-weight: 400;
+      color: #464646;
+      padding: 0px;
+      width: 100%;
+    }
+
+  }
+
+}

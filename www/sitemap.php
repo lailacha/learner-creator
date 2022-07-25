@@ -1,14 +1,16 @@
 ﻿<?php
 
-    $servername = "localhost";
+
+    $servername = "database";
     $username = "root";
-    $password = "rootiw3";
+    $password = "password";
     $dbname = "mvcdocker2";
     $conn = new mysqli($servername, $username, $password, $dbname);
 
     $links = $conn->query("SELECT id, updated_at FROM esgi_course");
 
     $base_url = "https://learner-creator.online/show/course?id=";
+
 
     header("Content-Type: application/xml; charset=utf-8");
     echo '<?xml version="1.0" encoding="UTF-8" ?>' . PHP_EOL;

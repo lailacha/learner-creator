@@ -1,12 +1,10 @@
 ﻿<!DOCTYPE html>
-<html lang="fr" class="vitrine">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard front</title>
+<html lang="fr">
+  <head>
+    <meta charset=UTF-8>
+    <title>home</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"
-            defer></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js" defer></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
     <script src="../../framework/dist/main.js"></script>
     <script src="https://kit.fontawesome.com/abaaf4d322.js" crossorigin="anonymous"></script>

@@ -27,7 +27,7 @@ class User extends Sql
     public function __construct()
     {
         //echo "constructeur du Model User";
-        parent::__construct();
+       $this->getPDO();
     }
 
     /**
@@ -277,6 +277,7 @@ class User extends Sql
         }
         return false;
     }
+    
 
 
 

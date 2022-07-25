@@ -17,7 +17,7 @@ class LessonCommentaire extends Sql
 
     public function __construct()
     {
-        parent::__construct();
+        $this->getPDO();
         $this->table  = DBPREFIXE."commentaire_lesson";
     }
 
@@ -116,6 +116,7 @@ class LessonCommentaire extends Sql
             ->from('commentaire_lesson c')
             ->innerJoin('user u', 'u.id = c.user')
             ->innerJoin('file', 'u.avatar = esgi_file.id')
+
             ->where('lesson = :lesson')
             ->setParams([
                 'lesson' => $lesson

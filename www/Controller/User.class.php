@@ -116,7 +116,7 @@ class User extends BaseController
                     $user->setPassword(htmlspecialchars($_POST["password"]));
 
                     $user->generateToken((Helpers::createToken()));
-
+                    $user->setAvatar(194);
                     $user->save();
                     $this->sendRegisterMail($user);
                     $this->session->destroy();
@@ -220,7 +220,7 @@ class User extends BaseController
                     $receivePasswordManager->setStatus(1);
                     $receivePasswordManager->save();
                     $user = $user->getBy('id', $idUser);
-                    $user->setPassword($_POST['password']);
+                    $user->setPassword(htmlspecialchars($_POST['password']));
                     $user->save();
                     $this->session->addFlashMessage("success", "Votre mot de passe a été modifié");
                     $this->route->redirect("/login");

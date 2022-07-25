@@ -40,13 +40,17 @@ class FormBuilder
 
     private static function renderCheckbox(string $name, array $checkbox): string
     {
-
-        if (isset($checkbox["label"])) {
-            $data = "<label for='" . ($name ?? "") . "'>" . ucfirst($name);
+        $data = "";
+        if(isset($checkbox["label"]))
+        {
+            $data .= "<label for='".($name ?? "")."'>".$checkbox["label"];
         }
-        $data .= " <input type='checkbox' class='" . ($checkbox["class"] ?? '') . "' " . ($checkbox["checked"] ?? '') . " id='" . ($checkbox["id"] ?? '') . "' name='" . ($name ?? '') . "'  value='" . ($checkbox["value"] ?? '') . "'>";
-        $data .= " <input type='hidden' name='" . ($name ?? '') . "'  value='0'>";
-        $data .= "</label>";
+        $data .= " <input type='hidden' name='".($name ?? '')."'  value='false'>";
+        $data .= " <input type='checkbox' class='".($checkbox["class"] ?? '')."' ".($checkbox["checked"] ?? '')." id='".($checkbox["id"] ?? '')."' name='".($name ?? '')."'  value='".($checkbox["value"] ?? '')."'>";
+        if(isset($checkbox["label"]))
+        {
+            $data .= "</label>";
+        }
         return $data;
 
     }
@@ -114,7 +118,7 @@ class FormBuilder
     private static function renderInput(string $name, array $input): string
     {
         $data = "<label for='".($name ?? "")."'>".ucfirst($name)."</label>";
-        $data .= " <input value='".($input["value"] ?? '')."'  type='".($input["type"] ?? 'text')."'  class='".($input["class"] ?? '')."'  id='".($input["id"] ?? '')."' placeholder='".($input["placeholder"] ?? '')."' ".(isset($input["disabled"]) ? "disabled" : "")." name='".($name ?? "")."'./>";
+        $data .= " <input value='".($input["value"] ?? '')."'  type='".($input["type"] ?? 'text')."'  class='".($input["class"] ?? '')."'  id='".($input["id"] ?? '')."' placeholder='".($input["placeholder"] ?? '')."' ".($input["disabled"] ?? "")." name='".($name ?? "")."'./>";
         return $data;
     }
 

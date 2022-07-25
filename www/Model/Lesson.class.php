@@ -3,7 +3,7 @@
 
 namespace App\Model;
 
-use App\Core\QueryBuilder;
+use App\Core\Helpers;
 use App\Core\Sql;
 use App\Model\Course as CourseManager;
 use App\Model\User as UserManager;
@@ -18,6 +18,7 @@ class Lesson extends Sql
     protected string $text;
     protected int $user;
     protected int $chapter;
+    protected string $slug;
     protected string $created_at;
 
 
@@ -148,6 +149,29 @@ class Lesson extends Sql
     {
         $courseManager = new CourseManager();
         return $courseManager->setId($this->chapter()->getCourse());
+    }
+
+    public function save(): void
+    {
+        //generate a slug
+        $this->setSlug();
+        parent::save();
+    }
+
+    /**
+     * @return void
+     */
+    public function setSlug(): void
+    {
+        //verify if the slugify name is already used in the database
+       if($this->getBy('slug', Helpers::slugify($this->title)))
+         {
+              $this->slug = $this->slug . '-' . $this->id;
+         }
+            else
+            {
+                $this->slug = Helpers::slugify($this->title);
+            }
     }
 
 

@@ -112,9 +112,10 @@ class LessonCommentaire extends Sql
     public function getWithUserByLesson($lesson) : array
     {
         $query = new QueryBuilder();
-        return  $query->select('c.id, firstname as userFirstname, lastname as userLastname, content, created_at')
+        return  $query->select('c.id, firstname as userFirstname, lastname as userLastname, content, created_at,  esgi_file.path as avatar')
             ->from('commentaire_lesson c')
-            ->innerJoin('user', DBPREFIXE.'user.id = c.user')
+            ->innerJoin('user u', 'u.id = c.user')
+            ->innerJoin('file', 'u.avatar = esgi_file.id')
             ->where('lesson = :lesson')
             ->setParams([
                 'lesson' => $lesson

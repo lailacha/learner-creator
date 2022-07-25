@@ -16,6 +16,7 @@ class User extends Sql
     protected $id = null;
     protected $firstname = null;
     protected $lastname = null;
+    protected $createdAt = null;
     protected $email = null;
     protected $avatar;
     protected $role_id = 1;
@@ -132,6 +133,15 @@ class User extends Sql
     public function setPassword(string $password): void
     {
         $this->password = password_hash($password, PASSWORD_DEFAULT);
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getCreatedAt(): string
+    {
+        return $this->createdAt;
     }
 
     public function fullName(): ?string
@@ -269,9 +279,10 @@ class User extends Sql
     }
 
 
+
     public function getEditProfileForm()
     {
-       
+
         return [
             "config" => [
                 "method" => "POST",
@@ -309,16 +320,6 @@ class User extends Sql
                     "class" => "formRegister",
                     "error" => " Votre nom doit faire entre 2 et 100 caractères",
                 ],
-                "email" => [
-                    "type" => "email",
-                    "placeholder" => "Saisissez votre mot de passe",
-                    "id" => "",
-                    "value" => $this->getEmail(),
-                    "class" => "formRegister",
-                    "error" => "Votre mot de passe doit faidqsdsq",
-                    "required" => false,
-                    "disabled" => true,
-                ],
                 "password" => [
                     "type" => "password",
                     "placeholder" => "Saisissez votre mot de passe",
@@ -328,10 +329,9 @@ class User extends Sql
                     "class" => "formRegister",
                     "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
                 ],
-
                 "Modifier le mot de passe" => [
                     "type" => "checkbox",
-                    "label" => "Saisissez votre mot de passe",
+                    "label" => "Modifier votre mot de passe",
                     "name" => "modifyPassword",
                     "id" => "checkPassword",
                     "required" => false,
@@ -383,15 +383,15 @@ class User extends Sql
                     "unicity" => true,
                     "errorUnicity" => "Un compte existe déjà avec cet email"
                 ],
-            "password" => [
-                "placeholder" => "Votre mot de passe ...",
+                "password" => [
+                    "placeholder" => "Votre mot de passe ...",
                     "type" => "password",
                     "id" => "pwdRegister",
                     "class" => "formRegister",
                     "required" => true,
                     "error" => "Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
                 ],
-            "passwordConfirm" => [
+                "passwordConfirm" => [
                     "placeholder" => "Confirmation ...",
                     "type" => "password",
                     "id" => "pwdConfirmRegister",

@@ -44,7 +44,7 @@ class Verificator
                 $errors[]=$name ." ne peut pas être vide";
             }
 
-            if($input["type"] === "email" &&  !self::checkEmail($data[$name]) && $input["required"]) {
+            if($input["type"] === "email" &&  !self::checkEmail($data[$name])) {
                 $errors[]=$input["error"];
             }
 

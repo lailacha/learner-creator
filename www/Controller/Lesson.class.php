@@ -57,6 +57,15 @@ class Lesson extends BaseController
         $fileManager = new FileManager();
         $lessonProgressManager = new LessonProgress();
         $lesson = $lessonManager->setId($lessonId);
+
+        if($lessonId !== null)
+        {
+            $lesson = $lessonManager->setId($lessonId);
+        }
+        else{
+            $lesson = $lessonManager->getBySlug($this->request->getSlug());
+        }
+
         if(!$lesson){
             $this->session->addFlashMessage("error", "Lesson not found");
             $this->route->redirect('/404');

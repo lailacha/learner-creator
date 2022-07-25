@@ -205,10 +205,18 @@ class Course extends BaseController {
         $courseManager = new CourseModel();
 
         try {
-            $course = $courseManager->setId($this->request->get("id"));
+            $course = $courseManager->getBySlug($this->request->getSlug());
+            if($this->request->get("id") !== null)
+            {
+                $course = $courseManager->setId($this->request->get("id"));
+            }
+            else{
+                $course = $courseManager->getBySlug($this->request->getSlug());
+            }
+
         } catch (\Exception $e) {
-            $this->session->addFlashMessage("error", "Ce cours n'existe pas");
-            $this->route->redirect("/createCourse");
+            echo $e->getMessage();
+            die();
         }
         $view = new View("oneCourse", "front");
        

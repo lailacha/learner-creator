@@ -11,8 +11,6 @@
         </div>
         <div class="col-md-5 col-offset-md-2">
                 <div id="container_user_info">
-                    <h3>Création date</h3>
-                    <p>15/10/2000</p>
                     <h3>Type of account </h3>
                     <p><?php echo \App\Model\User::getUserConnected()->getRole() ?></p>
                 </div>
